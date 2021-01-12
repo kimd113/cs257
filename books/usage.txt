@@ -1,0 +1,22 @@
+Command line syntax
+
+* search --title books.csv "1Q84" :
+
+Type the query (with quotation marks - "1Q84") to search for the list of the books from the list. 
+
+* search --author books.csv "Haruki" :
+
+Type the query (with quotation marks - "Haruki") to search for the list of the authors who match the query from the list. 
+
+Given a search string S, print a list of authors whose names contain S (case-insensitive). For each such author, print a list of the author's books.
+
+* search --year books.csv 1800 1900 :
+
+Type a range of years to search for the list of books published between the range, inclusive.
+
+* search -h / --help :
+
+Print out all the command-line tools and their explanations (all the above).
+
+
+- multiple arguments
