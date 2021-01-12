@@ -1,14 +1,28 @@
 Command line syntax
 
-* search --title books.csv "1Q84" :
+Description:
+Given the csv file books.csv, search allows the user to search the file for books based on the criteria listed below. Users can narrow down search results by combining flags like shown below:
 
-Type the query (with quotation marks - "1Q84") to search for the list of the books from the list. 
+python3 books.csv search --title "1Q84" --author "Haruki"
 
-* search --author books.csv "Haruki" :
+The query above will retrieve books with the title "1Q84" AND were written by an author with the name "Haruki". All combinations of flags always act as AND operators.
 
-Type the query (with quotation marks - "Haruki") to search for the list of the authors who match the query from the list. 
 
-Given a search string S, print a list of authors whose names contain S (case-insensitive). For each such author, print a list of the author's books.
+Flags/Parameters:
+
+[--title,--t]:
+
+* search --title books.csv "1Q84" 
+
+Type the query (with quotation marks - "1Q84") to search for the list of books with "1Q84" in the title.
+
+[--author,--a]:
+
+* search --author books.csv "Haruki" 
+
+Type the query (with quotation marks - "Haruki") to search for the list of books who's authors have the name "Haruki".
+
+[--year,--y]:
 
 * search --year books.csv 1800 1900 :
 
@@ -17,6 +31,12 @@ Type a range of years to search for the list of books published between the rang
 * search -h / --help :
 
 Print out all the command-line tools and their explanations (all the above).
+
+Further examples:
+
+python3 books.csv search --title "1Q84" 
+python3 books.csv search --t "Neverland" --y 1800 1900
+python3 books.csv search --a "Peter" --y 1750 1820
 
 
 - multiple arguments
