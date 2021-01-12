@@ -38,5 +38,3 @@ python3 books.csv search --title "1Q84"
 python3 books.csv search --t "Neverland" --y 1800 1900
 python3 books.csv search --a "Peter" --y 1750 1820
 
-
-- multiple arguments
