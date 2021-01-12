@@ -12,23 +12,25 @@ Flags/Parameters:
 
 [--title,--t]:
 
-* search --title books.py "1Q84" 
+Example: python3 books.py search --title "1Q84" 
 
 Type the query (with quotation marks - "1Q84") to search for the list of books with "1Q84" in the title.
 
 [--author,--a]:
 
-* search --author books.py "Haruki" 
+Example: python3 books.py search --author "Haruki" 
 
 Type the query (with quotation marks - "Haruki") to search for the list of books who's authors have the name "Haruki".
 
 [--year,--y]:
 
-* search --year books.py 1800 1900 :
+Example: python3 books.py search --year 1800 1900 :
 
 Type a range of years to search for the list of books published between the range, inclusive.
 
-* search -h / --help :
+[--help,--h]:
+
+Example: python3 books.py search --help :
 
 Print out all the command-line tools and their explanations (all the above).
 
