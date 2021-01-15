@@ -13,12 +13,7 @@ def get_parsed_arguments():
     parser.add_argument('--author', '-a', metavar='Author Name', nargs='+', help='The name of the author who\'s books you want to find')
     parser.add_argument('--year','-y', metavar='[Year 1,Year 2]', nargs='+', help='A time range of years(inclusive) as publishing dates for the book you want')
     parsed_arguments = parser.parse_args()
-    return parsed_arguments
-
-# print the items in list
-def printItemsInList(list = []):
-    for item in list:
-        print(item)   
+    return parsed_arguments  
 
 # Checks the items in common in two lists and append them to a new list(filtered_list).
 def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
@@ -27,7 +22,7 @@ def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
             if first_item == second_item:
                 filtered_list.append(first_item)
                 
-# Formats the printed output
+# Formats and prints the items in list
 def output_setter(item_list):
     tracker=None
     for item in item_list:
@@ -88,13 +83,10 @@ def search_books(title = None, author = None, year = None):
 
         # Handle one argument case
         if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
-            printItemsInList(auth_list)
             output_setter(auth_list)
         elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
-            printItemsInList(ttl_list)
             output_setter(ttl_list)
         elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
-            printItemsInList(yr_list)
             output_setter(yr_list)
         else:
             # Handle more than two arguments
@@ -108,21 +100,21 @@ def search_books(title = None, author = None, year = None):
             # 1
             if (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) == 0):
                 checkItemsInCommon(auth_list, ttl_list, books_list)
-                printItemsInList(books_list)
+                output_setter(books_list)
             # 2
             elif (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) > 0):
                 checkItemsInCommon(auth_list, yr_list, books_list)
-                printItemsInList(books_list)
+                output_setter(books_list)
             # 3
             elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) > 0):
                 checkItemsInCommon(ttl_list, yr_list, books_list)
-                printItemsInList(books_list)
+                output_setter(books_list)
             # 4
             elif (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) > 0):
                 checkItemsInCommon(auth_list, ttl_list, books_list)
                 filteredAllThreeArgs_list=[]
                 checkItemsInCommon(books_list, yr_list, filteredAllThreeArgs_list)
-                printItemsInList(filteredAllThreeArgs_list)
+                output_setter(filteredAllThreeArgs_list)
 
 # Main function
 def main():
