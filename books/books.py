@@ -24,17 +24,19 @@ def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
 
 # Formats and prints the items in list
 def output_setter(item_list):
-    sorted_item_list= sorted(item_list, key = lambda x: x[2]) # Sorted with help from GeeksforGeeks.org (https://www.geeksforgeeks.org/python-sort-list-according-second-element-sublist/)
-    tracker=None
+    # Sorted with help from GeeksforGeeks.org 
+    # (https://www.geeksforgeeks.org/python-sort-list-according-second-element-sublist/)
+    sorted_item_list = sorted(item_list, key = lambda x: x[2]) 
+    tracker = None
     for item in sorted_item_list:
-        if tracker==item[2]:
-            print("\nBook title:  " + item[0])
-            print("Publication date:  " + item[1])
+        if tracker == item[2]:
+            print('\nBook title:  ', item[0])
+            print('Publication date:  ', item[1])
         else:
-            print("-------------------------------------------------------")
-            print("Author:  "+ item[2]+ "\n")
-            print("Book title:  " + item[0])
-            print("Publication date:  " + item[1])
+            print('-------------------------------------------------------')
+            print('Author:  ', item[2], '\n')
+            print('Book title:  ', item[0])
+            print('Publication date:  ', item[1])
             tracker=item[2]
 
 # Function that searches the books from books.csv - filtered by the arguments
@@ -59,7 +61,7 @@ def search_books(title = None, author = None, year = None):
                     if author[0].lower() in row[2].lower():
                         auth_list.append(row)
                 if len(auth_list) == 0:
-                    print('The keyword does not exist.')
+                    print('There is no item matches. Please try with different keywords.')
 
         # Input of title
         if title != None:
@@ -69,19 +71,19 @@ def search_books(title = None, author = None, year = None):
                     if title[0].lower() in row[0].lower():
                         ttl_list.append(row)
                 if len(ttl_list) == 0:
-                    print('The keyword does not exist.')
+                    print('There is no item matches. Please try with different keywords.')
 
         # Input of range of year
         if year != None:
             try:
-                if isinstance(int(year[0]),int) and isinstance(int(year[1]),int):
+                if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
                     with open('books.csv') as csvfile:
                         booksReader = csv.reader(csvfile, delimiter = ',')
                         for row in booksReader:
                             if year[0] <= row[1] and year[1] >= row[1]:
                                 yr_list.append(row)
                         if len(yr_list) == 0:
-                            print('The keyword does not exist.')
+                            print('There is no item matches. Please try with different keywords.')
             except:
                 print('Please input an integer for both year values')
 
