@@ -13,6 +13,24 @@ def get_parsed_arguments():
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
+def output_setter(item_list):
+    tracker=None
+    for item in item_list:
+        if tracker==item[2]:
+            print("\n")
+            print("Book title:  " + item[0])
+            print("Publication date:  " + item[1])
+
+        else:
+            print("-------------------------------------------------------")
+            print("Author:  "+ item[2]+ "\n")
+            print("Book title:  " + item[0])
+            print("Publication date:  " + item[1])
+            tracker=item[2]
+
+
+
+
 def get_results(title=None, author=None,year=None):
     if title==None and author==None and year==None:
         with open('books.csv') as csvfile:
@@ -57,14 +75,17 @@ def get_results(title=None, author=None,year=None):
 
         # Handle one argument case
         if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
-            for item in auth_list:
-                print(item)
+            output_setter(auth_list)
+            # for item in auth_list:
+            #     print(item)
         elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
-            for item in ttl_list:
-                print(item)
+            output_setter(ttl_list)
+            # for item in ttl_list:
+            #     print(item)
         elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
-            for item in yr_list:
-                print(item)
+            output_setter(yr_list)
+            # for item in yr_list:
+            #     print(item)
         else:
             # Handle more than two arguments
             # 1. if auth and ttl, then check the items in common in both lists.
