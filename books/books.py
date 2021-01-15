@@ -26,6 +26,21 @@ def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
         for second_item in second_list:
             if first_item == second_item:
                 filtered_list.append(first_item)
+                
+# Formats the printed output
+def output_setter(item_list):
+    tracker=None
+    for item in item_list:
+        if tracker==item[2]:
+            print("\n")
+            print("Book title:  " + item[0])
+            print("Publication date:  " + item[1])
+        else:
+            print("-------------------------------------------------------")
+            print("Author:  "+ item[2]+ "\n")
+            print("Book title:  " + item[0])
+            print("Publication date:  " + item[1])
+            tracker=item[2]
 
 # Function that searches the books from books.csv - filtered by the arguments
 def search_books(title = None, author = None, year = None):
@@ -74,10 +89,13 @@ def search_books(title = None, author = None, year = None):
         # Handle one argument case
         if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
             printItemsInList(auth_list)
+            output_setter(auth_list)
         elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
             printItemsInList(ttl_list)
+            output_setter(ttl_list)
         elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
             printItemsInList(yr_list)
+            output_setter(yr_list)
         else:
             # Handle more than two arguments
             # 1. if auth and ttl, then check the items in common in both lists.
