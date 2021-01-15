@@ -3,40 +3,41 @@ Command line syntax - Daeyeon Kim, Kevin Phug
 Description:
 Given the csv file books.csv, search allows the user to search the file for books based on the criteria listed below. Users can narrow down search results by combining flags like shown below:
 
-python3 books.py search --title "1Q84" --author "Haruki"
+python3 books.py --title 1Q84 --author Haruki
 
 The query above will retrieve books with the title "1Q84" AND were written by an author with the name "Haruki". All combinations of flags always act as AND operators.
 
 
 Flags/Parameters:
 
-[--title,--t]:
+[--title,-t]:
 
-Example: python3 books.py search --title "1Q84" 
+Example: python3 books.py --title 1Q84
 
-Type the query (with quotation marks - "1Q84") to search for the list of books with "1Q84" in the title.
+Type the query above to search for the list of books with "1Q84" in the title.
 
-[--author,--a]:
+[--author,-a]:
 
-Example: python3 books.py search --author "Haruki" 
+Example: python3 books.py --author Haruki 
 
-Type the query (with quotation marks - "Haruki") to search for the list of books who's authors have the name "Haruki".
+Type the query above to search for the list of books who's authors have the name "Haruki".
 
-[--year,--y]:
+[--year,-y]:
 
-Example: python3 books.py search --year 1800 1900 :
+Example: python3 books.py --year 1800 1900 :
 
 Type a range of years to search for the list of books published between the range, inclusive.
 
-[--help,--h]:
+[--help,-h]:
 
-Example: python3 books.py search --help :
+Example: python3 books.py --help :
 
 Print out all the command-line tools and their explanations (all the above).
 
 Further examples:
 
-python3 books.py search --title "1Q84" 
-python3 books.py search --t "Neverland" --y 1800 1900
-python3 books.py search --a "Peter" --y 1750 1820
+python3 books.py --title 1Q84 
+python3 books.py -t Neverland -y 1800 1900
+python3 books.py -a Peter -y 1750 1820
+python3 books.py -a Daniel -y 1750 1820 -t End
 
