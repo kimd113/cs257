@@ -1,4 +1,5 @@
 # CS257 - Daeyeon Kim, Kevin Phung
+# Revised by both Daeyeon Kim, Kevin Phung
 import argparse
 import csv
 
@@ -7,16 +8,10 @@ def get_parsed_arguments():
     parser = argparse.ArgumentParser(description='Tool to help find books from a list')
     parser.add_argument('--title', '-t', metavar='Word from Title', nargs='+', help='One or more words in the title of the book you seek')
     parser.add_argument('--author', '-a', metavar='Author Name', nargs='+', help='The name of the author who\'s books you want to find')
-    parser.add_argument('--year','-y', metavar='[Year 1,Year 2]', nargs='+', help='A time range of years(inclusive) as publishing dates for the book you want')
+    parser.add_argument('--year','-y', metavar='Year 1 Year 2', nargs='+', help='A time range of years(inclusive) as publishing dates for the book you want')
     parsed_arguments = parser.parse_args()
     return parsed_arguments
 
-def check_items_in_common (first_list = [], second_list = [], filtered_list = []):
-    ''' Checks the items in common in two lists and append them to a new list(filtered_list ).'''
-    for first_item in first_list:
-        for second_item in second_list:
-            if first_item == second_item:
-                filtered_list.append(first_item)
 
 def format_printed_output(item_list):
     ''' Formats and prints the items in list '''
@@ -35,100 +30,88 @@ def format_printed_output(item_list):
             print('Publication date:  ', item[1])
             tracker=item[2]
 
-def filter_by_title(title, books, title_list):
+def filter_by_title(title,filtered_list):
     ''' filter by the input of title '''
     if title != None:
         joined_title = ' '.join(title)
-        for row in books:
+        new_list=[]
+        for row in filtered_list:
             if joined_title.lower() in row[0].lower():
-                title_list.append(row)
-        if len(title_list) == 0:
-            print('There is no title matches. Please try with different keywords.')
+                new_list.append(row)
+        return new_list
+    else:
+        return filtered_list
 
-def filter_by_author(author, books, author_list):
+
+def filter_by_author(author,filtered_list):
     ''' filter by the input of author '''
     if author != None:
         joined_author = ' '.join(author)
         if joined_author.isdigit():
-            print('Please enter a name, not a number')
+            print('Please enter a name for the author, not a number')
+            exit()
         else:
-            for row in books:
+            new_list=[]
+            for row in filtered_list:
                 if joined_author.lower() in row[2].lower():
-                    author_list.append(row)
-        if len(author_list) == 0:
-            print('There is no author matches. Please try with different keywords.')
+                    new_list.append(row)
+            return new_list
+    else:
+        return filtered_list
 
-def filter_by_year(year, books, year_list):
+
+def filter_by_year(year,filtered_list):
     ''' filter by the input of year '''
     if year != None:
         try:
-            if (isinstance(int(year[0]), int) and len(year[0]) == 4) and (isinstance(int(year[1]), int) and len(year[0]) == 4):
-                for row in books:
+            if int(year[0]) and len(year[0]) == 4 and int(year[1]) and len(year[1]) == 4:
+                new_list=[]
+                for row in filtered_list:
                     if year[0] <= row[1] and year[1] >= row[1]:
-                        year_list.append(row)
-                if len(year) == 0:
-                    print('There is no range of year matches. Please try with different keywords.')
+                        new_list.append(row)
+                return new_list
             else:
-                print('Please enter a proper integer for both year values')
+                exit()
+
         except:
-            print('Please enter an input of integer for both year values')
+            print('Please enter a proper 4-digit integer for both year values')
+            exit()
+    else:
+        return filtered_list
 
 def search_books(title = None, author = None, year = None):
     ''' Function that searches the books from books.csv - filtered by the arguments '''
+
     with open('books.csv') as csvfile:
         books_reader = csv.reader(csvfile, delimiter = ',')
-        books = []
+        filtered_list_0 = []
         for row in books_reader:
-            books.append(row)
+            filtered_list_0.append(row)
 
-        if (title == None and author == None and year == None):
-            for row in books_reader:
-                print(row[0], row[1], row[2])
-        else:
-            # lists to hold the items filtered by each arguments.
-            filtered_list = []
-            title_list = []
-            author_list = []
-            year_list = []
+    # if no flags are given, shows all books
+    if (title == None and author == None and year == None):
+        format_printed_output(filtered_list_0)
 
-            filter_by_title(title, books, title_list)
-            filter_by_author(author, books, author_list)
-            filter_by_year(year, books, year_list)
+    else:
+        # lists to hold the items filtered by each arguments.
+        # after each filter, checks if any eligible books are left and exits immediately if there are none
+        filtered_list_1=filter_by_title(title,filtered_list_0)
+        if len(filtered_list_1)==0:
+            print('There is no title matches. Please try with different keywords.')
+            exit()
 
-            # Handle one argument case
-            if (len(author_list) > 0 and len(title_list) == 0 and len(year_list) == 0):
-                format_printed_output(author_list)
-            elif (len(author_list) == 0 and len(title_list) > 0 and len(year_list) == 0):
-                format_printed_output(title_list)
-            elif (len(author_list) == 0 and len(title_list) == 0 and len(year_list) > 0):
-                format_printed_output(year_list)
-            else:
-                # Handle more than two arguments
-                # 1. if author and title, then check the items in common in both lists.
-                # 2. if author and year, then check the items in common in both lists.
-                # 3. if title and year, then check the items in common in both lists.
-                # 4. if author and title and year, then check the items in common in both lists.
-                #   4-1. Check the items in common in author and title first.
-                #   4-2. Then compare the list with year list and filter the items in common.
+        filtered_list_2=filter_by_author(author,filtered_list_1)
+        if len(filtered_list_2)==0:
+            print('There is no author matches. Please try with different keywords.')
+            exit()
 
-                # 1
-                if (len(author_list) > 0 and len(title_list) > 0 and len(year_list) == 0):
-                    check_items_in_common(author_list, title_list, filtered_list)
-                    format_printed_output(filtered_list)
-                # 2
-                elif (len(author_list) > 0 and len(title_list) == 0 and len(year_list) > 0):
-                    check_items_in_common(author_list, year_list, filtered_list)
-                    format_printed_output(filtered_list)
-                # 3
-                elif (len(author_list) == 0 and len(title_list) > 0 and len(year_list) > 0):
-                    check_items_in_common(title_list, year_list, filtered_list)
-                    format_printed_output(filtered_list)
-                # 4
-                elif (len(author_list) > 0 and len(title_list) > 0 and len(year_list) > 0):
-                    check_items_in_common(author_list, title_list, filtered_list)
-                    filtered_all_three_args_list=[]
-                    check_items_in_common(filtered_list, year_list, filtered_all_three_args_list)
-                    format_printed_output(filtered_all_three_args_list)
+        filtered_list_3=filter_by_year(year, filtered_list_2)
+        if len(filtered_list_3)==0:
+            print('There is no range of year matches. Please try with different keywords.')
+            exit()
+
+        format_printed_output(filtered_list_3)
+
 
 def main():
     ''' Main function '''
