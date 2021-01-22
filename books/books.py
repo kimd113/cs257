@@ -21,7 +21,7 @@ def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
                 filtered_list.append(first_item)
 
 # Formats and prints the items in list
-def output_setter(item_list):
+def format_printed_output(item_list):
     # Sorted with help from GeeksforGeeks.org
     # (https://www.geeksforgeeks.org/python-sort-list-according-second-element-sublist/)
     sorted_item_list = sorted(item_list, key = lambda x: x[2])
@@ -82,11 +82,11 @@ def search_books(title = None, author = None, year = None):
 
             # Handle one argument case
             if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
-                output_setter(auth_list)
+                format_printed_output(auth_list)
             elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
-                output_setter(ttl_list)
+                format_printed_output(ttl_list)
             elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
-                output_setter(yr_list)
+                format_printed_output(yr_list)
             else:
                 # Handle more than two arguments
                 # 1. if auth and ttl, then check the items in common in both lists.
@@ -99,21 +99,21 @@ def search_books(title = None, author = None, year = None):
                 # 1
                 if (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) == 0):
                     checkItemsInCommon(auth_list, ttl_list, books_list)
-                    output_setter(books_list)
+                    format_printed_output(books_list)
                 # 2
                 elif (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) > 0):
                     checkItemsInCommon(auth_list, yr_list, books_list)
-                    output_setter(books_list)
+                    format_printed_output(books_list)
                 # 3
                 elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) > 0):
                     checkItemsInCommon(ttl_list, yr_list, books_list)
-                    output_setter(books_list)
+                    format_printed_output(books_list)
                 # 4
                 elif (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) > 0):
                     checkItemsInCommon(auth_list, ttl_list, books_list)
                     filteredAllThreeArgs_list=[]
                     checkItemsInCommon(books_list, yr_list, filteredAllThreeArgs_list)
-                    output_setter(filteredAllThreeArgs_list)
+                    format_printed_output(filteredAllThreeArgs_list)
 
 # Main function
 def main():
