@@ -62,14 +62,16 @@ def filter_by_year(year, books, year_list):
     ''' filter by the input of year '''
     if year != None:
         try:
-            if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
+            if (isinstance(int(year[0]), int) and len(year[0]) == 4) and (isinstance(int(year[1]), int) and len(year[0]) == 4):
                 for row in books:
                     if year[0] <= row[1] and year[1] >= row[1]:
                         year_list.append(row)
                 if len(year) == 0:
                     print('There is no range of year matches. Please try with different keywords.')
+            else:
+                print('Please enter a proper integer for both year values')
         except:
-            print('Please input an integer for both year values')
+            print('Please enter an input of integer for both year values')
 
 def search_books(title = None, author = None, year = None):
     ''' Function that searches the books from books.csv - filtered by the arguments '''
