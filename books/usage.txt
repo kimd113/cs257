@@ -1,4 +1,4 @@
-Command line syntax - Daeyeon Kim, Kevin Phug
+Command line syntax - Daeyeon Kim, Kevin Phung
 
 Description:
 Given the csv file books.csv, search allows the user to search the file for books based on the criteria listed below. Users can narrow down search results by combining flags like shown below:
