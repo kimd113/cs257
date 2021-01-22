@@ -38,8 +38,9 @@ def format_printed_output(item_list):
 def filter_by_title(title, books_reader, title_list):
     ''' filter by the input of title '''
     if title != None:
+        joined_title = ' '.join(title)
         for row in books_reader:
-            if title[0].lower() in row[0].lower():
+            if joined_title.lower() in row[0].lower():
                 title_list.append(row)
         if len(title_list) == 0:
             print('There is no item matches. Please try with different keywords.')
@@ -47,8 +48,9 @@ def filter_by_title(title, books_reader, title_list):
 def filter_by_author(author, books_reader, author_list):
     ''' filter by the input of author '''
     if author != None:
+        joined_title = ' '.join(author)
         for row in books_reader:
-            if author[0].lower() in row[2].lower():
+            if joined_title.lower() in row[2].lower():
                 author_list.append(row)
         if len(author_list) == 0:
             print('There is no item matches. Please try with different keywords.')
