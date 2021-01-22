@@ -2,9 +2,7 @@
 import argparse
 import csv
 
-# Read books.csv file with csv module.
-with open('books.csv') as csvfile:
-    booksReader=csv.reader(csvfile, delimiter=',')
+
 
 # Adds arguments and parse them with argparse module.
 def get_parsed_arguments():
@@ -24,9 +22,9 @@ def checkItemsInCommon (first_list = [], second_list = [], filtered_list = []):
 
 # Formats and prints the items in list
 def output_setter(item_list):
-    # Sorted with help from GeeksforGeeks.org 
+    # Sorted with help from GeeksforGeeks.org
     # (https://www.geeksforgeeks.org/python-sort-list-according-second-element-sublist/)
-    sorted_item_list = sorted(item_list, key = lambda x: x[2]) 
+    sorted_item_list = sorted(item_list, key = lambda x: x[2])
     tracker = None
     for item in sorted_item_list:
         if tracker == item[2]:
@@ -41,86 +39,81 @@ def output_setter(item_list):
 
 # Function that searches the books from books.csv - filtered by the arguments
 def search_books(title = None, author = None, year = None):
-    if (title == None and author == None and year == None):
-        with open('books.csv') as csvfile:
-            booksReader = csv.reader(csvfile, delimiter = ',')
+    with open('books.csv') as csvfile:
+        booksReader = csv.reader(csvfile, delimiter = ',')
+
+        if (title == None and author == None and year == None):
             for row in booksReader:
                 print(row[0], row[1], row[2])
-    else:
-        # lists to hold the items filtered by each arguments.
-        books_list = []
-        auth_list = []
-        ttl_list = []
-        yr_list = []
+        else:
+            # lists to hold the items filtered by each arguments.
+            books_list = []
+            auth_list = []
+            ttl_list = []
+            yr_list = []
 
-        # Input of author
-        if author != None:
-            with open('books.csv') as csvfile:
-                booksReader=csv.reader(csvfile, delimiter = ',')
+            # Input of author
+            if author != None:
                 for row in booksReader:
                     if author[0].lower() in row[2].lower():
                         auth_list.append(row)
                 if len(auth_list) == 0:
                     print('There is no item matches. Please try with different keywords.')
 
-        # Input of title
-        if title != None:
-            with open('books.csv') as csvfile:
-                booksReader=csv.reader(csvfile, delimiter = ',')
+            # Input of title
+            if title != None:
                 for row in booksReader:
                     if title[0].lower() in row[0].lower():
                         ttl_list.append(row)
                 if len(ttl_list) == 0:
                     print('There is no item matches. Please try with different keywords.')
 
-        # Input of range of year
-        if year != None:
-            try:
-                if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
-                    with open('books.csv') as csvfile:
-                        booksReader = csv.reader(csvfile, delimiter = ',')
+            # Input of range of year
+            if year != None:
+                try:
+                    if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
                         for row in booksReader:
                             if year[0] <= row[1] and year[1] >= row[1]:
                                 yr_list.append(row)
                         if len(yr_list) == 0:
                             print('There is no item matches. Please try with different keywords.')
-            except:
-                print('Please input an integer for both year values')
+                except:
+                    print('Please input an integer for both year values')
 
-        # Handle one argument case
-        if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
-            output_setter(auth_list)
-        elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
-            output_setter(ttl_list)
-        elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
-            output_setter(yr_list)
-        else:
-            # Handle more than two arguments
-            # 1. if auth and ttl, then check the items in common in both lists.
-            # 2. if auth and yr, then check the items in common in both lists.
-            # 3. if ttl and yr, then check the items in common in both lists.
-            # 4. if auth and ttl and yr, then check the items in common in both lists.
-            #   4-1. Check the items in common in auth and ttl first.
-            #   4-2. Then compare the list with yr list and filter the items in common.
+            # Handle one argument case
+            if (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) == 0):
+                output_setter(auth_list)
+            elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) == 0):
+                output_setter(ttl_list)
+            elif (len(auth_list) == 0 and len(ttl_list) == 0 and len(yr_list) > 0):
+                output_setter(yr_list)
+            else:
+                # Handle more than two arguments
+                # 1. if auth and ttl, then check the items in common in both lists.
+                # 2. if auth and yr, then check the items in common in both lists.
+                # 3. if ttl and yr, then check the items in common in both lists.
+                # 4. if auth and ttl and yr, then check the items in common in both lists.
+                #   4-1. Check the items in common in auth and ttl first.
+                #   4-2. Then compare the list with yr list and filter the items in common.
 
-            # 1
-            if (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) == 0):
-                checkItemsInCommon(auth_list, ttl_list, books_list)
-                output_setter(books_list)
-            # 2
-            elif (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) > 0):
-                checkItemsInCommon(auth_list, yr_list, books_list)
-                output_setter(books_list)
-            # 3
-            elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) > 0):
-                checkItemsInCommon(ttl_list, yr_list, books_list)
-                output_setter(books_list)
-            # 4
-            elif (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) > 0):
-                checkItemsInCommon(auth_list, ttl_list, books_list)
-                filteredAllThreeArgs_list=[]
-                checkItemsInCommon(books_list, yr_list, filteredAllThreeArgs_list)
-                output_setter(filteredAllThreeArgs_list)
+                # 1
+                if (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) == 0):
+                    checkItemsInCommon(auth_list, ttl_list, books_list)
+                    output_setter(books_list)
+                # 2
+                elif (len(auth_list) > 0 and len(ttl_list) == 0 and len(yr_list) > 0):
+                    checkItemsInCommon(auth_list, yr_list, books_list)
+                    output_setter(books_list)
+                # 3
+                elif (len(auth_list) == 0 and len(ttl_list) > 0 and len(yr_list) > 0):
+                    checkItemsInCommon(ttl_list, yr_list, books_list)
+                    output_setter(books_list)
+                # 4
+                elif (len(auth_list) > 0 and len(ttl_list) > 0 and len(yr_list) > 0):
+                    checkItemsInCommon(auth_list, ttl_list, books_list)
+                    filteredAllThreeArgs_list=[]
+                    checkItemsInCommon(books_list, yr_list, filteredAllThreeArgs_list)
+                    output_setter(filteredAllThreeArgs_list)
 
 # Main function
 def main():
