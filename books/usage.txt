@@ -26,7 +26,7 @@ Type the query above to search for the list of books who's authors have the name
 
 Example: python3 books.py --year 1800 1900
 
-Type a range of years to search for the list of books published between the range, inclusive. Include a space between the years and not a comma.
+Type a range of years to search for the list of books published between the range, inclusive. Include a space between the years and not a comma. The first year must be smaller or equal to the second year.
 
 [--help,-h]:
 
