@@ -14,7 +14,7 @@ Flags/Parameters:
 
 Example: python3 books.py --title 1Q84
 
-Type the query above to search for the list of books with "1Q84" in the title. Note that the title parameter only accepts 1 word and no spaces.
+Type the query above to search for the list of books with "1Q84" in the title. Note that when searching by more than 1 word for the title, the title must include all words in order to be retrieved.
 
 [--author,-a]:
 
@@ -38,5 +38,6 @@ Further examples:
 
 python3 books.py --title 1Q84
 python3 books.py -t Neverland -y 1800 1900
+python3 books.py -t Boys and  -y 2000 2021
 python3 books.py -a Peter -y 1750 1820
 python3 books.py -a Daniel -y 1750 1820 -t End
