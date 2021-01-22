@@ -37,36 +37,42 @@ def format_printed_output(item_list):
 
 def filter_by_title(title, books_reader, title_list):
     ''' filter by the input of title '''
-    if title != None:
-        joined_title = ' '.join(title)
-        for row in books_reader:
-            if joined_title.lower() in row[0].lower():
-                title_list.append(row)
-        if len(title_list) == 0:
-            print('There is no title matches. Please try with different keywords.')
+    with open('books.csv') as csvfile:
+        books_reader = csv.reader(csvfile, delimiter = ',')
+        if title != None:
+            joined_title = ' '.join(title)
+            for row in books_reader:
+                if joined_title.lower() in row[0].lower():
+                    title_list.append(row)
+            if len(title) == 0:
+                print('There is no title matches. Please try with different keywords.')
 
 def filter_by_author(author, books_reader, author_list):
     ''' filter by the input of author '''
-    if author != None:
-        joined_title = ' '.join(author)
-        for row in books_reader:
-            if joined_title.lower() in row[2].lower():
-                author_list.append(row)
-        if len(author_list) == 0:
-            print('There is no author matches. Please try with different keywords.')
+    with open('books.csv') as csvfile:
+        books_reader = csv.reader(csvfile, delimiter = ',')
+        if author != None:
+            joined_title = ' '.join(author)
+            for row in books_reader:
+                if joined_title.lower() in row[2].lower():
+                    author_list.append(row)
+            if len(author) == 0:
+                print('There is no author matches. Please try with different keywords.')
 
 def filter_by_year(year, books_reader, year_list):
     ''' filter by the input of year '''
-    if year != None:
-        try:
-            if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
-                for row in books_reader:
-                    if year[0] <= row[1] and year[1] >= row[1]:
-                        year_list.append(row)
-                if len(year) == 0:
-                    print('There is no range of year matches. Please try with different keywords.')
-        except:
-            print('Please input an integer for both year values')
+    with open('books.csv') as csvfile:
+        books_reader = csv.reader(csvfile, delimiter = ',')
+        if year != None:
+            try:
+                if isinstance(int(year[0]), int) and isinstance(int(year[1]), int):
+                    for row in books_reader:
+                        if year[0] <= row[1] and year[1] >= row[1]:
+                            year_list.append(row)
+                    if len(year) == 0:
+                        print('There is no range of year matches. Please try with different keywords.')
+            except:
+                print('Please input an integer for both year values')
 
 def search_books(title = None, author = None, year = None):
     ''' Function that searches the books from books.csv - filtered by the arguments '''
@@ -88,6 +94,10 @@ def search_books(title = None, author = None, year = None):
             filter_by_author(author, books_reader, author_list)
 
             filter_by_year(year, books_reader, year_list)
+
+            # print(title_list)
+            # print(author_list)
+
 
             # Handle one argument case
             if (len(author_list) > 0 and len(title_list) == 0 and len(year_list) == 0):
@@ -120,9 +130,9 @@ def search_books(title = None, author = None, year = None):
                 # 4
                 elif (len(author_list) > 0 and len(title_list) > 0 and len(year_list) > 0):
                     check_items_in_common(author_list, title_list, books_list)
-                    filteredAllThreeArgs_list=[]
-                    check_items_in_common(books_list, year_list, filteredAllThreeArgs_list)
-                    format_printed_output(filteredAllThreeArgs_list)
+                    filtered_all_three_args_list=[]
+                    check_items_in_common(books_list, year_list, filtered_all_three_args_list)
+                    format_printed_output(filtered_all_three_args_list)
 
 def main():
     ''' Main function '''
