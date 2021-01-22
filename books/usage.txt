@@ -24,13 +24,13 @@ Type the query above to search for the list of books who's authors have the name
 
 [--year,-y]:
 
-Example: python3 books.py --year 1800 1900 :
+Example: python3 books.py --year 1800 1900
 
-Type a range of years to search for the list of books published between the range, inclusive.
+Type a range of years to search for the list of books published between the range, inclusive. Include a space between the years and not a comma.
 
 [--help,-h]:
 
-Example: python3 books.py --help :
+Example: python3 books.py --help
 
 Print out all the command-line tools and their explanations (all the above).
 
