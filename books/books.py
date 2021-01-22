@@ -43,7 +43,7 @@ def filter_by_title(title, books_reader, title_list):
             if joined_title.lower() in row[0].lower():
                 title_list.append(row)
         if len(title_list) == 0:
-            print('There is no item matches. Please try with different keywords.')
+            print('There is no title matches. Please try with different keywords.')
 
 def filter_by_author(author, books_reader, author_list):
     ''' filter by the input of author '''
@@ -53,7 +53,7 @@ def filter_by_author(author, books_reader, author_list):
             if joined_title.lower() in row[2].lower():
                 author_list.append(row)
         if len(author_list) == 0:
-            print('There is no item matches. Please try with different keywords.')
+            print('There is no author matches. Please try with different keywords.')
 
 def filter_by_year(year, books_reader, year_list):
     ''' filter by the input of year '''
@@ -63,8 +63,8 @@ def filter_by_year(year, books_reader, year_list):
                 for row in books_reader:
                     if year[0] <= row[1] and year[1] >= row[1]:
                         year_list.append(row)
-                if len(year_list) == 0:
-                    print('There is no item matches. Please try with different keywords.')
+                if len(year) == 0:
+                    print('There is no range of year matches. Please try with different keywords.')
         except:
             print('Please input an integer for both year values')
 
