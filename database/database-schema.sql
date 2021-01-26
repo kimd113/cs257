@@ -1,37 +1,37 @@
 CREATE TABLE athletes (
   id SERIAL,
-  name string,
-  sex string,
+  name text,
+  sex text,
   height int,
   weight int
 );
 
 CREATE TABLE teams (
   id SERIAL,
-  team string,
-  NOC string
+  team text,
+  NOC text
 );
 
 CREATE TABLE sports (
   id SERIAL,
-  sport string
+  sport text
 );
 
 CREATE TABLE games (
   id SERIAL,
   year int,
-  season string,
-  city string
+  season text,
+  city text
 );
 
 CREATE TABLE events (
   id SERIAL ,
-  event sting
+  event text
 );
 
 CREATE TABLE medals (
   id SERIAL,
-  medal sting
+  medal text
 );
 
 CREATE TABLE athletes_teams (
