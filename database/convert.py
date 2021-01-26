@@ -1,9 +1,9 @@
+# CS257 - Daeyeon Kim, Duc Nguyen
 import csv
 
 def create_csv(created_collection, field_names, file_to_write):
     with open("archive/" + file_to_write, "w") as csv_file:
         writer = csv.writer(csv_file)
-        writer.writerow(field_names)
         for data in created_collection:
             writer.writerow(created_collection[data])
 
@@ -33,7 +33,16 @@ def main():
             # athletes table
             if row[1] not in athletes_dict:
                 athlete_id += 1
-                athletes_dict[row[1]] = [athlete_id, row[1], row[2], row[4], row[5]]
+                if row[4] == "NA":
+                    height = "NULL"
+                else:
+                    height = row[4]
+
+                if row[5] == "NA":
+                    weight = "NULL"
+                else:
+                    weight = row[5]
+                athletes_dict[row[1]] = [athlete_id, row[1], row[2], height, weight]
             
             # teams table
             if (row[6], row[7]) not in teams_dict:
@@ -98,23 +107,23 @@ def main():
             athletes_events_medals_dict[row_id] = \
             [row_id, current_athlete_team_id, current_game_id, current_sport_event_id, current_medal_id]
     
-    create_csv(athletes_dict, ["id", "name", "sex", "height", "weight"], "athletes.csv")
+    create_csv(athletes_dict, "athletes.csv")
     
-    create_csv(teams_dict, ["id", "team", "NOC"], "teams.csv")
+    create_csv(teams_dict, "teams.csv")
     
-    create_csv(sports_dict, ["id", "sport"], "sports.csv")
+    create_csv(sports_dict, "sports.csv")
     
-    create_csv(games_dict, ["id", "year", "season", "city"], "games.csv")
+    create_csv(games_dict, "games.csv")
     
-    create_csv(events_dict, ["id", "event"], "events.csv")
+    create_csv(events_dict, "events.csv")
     
-    create_csv(medals_dict, ["id", "medal"], "medals.csv")
+    create_csv(medals_dict, "medals.csv")
 
-    create_csv(athletes_teams_dict, ["id", "athlete_team_id", "athlete_id", "team_id"], "athletes_teams.csv")
+    create_csv(athletes_teams_dict, "athletes_teams.csv")
     
-    create_csv(sports_events_dict, ["id", "sport_event_id", "sport_id", "event_id"], "sports_events.csv")
+    create_csv(sports_events_dict, "sports_events.csv")
 
-    create_csv(athletes_events_medals_dict, ["id", "athlete_team_id", "game_id", "sport_event_id", "medal_id"], "athletes_events_medals.csv")
+    create_csv(athletes_events_medals_dict, "athletes_events_medals.csv")
 if __name__ == "__main__":
     main()
             

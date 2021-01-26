@@ -3,7 +3,7 @@ CREATE TABLE athletes (
   name text,
   sex text,
   height int,
-  weight int
+  weight float
 );
 
 CREATE TABLE teams (
@@ -40,16 +40,16 @@ CREATE TABLE athletes_teams (
   team_id int
 );
 
+CREATE TABLE sports_events (
+  id SERIAL,
+  event_id int,
+  sport_id int
+);
+
 CREATE TABLE athletes_events_medals (
   id SERIAL,
   athlete_team_id int,
   game_id int,
-  medal_id int,
-  sport_event_id int
-);
-
-CREATE TABLE sports_events (
-  id SERIAL,
-  sport_id int,
-  event_id int
+  sport_event_id int,
+  medal_id int
 );
