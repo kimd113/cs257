@@ -1,62 +1,55 @@
 CREATE TABLE athletes (
   id SERIAL,
-  name text,
-  sex text,
-  height integer,
-  weight integer
+  name string,
+  sex string,
+  height int,
+  weight int
 );
 
 CREATE TABLE teams (
   id SERIAL,
-  team text,
-  NOC text
+  team string,
+  NOC string
 );
 
 CREATE TABLE sports (
   id SERIAL,
-  sport text
+  sport string
 );
 
 CREATE TABLE games (
   id SERIAL,
-  games text,
-  year integer,
-  season text,
-  city text
-); 
+  year int,
+  season string,
+  city string
+);
 
 CREATE TABLE events (
-  id SERIAL,
-  event text
+  id SERIAL ,
+  event sting
 );
 
 CREATE TABLE medals (
   id SERIAL,
-  medal text
-);
-
-CREATE TABLE athletes_games (
-  id SERIAL,
-  athlete_id integer,
-  age integer,
-  game_id integer
+  medal sting
 );
 
 CREATE TABLE athletes_teams (
   id SERIAL,
-  athlete_id integer,
-  team_id integer
+  athlete_id int,
+  team_id int
 );
 
-CREATE TABLE events_games_medals (
+CREATE TABLE athletes_events_medals (
   id SERIAL,
-  event_id integer,
-  athlete_game_id integer,
-  medal_id integer
+  athlete_team_id int,
+  game_id int,
+  medal_id int,
+  sport_event_id int
 );
 
 CREATE TABLE sports_events (
   id SERIAL,
-  sport_id integer,
-  event_id integer
+  sport_id int,
+  event_id int
 );
