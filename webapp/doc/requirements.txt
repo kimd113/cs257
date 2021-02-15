@@ -9,10 +9,13 @@ Description: This dataset contains a list of top trending videos on Youtube base
 
 ---Stories---
 
-1. STORY: A user can get a list videos where the user can customize the channel, category, publish date, and tags they want to search for. The list can be sorted by number of views, likes, dislikes, or comments. 
+1. STORY: A user can get a list of videos where the user can customize the channel, category, publish date, and tags they want to search for. The list can be sorted by number of views, likes, dislikes, or comments. 
 
 IMPLEMENTATION: We could have a search engine with four search values, channel, category, publish date, and title. And then we have a sort feature with four values, views, like, dislike, and comments.
 
+1.5 STORY: A user can see the list of videos in a vertical list without thumbnails or a horizontal list with thumbnails, so they can add videos to their list.
+
+IMPLEMENTATION: The list of videos can be displayed in two formats. One is a traditional table with columns like video title, channel, publish dates. The other is a horizontal list of a number of videos with thumbnails where the user can see more videos by clickling prev/next buttons.
 
 2. STORY: A user can be directed to the link of video by clicking the box of video data.
 
