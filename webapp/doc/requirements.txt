@@ -1,0 +1,34 @@
+CS257 Web app - Harry Tian, Daniel Kim
+
+---Dataset---
+
+Dataset: Trending YouTube Video Statistics
+https://www.kaggle.com/datasnaek/youtube-new?select=USvideos.csv
+
+Description: This dataset contains a list of top trending videos on Youtube based on the YouTube API. It has basic elements of YouTube videos (title, channel, publish_time, views, likes, and dislikes, etc). One interesting thing is that there is a column named trending_date and it could be used to categorize by the list of trending videos by date.
+
+---Stories---
+
+1. STORY: A user can get a list videos where the user can customize the channel, category, publish date, and tags they want to search for. The list can be sorted by number of views, likes, dislikes, or comments. 
+
+IMPLEMENTATION: We could have a search engine with four search values, channel, category, publish date, and title. And then we have a sort feature with four values, views, like, dislike, and comments.
+
+
+2. STORY: A user can be directed to the link of video by clicking the box of video data.
+
+IMPLEMENTATION: We could cover the box of video data with <a> tag to direct user to the link. 
+
+
+3. STORY: A user can save the video that the user is interested in, and the user can find the list of the saved videos from the "my page".
+
+IMPLEMENTATION: We could add a "save" button to each of videos on the page, and when the user clicks the button, we post the data of clicked video to the server so that we could link with the user data.
+
+
+4. STORY: When a user clicks "save" button for the first time, user could create a new playlist and add the selected video to that playlist.
+
+IMPLEMENTATION: A pop-up window comes out and makes user to create a playlist first so that the selected video can added to the playlist.
+
+
+5. STORY: A user has own "my page" that the user can find the videos that he/she saved previously. User can create a playlist to categorize the videos that user saved.
+
+IMPLEMENTATION: We could show the name of the playlists on the left side, and by clicking each playlists, we switch the data and show the matching list of the playlist on the right side.
