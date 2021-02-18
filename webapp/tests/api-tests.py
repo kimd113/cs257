@@ -1,23 +1,16 @@
 import unittest
 import sys
-# import argparse
 import json
 import urllib.request
 
 API_BASE_URL = 'http://localhost:5000/'
 
-def get_root_words(word, language):
-    url = f'{API_BASE_URL}/stems/{language}/{word}'
+def get_JSON_string(url):
+    # url = API_BASE_URL
     data_from_server = urllib.request.urlopen(url).read()
     string_from_server = data_from_server.decode('utf-8')
-    root_word_list = json.loads(string_from_server)
-    result_list = []
-    for root_word_dictionary in root_word_list:
-        root = root_word_dictionary.get('text', '')
-        part_of_speech = root_word_dictionary.get('partofspeech', {})
-        part_of_speech_category = part_of_speech.get('partofspeechcategory', '')
-        result_list.append({'root':root, 'partofspeech':part_of_speech_category})
-    return result_list
+    # self.video_dict_list = json.loads(string_from_server)
+    return json.loads(string_from_server)
 
 class MainPageTester(unittest.TestCase):
     '''
@@ -39,11 +32,9 @@ class MainPageTester(unittest.TestCase):
         {'link':'PaJCFHXcWmM', ... ,'thumbnail_link':'https://i.ytimg.com/vi/PaJCFHXcWmM/default.jpg'}]   
     '''
     def setUp(self):
-        url = API_BASE_URL}
-        data_from_server = urllib.request.urlopen(url).read()
-        string_from_server = data_from_server.decode('utf-8')
-        self.video_dict_list = json.loads(string_from_server)
-
+        url = API_BASE_URL
+        self.video_dict_list = get_JSON_string(url)
+        
     def tearDown(self):
         pass
 
@@ -68,14 +59,79 @@ class MainPageTester(unittest.TestCase):
 
 class SignUpTester(unittest.TestCase):
     ''' returns a success code if the username is not taken, else an error code '''
+    
     def setUp(self):
         url = {API_BASE_URL} + 'sign-up/'
-        data_from_server = urllib.request.urlopen(url).read()
-        string_from_server = data_from_server.decode('utf-8')
-        self.video_dict_list = json.loads(string_from_server)
+        self.message = get_JSON_string(url)
 
     def tearDown(self):
         pass
+
+    def test_is_empty(self):
+        self.assertFalse(not self.message)
+    # After implementing server and database, add a test to check whether message already exists in the database.
+
+class LogInTester(unittest.TestCase):
+    '''
+    Returns a success code and user information if the username exists, else an error code
+    '''
+        def setUp(self):
+        url = {API_BASE_URL} + 'log-in/'
+        self.message = get_JSON_string(url)
+
+    def tearDown(self):
+        pass
+
+    def test_is_empty(self):
+        self.assertFalse(not self.message)
+    # After implementing server and database, add a test to check whether message already exists in the database.
+
+class SaveToPlaylistTester(unittest.TestCase):
+    ''' returns a success code if the video is not in the playlist and saved successfully, else an error code '''
+    
+    def setUp(self):
+        url = {API_BASE_URL} + 'save-to-playlist/'
+        self.message = get_JSON_string(url)
+
+    def tearDown(self):
+        pass
+
+    def test_is_empty(self):
+        self.assertFalse(not self.message)
+
+class SearchTest(unittest.TestCase):
+    ''' returns a success code if logged out successfully, else an error code  '''
+    
+    def setUp(self):
+        url = {API_BASE_URL} + 'videos?title_contains={search_text}
+        &category={category}&channel={channel}&publish-time={publish-time}&sort-option={sort-option}/'
+        self.message = get_JSON_string(url)
+
+    def tearDown(self):
+        pass
+
+class MyPageTest(unittest.TestCase):
+    ''' returns a success code if logged out successfully, else an error code  '''
+    
+    def setUp(self):
+        url = {API_BASE_URL} + 'my-page?user={username}/'
+        self.message = get_JSON_string(url)
+
+    def tearDown(self):
+        pass
+
+class LogOutTest(unittest.TestCase):
+    ''' returns a success code if logged out successfully, else an error code  '''
+    
+    def setUp(self):
+        url = {API_BASE_URL} + 'log-out/'
+        self.message = get_JSON_string(url)
+
+    def tearDown(self):
+        pass
+
+    def test_is_empty(self):
+        self.assertFalse(not self.message)
 
 if __name__ == '__main__':
     unittest.main()
