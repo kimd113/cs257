@@ -75,7 +75,7 @@ class LogInTester(unittest.TestCase):
     '''
     Returns a success code and user information if the username exists, else an error code
     '''
-        def setUp(self):
+    def setUp(self):
         url = {API_BASE_URL} + 'log-in/'
         self.message = get_JSON_string(url)
 
@@ -99,18 +99,44 @@ class SaveToPlaylistTester(unittest.TestCase):
     def test_is_empty(self):
         self.assertFalse(not self.message)
 
-class SearchTest(unittest.TestCase):
-    ''' returns a success code if logged out successfully, else an error code  '''
-    
-    def setUp(self):
-        url = {API_BASE_URL} + 'videos?title_contains={search_text}
-        &category={category}&channel={channel}&publish-time={publish-time}&sort-option={sort-option}/'
-        self.message = get_JSON_string(url)
+class SearchTester(unittest.TestCase):
+    ''' Return a list of data of videos searched by queries below:
+    search_text, category, channel, publish_time, sort_option.
+
+    The data of vidoes are represented as dictionaries of the form same as the list from MainPageTester: 
+
+    The full result of setUp would be like below:
+        [{'link':'kgaO45SyaO4', ... ,'thumbnail_link':'https://i.ytimg.com/vi/kgaO45SyaO4/default.jpg'},
+        {'link':'PaJCFHXcWmM', ... ,'thumbnail_link':'https://i.ytimg.com/vi/PaJCFHXcWmM/default.jpg'}]    
+    '''
+    def setUp(self, search_text, category, channel, publish_time, sort_option):
+        url = f'{API_BASE_URL}/videos?title-contains={search_text}&category={category}'
+        +f'&channel={channel}&publish-time={publish_time}&sort-option={sort_option}/'
+        self.video_dict_list = get_JSON_string(url)
 
     def tearDown(self):
         pass
 
-class MyPageTest(unittest.TestCase):
+    def test_is_empty(self):    
+        self.assertFalse(not self.video_dict_list)
+
+    def test_keys(self):
+        keys = ['link','title','channel','publish_time','views','likes','dislikes','comments','thumbnail_link']
+        self.assertTrue(self.video_dict_list[0].keys() == keys)
+
+    def test_types(self):
+        video = self.video_dict_list[0]
+        self.assertIsInstance(video.get('link'), str)
+        self.assertIsInstance(video.get('title'), str)
+        self.assertIsInstance(video.get('channel'), str)
+        self.assertIsInstance(video.get('publish_time'), str)
+        self.assertIsInstance(video.get('views'), int)
+        self.assertIsInstance(video.get('likes'), int)
+        self.assertIsInstance(video.get('dislikes'), int)
+        self.assertIsInstance(video.get('comments'), int)
+        self.assertIsInstance(video.get('thumbnail_link'), str)
+
+class MyPageTester(unittest.TestCase):
     ''' returns a success code if logged out successfully, else an error code  '''
     
     def setUp(self):
@@ -120,7 +146,7 @@ class MyPageTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-class LogOutTest(unittest.TestCase):
+class LogOutTester(unittest.TestCase):
     ''' returns a success code if logged out successfully, else an error code  '''
     
     def setUp(self):
