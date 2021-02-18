@@ -13,7 +13,6 @@ CREATE TABLE videos (
   link text,
   title text,
   publish_time text,
-  tags text,
   views int,
   likes int,
   dislikes int,
