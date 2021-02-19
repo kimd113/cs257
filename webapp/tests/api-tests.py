@@ -109,12 +109,6 @@ class SearchTester(unittest.TestCase):
         test for the search endpoint 
         /videos?title_contains={search_text}&category={category}&channel={channel}&publish-time={publish-time}&sort-option={sort-option}
     '''
-    # def setUp(self, search_text, category, channel, publish_time, sort_option):
-    #     url = f'{API_BASE_URL}/videos?title-contains={search_text}&category={category}'
-    #     +f'&channel={channel}&publish-time={publish_time}&sort-option={sort_option}/'
-    #     self.video_dict_list = get_JSON_string(url)
-
-    # I don't think we can pass parameters to unittest classes?
     def setUp(self):
         ''' Return a list of data of videos searched by queries below:
         search_text, category, channel, publish_time, sort_option.
