@@ -1,7 +1,8 @@
 1. Run python convert.py
-1. Create a youtube database in psql
-2. Execute CREATE TABLE commands from database-schema.sql
-4. Execute the following \copy commands:
+2. Create a youtube database in psql
+3. Run psql -U USER_NAME DATABASE_NAME < database-schema.sql
+4. Navigate into the database in psql by running something like: psql -U USER_NAME youtube
+5. Execute the following \copy commands:
 
 \copy categories from 'categories.csv' DELIMITER ',' CSV NULL AS 'NULL'
 \copy channels from 'channels.csv' DELIMITER ',' CSV NULL AS 'NULL'
