@@ -2,21 +2,140 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='webapp.css') }}" />
-    <script type="text/javascript" src="{{ url_for('static', filename='webapp.js') }}"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
-    <title>CS 257: Software Design</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='webapp.css') }}" /> -->
+    <link rel="stylesheet" type="text/css" href="../static/webapp.css" />
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='webapp.js') }}"></script> -->
+    <script type="text/javascript" src="../static/webapp.js"></script>
+    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" /> -->
+    <link rel="shortcut icon" href="../static/favicon.ico" />
+    <title>YouTube Trending Videos</title>
 </head>
 
 <body>
-    <h3>Tiny Web App Home Page</h3>
+    <div id="header_box">
+        <div id="header_title_box">
+            <h2 id="header_title">YouTube Trending Videos</h2>
+        </div>
+        <div id="header_user_box">
+            <button class="button" id="login">Log in</button>
+            <button class="button" id="signup">Sign up</button>
+        </div>
+    </div>
 
-    <p><button id="cats_button">Cats</button></p>
-    <p><button id="dogs_button">Dogs</button></p>
+    <div class="clear"></div>
 
-    <ul id="animal_list"></ul>
+    <div id="now_trending_box">
+        <div id="now_trending_header_box">
+            <div id="now_trending_header_title_box">
+                <h3 id="now_trending_header_title">Now Trending Videos</h3>
+            </div>
+            <div id="view_buttons_box">
+                <button class="view_button" id="vertical">vertical</button>
+                <button class="view_button" id="horizontal">horizontal</button>
+            </div>
+        </div>
+
+        <div id="now_trending_videos_box">
+            <div class="now_videos_button_box">
+                <button class="now_videos_button" id="prev">prev</button>
+            </div>
+            <div id="now_trending_videos_list_box">
+                <ul id="now_trending_videos_list">
+                    <li class="now_trending_videos_list_item">
+                        <img class="video_img" alt="" />
+                        <div class="video_title">Video Title</div>
+                        <div class="video_channel">Channel</div>
+                        <div class="video_list_item_text">
+                            <span class="video_views">Views</span>|
+                            <span class="video_likes">Likes</span>|
+                            <span class="video_dislikes">Dislikes</span>
+                        </div>
+                        <button class="save_to_playlist_button">Save to my playlist</button>
+                    </li>
+                    <li class="now_trending_videos_list_item">
+                        <img class="video_img" alt="" />
+                        <div class="video_title">Video Title</div>
+                        <div class="video_channel">Channel</div>
+                        <div class="video_list_item_text">
+                            <span class="video_views">Views</span>|
+                            <span class="video_likes">Likes</span>|
+                            <span class="video_dislikes">Dislikes</span>
+                        </div>
+                        <button class="save_to_playlist_button">Save to my playlist</button>
+                    </li>
+                    <li class="now_trending_videos_list_item">
+                        <img class="video_img" alt="" />
+                        <div class="video_title">Video Title</div>
+                        <div class="video_channel">Channel</div>
+                        <div class="video_list_item_text">
+                            <span class="video_views">Views</span>|
+                            <span class="video_likes">Likes</span>|
+                            <span class="video_dislikes">Dislikes</span>
+                        </div>
+                        <button class="save_to_playlist_button">Save to my playlist</button>
+                    </li>
+                    <li class="now_trending_videos_list_item">
+                        <img class="video_img" alt="" />
+                        <div class="video_title">Video Title</div>
+                        <div class="video_channel">Channel</div>
+                        <div class="video_list_item_text">
+                            <span class="video_views">Views</span>|
+                            <span class="video_likes">Likes</span>|
+                            <span class="video_dislikes">Dislikes</span>
+                        </div>
+                        <button class="save_to_playlist_button">Save to my playlist</button>
+                    </li>
+                    <li class="now_trending_videos_list_item">
+                        <img class="video_img" alt="" />
+                        <div class="video_title">Video Title</div>
+                        <div class="video_channel">Channel</div>
+                        <div class="video_list_item_text">
+                            <span class="video_views">Views</span>|
+                            <span class="video_likes">Likes</span>|
+                            <span class="video_dislikes">Dislikes</span>
+                        </div>
+                        <button class="save_to_playlist_button">Save to my playlist</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="now_videos_button_box">
+                <button class="now_videos_button" id="next">next</button>
+            </div>
+        </div>
+    </div>
+    <div id="search_trending_box">
+        <h3 id="search_trending_box_title">Search Trending Videos</h3>
+        <div id="search_options_text">Search options</div>
+        <div id="search_options_box">
+            <div id="search_options_title_box">
+                <span class="search_options_input_title"></span>
+                <input class="search_options_input" id="title_input"/>
+            </div>
+            <div id="search_options_category_box">
+                <span class="search_options_input_title"></span>
+                <input class="search_options_input" id="category_input"/>
+            </div>
+            <div id="search_options_sort_options_box">
+                <span class="search_options_input_title"></span>
+                <input class="search_options_input" id="sort_options_input"/>
+            </div>
+            <div id="search_options_channel_box">
+                <span class="search_options_input_title"></span>
+                <input class="search_options_input" id="channel_input"/>
+            </div>
+            <div id="search_options_publish_time_box">
+                <span class="search_options_input_title"></span>
+                <input class="search_options_input" id="publish_time_input"/>
+            </div>
+        </div>
+        <div id="search_button_box">
+            <button id="search_button">Search</button>
+        </div>
+    </div>
+
+    <!-- <ul id="animal_list"></ul>
 
     <h3>One other page</h3>
-    <p>You can go to <a href="other.html">this other page</a>.</p>
+    <p>You can go to <a href="other.html">this other page</a>.</p> -->
 </body>
 </html>
