@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-'''
-    webapp.py
-    Jeff Ondich
-    6 November 2020
-
-    A tiny Flask web application, including API, to be used
-    as a template for setting up your web app assignment.
-'''
 import sys
 import argparse
 import flask
@@ -23,9 +15,9 @@ def home():
 # This route supports relative links among your web pages, assuming those pages
 # are stored in the templates/ directory or one of its descendant directories,
 # without requiring you to have specific routes for each page.
-@app.route('/<path:path>')
-def shared_header_catchall(path):
-    return flask.render_template(path)
+# @app.route('/<path:path>')
+# def shared_header_catchall(path):
+#     return flask.render_template(path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('A tiny Flask application, including API')
