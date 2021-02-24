@@ -82,52 +82,78 @@ def create_categories_csv():
 def create_videos_csv():
     ''' create videos.csv, each row contains relevant unique data for a video'''
     
+    videos_dict = {} # this dictionary uses video links as keys
     with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open('videos.csv', 'w', newline='') as csvfile:
+        with open('videos.csv', 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
             for row in reader:
                 link = row['video_id']
-                title = row['title']
-                publish_time = row['publish_time']
+                if link not in videos_dict:
+                    videos_dict[link] = id
+                    title = row['title']
+                    publish_time = row['publish_time']
+                    thumbnail_link = row['thumbnail_link']
+
+                    writer.writerow([id, link, title, publish_time,thumbnail_link])
+                    id += 1
+    
+    return videos_dict
+
+def create_videos_trending_views_csv(videos_dict, trending_dates_dict):
+    ''' 
+        create videos_trending_views.csv that links videos_id to trending_dates_id, 
+        each row also contains views, likes, dislikes, and comment_count or each video trending on a date
+    '''
+    
+    with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        with open('videos_trending_views.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            
+            id = 1
+            for row in reader:
+                link = row['video_id']
+                trending_date = row['trending_date']
                 views = int(row['views'])
                 likes = int(row['likes'])
                 dislikes = int(row['dislikes'])
                 comment_count = int(row['comment_count'])
-                thumbnail_link = row['thumbnail_link']
 
-                writer.writerow([id, link, title, publish_time, views, likes, dislikes, comment_count, thumbnail_link])
+                videos_id = videos_dict[link]
+                trending_dates_id = trending_dates_dict[trending_date]
+
+                writer.writerow([id, videos_id, trending_dates_id, views, likes, dislikes, comment_count])
                 id += 1
 
-def create_videos_categories_trending_channels_csv(categories_dict, trending_dates_dict, channels_dict):
-    ''' creates csv that links video id to category_id, trending_date_id, channels_id '''
+def create_videos_categories_channels_csv(categories_dict, channels_dict):
+    ''' creates csv that links video id to category_id, channels_id '''
 
     with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open('videos_categories_trending_channels.csv', 'w', newline='') as csvfile:
+        with open('videos_categories_channels.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
             for row in reader:
                 categories_id = row['category_id']
-                trending_date = row['trending_date']
                 channel = row['channel_title']
 
-                trending_dates_id = trending_dates_dict[trending_date]
                 channels_id = channels_dict[channel]
 
-                writer.writerow([id, categories_id, trending_dates_id, channels_id])
+                writer.writerow([id, categories_id, channels_id])
                 id += 1
 
 def main():
     trending_dates_dict, channels_dict = extract_discrete_fields()
     categories_dict = create_categories_csv()
+    videos_dict = create_videos_csv()
 
     create_trending_dates_csv(trending_dates_dict.keys())
     create_channels_csv(channels_dict.keys())
-    create_videos_csv()
-    create_videos_categories_trending_channels_csv(categories_dict, trending_dates_dict, channels_dict)
+    create_videos_trending_views_csv(videos_dict, trending_dates_dict)
+    create_videos_categories_channels_csv(categories_dict, channels_dict)
 
 main()

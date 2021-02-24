@@ -13,11 +13,17 @@ CREATE TABLE videos (
   link text,
   title text,
   publish_time text,
+  thumbnail_link text
+);
+
+CREATE TABLE videos_trending_views (
+  id SERIAL,
+  videos_id int,
+  trending_dates_id int,
   views int,
   likes int,
   dislikes int,
-  comment_count int,
-  thumbnail_link text
+  comment_count int
 );
 
 CREATE TABLE channels (
@@ -25,10 +31,9 @@ CREATE TABLE channels (
   title text
 );
 
-CREATE TABLE videos_categories_trending_channels (
+CREATE TABLE videos_categories_channels (
   videos_id int,
   categories_id int,
-  trending_dates_id int,
   channels_id int
 );
 

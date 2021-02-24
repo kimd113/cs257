@@ -23,8 +23,8 @@ CREATE TABLE videos_trending_views (
   views int,
   likes int,
   dislikes int,
-  comment_count int,
-}
+  comment_count int
+);
 
 CREATE TABLE channels (
   id SERIAL,
