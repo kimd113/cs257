@@ -1,6 +1,6 @@
 0. Create a youtube database in psql
 1. load the database by running [psql -U USER_NAME DATABASE_NAME < data.sql]
-2. create a config.py in the format:
+2. create a config.py in the format: <br/>
 	database = <br/>
 	user = <br/>
 	password = <br/>
