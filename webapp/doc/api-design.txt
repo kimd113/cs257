@@ -1,6 +1,9 @@
 Harry Tian & Daeyeon Kim
 
 REQUEST: /
+GET parameter:
+	trending_date (Optional, default=random?)
+
 RESPONSE: a JSON list of dictionaires, each of which representes a trending video. 
 Each video dictionary will have the following fields.
 	link: (string) a unique id that is part of the video link
@@ -13,6 +16,7 @@ Each video dictionary will have the following fields.
 	comments: (int) the number of comments of the video
 	thumbnail_link: (string) the link to the video thumbnail
 
+
 REQUEST: /sign-up
 RESPONSE: a success code if the username is not taken, else an error code 
 
@@ -22,10 +26,10 @@ RESPONSE: a success code and user information if the username exists, else an er
 REQUEST: /save-to-playlist
 RESPONSE: a success code if the video is not in the playlist and saved successfully, else an error code
 
-REQUEST: /videos?title_contains={search_text}&category={category}&channel={channel}&publish-time={publish-time}&sort-option={sort-option}
-RESPONSE: a JSON list of dictionaires, each of which represents a video. 
+REQUEST: /my-page
+GET parameter
+	user {Optional, default=None}
 
-REQUEST: /my-page?user={username}
 RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
 
 REQUEST: /log-out

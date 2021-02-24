@@ -20,38 +20,48 @@ def get_connection():
 ########### The API endpoints ###########
 @api.route('/') 
 def get_main_page():
-    ''' Returns a list of dictionaires, 
-        each of which representes a trending video (from all time?). 
+    ''' Returns a list of videos from a default trending date, 
+        each video is in a dictionary format.
+        
+        The user may request a trending data through the GET parameter
+
+            http://.../?trending_data=date
+
         By default, the list is ordered by number of views, descending
 
         Returns an empty list if there's any database failure.
     '''
 
-    # There are multiple vidoes with the same title, even the same link???
+    trending_date = flask.request.args.get('trending_date')
+    if not trending_date:
+        trending_date = "18.31.05"
 
-    # query = ''' SELECT videos.link, videos.title, videos.publish_time, videos.views, videos.likes, videos.dislikes, videos.comment_count, videos.thumbnail_link
-    #             FROM videos
-    #             ORDER BY videos.views DESC LIMIT 20;'''
-    
-    query = '''SELECT videos.link, videos.title, videos.publish_time, SUM(videos.views), videos.likes, videos.dislikes, videos.comment_count, videos.thumbnail_link
-               FROM videos
-               GROUP BY videos.link, videos.title, videos.publish_time, videos.views, videos.likes, videos.dislikes, videos.comment_count, videos.thumbnail_link
-               ORDER BY SUM(videos.views)
-               DESC
-               LIMIT 20;'''
+    query = '''SELECT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
+                      videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
+               FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates
+               WHERE trending_dates.date = '{}'
+               AND trending_dates.id = videos_trending_views.trending_dates_id
+               AND videos_trending_views.videos_id = videos.id
+               AND videos.id = videos_categories_channels.videos_id
+               AND videos_categories_channels.channels_id = channels.id
+               ORDER BY videos_trending_views.views
+               DESC;'''.format(trending_date)
                
     video_list = []
+
     try:
         connection = get_connection()
         cursor = connection.cursor()
         cursor.execute(query)
+
         for row in cursor:
-            video = {'link':row[0], 'title':row[1], 'publish_time':row[2], 
-                     'views':row[3], 'likes':row[4], 'dislikes':row[5], 'comment_count':row[6],
-                     'thumbnail_link':row[7]}
+            video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4],
+                     'views':row[3], 'likes':row[4], 'dislikes':row[5], 'comment_count':row[6],}
             video_list.append(video)
+
         cursor.close()
         connection.close()
+
     except Exception as e:
         print(e, file=sys.stderr)
         exit()
