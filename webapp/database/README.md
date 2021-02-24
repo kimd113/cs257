@@ -1,4 +1,4 @@
-1. Run [python convert.py]
+1. Run [python3 convert.py]
 2. Drop and create a new youtube database in psql
 3. Run [psql -U USER_NAME DATABASE_NAME < database-schema.sql]
 4. Navigate into the database in psql by running something like: psql -U USER_NAME youtube
