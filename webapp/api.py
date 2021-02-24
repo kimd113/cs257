@@ -56,7 +56,7 @@ def get_main_page():
 
         for row in cursor:
             video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4],
-                     'views':row[3], 'likes':row[4], 'dislikes':row[5], 'comment_count':row[6],}
+                     'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8],}
             video_list.append(video)
 
         cursor.close()
