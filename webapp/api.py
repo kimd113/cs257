@@ -25,7 +25,7 @@ def get_main_page():
         
         The user may request a trending data through the GET parameter
 
-            http://.../?trending_data=date
+            http://.../?trending_date=date
 
         By default, the list is ordered by number of views, descending
 
