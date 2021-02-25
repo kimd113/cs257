@@ -1,7 +1,7 @@
 /*
     webapp.css
-    Jeff Ondich
-    6 November 2020
+    Daniel Kim, Harry Tian
+    25 February 2021
 
     CSS for the tiny web app for CS257.
 */
@@ -10,6 +10,7 @@ body {
     margin: 20px;
     font-family: Helvetica;
     background: #ddffdd;
+    font-size: smaller;
 }
 
 #header_box {
@@ -85,15 +86,25 @@ body {
 
 ul#now_trending_videos_list {
     list-style: none;
-    display: -webkit-inline-box;
-    width: fit-content;
+    /* display: -webkit-inline-box; */
+    /* width: fit-content;
     height: 17rem;
     margin: 0 auto;
+    padding: 0; */
+    height: 34rem;
+    margin: 0 auto;
     padding: 0;
+    column-count: 5;
 }
 
 .now_trending_videos_list_item {
-    /* margin-left: 1.5rem;
-    margin-right: 1.5rem; */
-    margin: 10rem 1.5rem 0rem 1.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    height: 17rem;
+    /* margin: 10rem 1.5rem 0rem 1.5rem; */
+}
+
+.video_img {
+    width: 120px;
+    height: 90px;
 }
