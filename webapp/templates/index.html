@@ -2,8 +2,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='webapp.css') }}" /> -->
     <link rel="stylesheet" type="text/css" href="../static/webapp.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!-- <script type="text/javascript" src="{{ url_for('static', filename='webapp.js') }}"></script> -->
     <script type="text/javascript" src="../static/webapp.js"></script>
     <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" /> -->
@@ -12,46 +14,74 @@
 </head>
 
 <body>
-    <div id="header_box">
-        <div id="header_title_box">
-            <h2 id="header_title">YouTube Trending Videos</h2>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div id="header_box" class="container-fluid">
+            <div id="header_title_box" class="">
+                <a id="header_title" class="navbar-brand" href="/">YouTube Trending Videos</a>
+            </div>
+            <div id="header_user_box" class="">
+                <button class="button btn btn-outline-success" id="login" type="button">Log in</button>
+                <button class="button btn btn-outline-success" id="signup" type="button">Sign up</button>
+            </div>
         </div>
-        <div id="header_user_box">
-            <button class="button" id="login">Log in</button>
-            <button class="button" id="signup">Sign up</button>
-        </div>
-    </div>
+    </nav>
 
     <div class="clear"></div>
 
-    <div id="now_trending_box">
-        <div id="now_trending_header_box">
-            <div id="now_trending_header_title_box">
+    <div id="now_trending_box" class="container-fluid">
+        <div id="now_trending_header_box" class="row align-items-center">
+            <div id="now_trending_header_title_box" class="col-3">
                 <h3 id="now_trending_header_title">Trending Videos on:</h3>
             </div>
-            <div id="search_trending_time_box">
-                <input class="search_trending_time_input date" placeholder="date"/>
-                <input class="search_trending_time_input month" placeholder="month"/>
-                <input class="search_trending_time_input year" placeholder="year"/>
-                <button id="search_trending_time_button">Search</button>
+            <div id="search_trending_time_box" class="col-4 row align-items-center ">
+                <input class="search_trending_time_input input_date col" placeholder="date"/>
+                <input class="search_trending_time_input input_month col" placeholder="month"/>
+                <input class="search_trending_time_input input_year col" placeholder="year"/>
+                <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
             </div>
-            <div id="view_buttons_box">
-                <button class="view_button" id="vertical">vertical</button>
-                <button class="view_button" id="horizontal">horizontal</button>
+            <div id="view_buttons_box" class="col">
+                <button class="view_button btn btn-sm btn-secondary" id="vertical" type="button">vertical</button>
+                <button class="view_button btn btn-sm btn-secondary" id="horizontal" type="button">horizontal</button>
             </div>
         </div>
         
-        <div id="now_trending_videos_box">
-            <div class="now_videos_button_box">
-                <button class="now_videos_button" id="prev_button">prev</button>
+        <div id="now_trending_videos_box" class="row justify-content-center">
+            <div class="now_videos_button_box col-auto align-self-center">
+                <button class="now_videos_button btn btn-sm btn-secondary" id="prev_button" type="button">prev</button>
             </div>
-            <div id="now_trending_videos_list_box">
-                <ul id="now_trending_videos_list"></ul>
+            <div id="now_trending_videos_list_box" class="col align-self-center">
+                <div id="now_trending_videos_list_1" class="row justify-content-center"></div>
+                <div id="now_trending_videos_list_2" class="row justify-content-center"></div>
             </div>
-            <div class="now_videos_button_box">
-                <button class="now_videos_button" id="next_button">next</button>
+            <div class="now_videos_button_box col-auto align-self-center">
+                <button class="now_videos_button btn btn-sm btn-secondary" id="next_button" type="button">next</button>
             </div>
         </div>
+
+        <!-- <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div id="carousel-item-video" class="d-block w-100">
+                    <div id="carousel-item-video-list-1" class="row justify-content-center"></div>
+                    <div id="carousel-item-video-list-2" class="row justify-content-center"></div>
+                </div>
+
+              </div>
+            </div>
+            <div class="now_videos_button_box">
+                <button id="prev_button" class="carousel-control-prev now_videos_button" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Prev</span>
+                </button>
+                <button id="next_button" class="carousel-control-next now_videos_button" type="button" data-bs-target="#carouselExampleIndicators"  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div> -->
+
+
     </div>
 </body>
 </html>

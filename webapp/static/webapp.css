@@ -7,26 +7,26 @@
 */
 
 body {
-    margin: 20px;
+    /* margin: 20px;
     font-family: Helvetica;
     background: #ddffdd;
-    font-size: smaller;
+    font-size: smaller; */
 }
 
 #header_box {
-    height: 4rem;
+    /* height: 4rem; */
 }
 
 #header_title_box {
-    width: 50%;
-    float: left;
+    /* width: 50%;
+    float: left; */
 }
 
 #header_user_box {
-    width: 50%;
+    /* width: 50%;
     height: 4rem;
     float: left;
-    text-align: right;
+    text-align: right; */
 }
 
 .clear {
@@ -34,77 +34,81 @@ body {
 }
 
 #now_trending_box {
-    width: 100%;
-    height: 16rem;
+    /* width: 100%;
+    height: 16rem; */
 }
 
 #now_trending_header_box {
-    height: 4rem;
+    /* height: 4rem; */
 }
 
 #now_trending_header_title_box {
-    width: 17%;
-    float: left;
-    /* height: 3rem; */
+    /* width: 17%;
+    float: left; */
 }
 
 #search_trending_time_box {
-    width: 63%;
+    /* width: 63%;
     height: 2.83rem;
     float: left;
-    margin-top: 1.17rem;
+    margin-top: 1.17rem; */
 }
 
 #view_buttons_box {
-    width: 20%;
+    /* width: 20%;
     height: 2.83rem;
     float: left;
     margin-top: 1.17rem;
-    text-align: right;
+    text-align: right; */
+    text-align: end;
 }
 
 #now_trending_videos_box {
-    width: 100%;
-    height: 34rem;
+    /* width: 100%;
+    height: 34rem; */
 }
 
 .now_videos_button_box {
-    width: 5%;
+    /* width: 5%;
     height: 2rem;
     float: left;
     margin-top: 16rem;
-    margin-bottom: 16rem;
+    margin-bottom: 16rem; */
 }
 
 #now_trending_videos_list_box {
-    height: 34rem;
+    /* height: 34rem;
     width: 90%;
     text-align: center;
     margin: 0 auto;
-    float: left;
+    float: left; */
 }
 
 ul#now_trending_videos_list {
-    list-style: none;
-    /* display: -webkit-inline-box; */
-    /* width: fit-content;
-    height: 17rem;
-    margin: 0 auto;
-    padding: 0; */
+    /* list-style: none;
     height: 34rem;
     margin: 0 auto;
     padding: 0;
-    column-count: 5;
+    column-count: 5; */
+
+    /* display: -webkit-inline-box;
+    width: fit-content;
+    height: 17rem;
+    margin: 0 auto;
+    padding: 0; */
 }
 
 .now_trending_videos_list_item {
-    margin-left: 1.5rem;
+    /* margin-left: 1.5rem;
     margin-right: 1.5rem;
-    height: 17rem;
+    height: 17rem; */
+
     /* margin: 10rem 1.5rem 0rem 1.5rem; */
 }
 
 .video_img {
-    width: 120px;
-    height: 90px;
+    /* width: 120px;
+    height: 90px; */
+    width: 12rem;
+    height: 9rem;
 }

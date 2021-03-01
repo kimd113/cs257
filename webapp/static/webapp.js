@@ -40,27 +40,38 @@ function getVideosListInMainPage() {
     .then((response) => response.json())
     .then((videos) => {
         videos_list = videos;
-        let listBody = '';
+        let listBodyFirstRow = '';
+        let listBodySecondRow = '';
         for (let i = 0; i < 10; i++) {
             let video = videos[i];
-            listBody += `<li class="now_trending_videos_list_item">
+            let listBody = `<div class="now_trending_videos_list_item col card">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
-                    <img class="video_img" src=${video.thumbnail_link} alt="" />
+                    <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
+                </a>
                     <div class="video_channel">${video.channel}</div>
                     <div class="video_list_item_text">
                         <span class="video_views">${video.views} </span>|
                         <span class="video_likes">${video.likes} </span>|
                         <span class="video_dislikes">${video.dislikes}</span>
                     </div>
-                    <button class="save_to_playlist_button">Save to my playlist</button>
-                </a>
-            </li>`;
+                    <button class="save_to_playlist_button btn btn-sm btn-outline-primary">Save to my playlist</button>
+                </div>`;
+            if (i < 5) {
+                listBodyFirstRow += listBody;
+            } else {
+                listBodySecondRow += listBody;
+            }
         }
 
-        let videosListElement = document.getElementById('now_trending_videos_list');
-        if (videosListElement) {
-            videosListElement.innerHTML = listBody;
+        // let videosListElement = document.getElementById('now_trending_videos_list');
+        let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
+        let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+        if (videosListElementFirstRow) {
+            videosListElementFirstRow.innerHTML = listBodyFirstRow;
+        }
+        if (videosListElementSecondRow) {
+            videosListElementSecondRow.innerHTML = listBodySecondRow;
         }
     })
     .catch(function(error) {
@@ -77,31 +88,43 @@ function onPrevVideosButton() {
         return;
     }
 
-    let videosListElement = document.getElementById('now_trending_videos_list');
-    videosListElement.innerHTML = '';
+    let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
+    let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+    videosListElementFirstRow.innerHTML = '';
+    videosListElementSecondRow.innerHTML = '';
 
     videos_list_current_page -= 1;
     let prev_page_count = videos_list_current_page * 10;
-    let listBody = '';
+    let listBodyFirstRow = '';
+    let listBodySecondRow = '';
     for (let i = prev_page_count; i < prev_page_count + 10; i++) {
         let video = videos_list[i];
-        listBody += `<li class="now_trending_videos_list_item">
-        <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
-            <img class="video_img" src=${video.thumbnail_link} alt="" />
-            <div class="video_title">${video.title}</div>
-            <div class="video_channel">${video.channel}</div>
-            <div class="video_list_item_text">
-                <span class="video_views">${video.views} </span>|
-                <span class="video_likes">${video.likes} </span>|
-                <span class="video_dislikes">${video.dislikes}</span>
-            </div>
-            <button class="save_to_playlist_button">Save to my playlist</button>
+        let listBody = `<div class="now_trending_videos_list_item col card">
+            <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
+                <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
+                <div class="video_title">${video.title}</div>
             </a>
-        </li>`;
+                <div class="video_channel">${video.channel}</div>
+                <div class="video_list_item_text">
+                    <span class="video_views">${video.views} </span>|
+                    <span class="video_likes">${video.likes} </span>|
+                    <span class="video_dislikes">${video.dislikes}</span>
+                </div>
+                <button class="save_to_playlist_button btn btn-sm btn-outline-primary">Save to my playlist</button>
+            </div>`;
+        if (i < prev_page_count + 5 ) {
+            listBodyFirstRow += listBody;
+        } else {
+            listBodySecondRow += listBody;
+        }
     }
 
-    if (videosListElement) {
-        videosListElement.innerHTML = listBody;
+    // let videosListElement = document.getElementById('now_trending_videos_list');
+    if (videosListElementFirstRow) {
+        videosListElementFirstRow.innerHTML = listBodyFirstRow;
+    }
+    if (videosListElementSecondRow) {
+        videosListElementSecondRow.innerHTML = listBodySecondRow;
     }
 }
 
@@ -113,34 +136,46 @@ function onNextVideosButton() {
         alert('This is the last page of videos.');
         return;
     }
-    let videosListElement = document.getElementById('now_trending_videos_list');
-    videosListElement.innerHTML = '';
+
+    let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
+    let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+    videosListElementFirstRow.innerHTML = '';
+    videosListElementSecondRow.innerHTML = '';
 
     
     videos_list_current_page += 1;
     let next_page_count = videos_list_current_page * 10;
-    let listBody = '';
+    let listBodyFirstRow = '';
+    let listBodySecondRow = '';
     for (let i = next_page_count; i < next_page_count + 10; i++) {
         if (videos_list[i]) {
             let video = videos_list[i];
-            listBody += `<li class="now_trending_videos_list_item">
+            let listBody = `<div class="now_trending_videos_list_item col card">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
-                    <img class="video_img" src=${video.thumbnail_link} alt="" />
+                    <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
+                </a>
                     <div class="video_channel">${video.channel}</div>
                     <div class="video_list_item_text">
                         <span class="video_views">${video.views} </span>|
                         <span class="video_likes">${video.likes} </span>|
                         <span class="video_dislikes">${video.dislikes}</span>
                     </div>
-                    <button class="save_to_playlist_button">Save to my playlist</button>
-                </a>
-            </li>`;
+                    <button class="save_to_playlist_button btn btn-sm btn-outline-primary">Save to my playlist</button>
+                </div>`;
+            if (i < next_page_count + 5 ) {
+                listBodyFirstRow += listBody;
+            } else {
+                listBodySecondRow += listBody;
+            }
         }
     }
 
-    if (videosListElement) {
-        videosListElement.innerHTML = listBody;
+    if (videosListElementFirstRow) {
+        videosListElementFirstRow.innerHTML = listBodyFirstRow;
+    }
+    if (videosListElementSecondRow) {
+        videosListElementSecondRow.innerHTML = listBodySecondRow;
     }
 }
 
