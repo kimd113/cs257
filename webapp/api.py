@@ -163,51 +163,5 @@ def log_in():
 
 ########### Help endpoints ###########
 @api.route('/help') 
-def get_documentation():
-    path = Path('doc')
-    help_doc = path/'api-design.txt'
-    help = ""
-    l = []
-
-    with open(help_doc, 'r') as f:
-        for row in f:
-            help += row
-            l.append(row)
-
-    help = '''
-REQUEST: /
-GET parameter:
-	trending_date (Optional, default=random?)
-
-RESPONSE: a JSON list of dictionaires, each of which representes a trending video. 
-Each video dictionary will have the following fields.
-	link: (string) a unique id that is part of the video link
-	title: (string) the title of the video
-	channel: (string) the channel of the videomy
-	pulish time: (string) the publish time of the video
-	views: (int) the number of views of the video
-	likes: (int) the number likes of the video
-	dislikes (int) the number of dislikes of the video
-	comments: (int) the number of comments of the video
-	thumbnail_link: (string) the link to the video thumbnail
-
-
-REQUEST: /sign-up
-RESPONSE: a success code if the username is not taken, else an error code 
-
-REQUEST: /log-in
-RESPONSE: a success code and user information if the username exists, else an error code
-
-REQUEST: /save-to-playlist
-RESPONSE: a success code if the video is not in the playlist and saved successfully, else an error code
-
-REQUEST: /my-page
-GET parameter
-	user {Optional, default=None}
-
-RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
-
-REQUEST: /log-out
-RESPONSE: a success code if logged out successfully, else an error code '''
-
-    return json.dumps(l)
+def get_help():
+    return flask.render_template('help.html')
