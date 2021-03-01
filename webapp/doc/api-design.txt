@@ -2,9 +2,8 @@ Harry Tian & Daeyeon Kim
 
 REQUEST: /
 GET parameter:
-	trending_date (Optional, default=random?)
-
-RESPONSE: a JSON list of dictionaires, each of which representes a trending video. 
+	trending_date (Optional, default=18.31.05)
+RESPONSE: a JSON list of dictionaires, each of which representes a trending video on the user specified date. 
 Each video dictionary will have the following fields.
 	link: (string) a unique id that is part of the video link
 	title: (string) the title of the video
@@ -16,11 +15,14 @@ Each video dictionary will have the following fields.
 	comments: (int) the number of comments of the video
 	thumbnail_link: (string) the link to the video thumbnail
 
-
 REQUEST: /sign-up
+GET parameter:
+	user_name
 RESPONSE: a success code if the username is not taken, else an error code 
 
 REQUEST: /log-in
+GET parameter:
+	user_name
 RESPONSE: a success code and user information if the username exists, else an error code
 
 REQUEST: /save-to-playlist
@@ -29,10 +31,6 @@ RESPONSE: a success code if the video is not in the playlist and saved successfu
 REQUEST: /my-page
 GET parameter
 	user {Optional, default=None}
-
 RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
-
-REQUEST: /log-out
-RESPONSE: a success code if logged out successfully, else an error code 
 
 #note: creating a new endpoint for vertical view? or use the same API endpoint.
