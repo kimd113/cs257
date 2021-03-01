@@ -1,8 +1,15 @@
-Harry Tian & Daeyeon Kim
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Youtube  API reference</title>
+</head>
+<body>
+    <pre>Youtube API: endpoint reference
+All responses are in JSON
 
 REQUEST: /
 GET parameter:
-	trending_date (Optional, default=18.31.05)
+	trending_date (Optional, default: 18.31.05)
 RESPONSE: a JSON list of dictionaires, each of which representes a trending video on the user specified date. 
 Each video dictionary will have the following fields.
 	link: (string) a unique id that is part of the video link
@@ -14,6 +21,10 @@ Each video dictionary will have the following fields.
 	dislikes (int) the number of dislikes of the video
 	comments: (int) the number of comments of the video
 	thumbnail_link: (string) the link to the video thumbnail
+
+REQUEST: /help
+RESPONSE:
+    This message
 
 REQUEST: /sign-up
 GET parameter:
@@ -32,5 +43,7 @@ REQUEST: /my-page
 GET parameter
 	user {Optional, default=None}
 RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
+    </pre>
+</body>
+</html>
 
-#note: creating a new endpoint for vertical view? or use the same API endpoint.

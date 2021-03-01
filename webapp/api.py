@@ -5,6 +5,7 @@ import flask
 import json
 import config
 import psycopg2
+from pathlib import Path
 
 api = flask.Blueprint('api', __name__)
 
@@ -69,3 +70,98 @@ def get_main_page():
     return json.dumps(video_list)
 
 
+@api.route('/sign-up') 
+def sign_up():
+    ''' 
+        The user signs up an account through the GET parameter
+
+            http://.../?user_name=name
+
+        Returns a success code if the username is not taken, else an error code 
+    '''
+    user_name = flask.request.args.get('user_name')
+
+    check_user_query = '''SELECT users.username
+                          FROM users
+                          WHERE users.username = '{}';'''.format(user_name)
+
+    sucess_code = "signed up successfully"
+    error_code = "this name is already taken"
+
+    # check if user_name exists in the database
+    name_taken = False
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(check_user_query)
+
+        if cursor.rowcount: name_taken = True
+
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+        exit()
+
+    if name_taken: 
+        return json.dumps(error_code)
+        
+    # if user_name does not exist, create a new one for the user
+    else: 
+        sign_up_query = '''INSERT INTO users
+                           (username)
+                           VALUES('{}');'''.format(user_name)
+        try:
+            connection = get_connection()
+            cursor = connection.cursor()
+            cursor.execute(sign_up_query)
+
+            cursor.close()
+            connection.commit() # very important line
+            connection.close()
+        except Exception as e:
+            print(e, file=sys.stderr)
+            exit()
+
+        return json.dumps(sucess_code)
+
+@api.route('/log-in') 
+def log_in():
+    ''' 
+        The user logs in to their account the GET parameter
+
+            http://.../?user_name=name
+
+        Returns a success code if the username exists, else an error code 
+    '''
+    user_name = flask.request.args.get('user_name')
+
+    check_user_query = '''SELECT users.username
+                          FROM users
+                          WHERE users.username = '{}';'''.format(user_name)
+
+    sucess_code = "logged in successfully"
+    error_code = "user name does not exists, please sign up first"
+
+    # check if user_name exists in the database
+    name_exists = False
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+        cursor.execute(check_user_query)
+
+        if cursor.rowcount: name_exists = True
+
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(e, file=sys.stderr)
+        exit()
+
+    return json.dumps(sucess_code) if name_exists else json.dumps(error_code)
+
+
+########### Help endpoints ###########
+@api.route('/help') 
+def get_help():
+    return flask.render_template('help.html')
