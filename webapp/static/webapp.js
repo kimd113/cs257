@@ -249,5 +249,4 @@ function onSignUpButton() {
      * When user clicks the sign up button, create an account for the user*
      */
     getVideosListInMainPage();
-    console.log('hi');
 }
