@@ -49,7 +49,6 @@ function getVideosListInMainPage() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((videos) => {
-        videos_list = videos;
         let listBodyFirstRow = '';
         let listBodySecondRow = '';
         for (let i = 0; i < 10; i++) {
@@ -103,8 +102,6 @@ function onSearchButton() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((videos) => {
-        console.log(videos);
-        videos_list = videos;
         let listBodyFirstRow = '';
         let listBodySecondRow = '';
         videos_list_current_page = 0;
@@ -184,7 +181,6 @@ function onPrevVideosButton() {
         }
     }
 
-    // let videosListElement = document.getElementById('now_trending_videos_list');
     if (videosListElementFirstRow) {
         videosListElementFirstRow.innerHTML = listBodyFirstRow;
     }
@@ -244,9 +240,58 @@ function onNextVideosButton() {
     }
 }
 
-function onSignUpButton() {
-    /**
-     * When user clicks the sign up button, create an account for the user*
-     */
-    getVideosListInMainPage();
-}
+// function onSignUpButton() {
+//     /**
+//      * When user clicks the sign up button, create an account for the user*
+//      */
+//     let user_name = document.getElementById(user name id); 
+//     let url =  `${getAPIBaseURL()}?user_name=${user_name.value}`;
+
+//     let msgbox = document.getElementById(message box id);
+//     let sucess_code = "signed up successfully"
+//     let error_code = "this name is already taken"
+
+//     fetch(url, {method: 'get'})
+//     .then((response) => response.json())
+//     .then((msg) => {
+//         if (msgbox){
+//             if (msg){
+//                 msgbox.innerHTML = sucess_code;
+//             }
+//             else{
+//                 msgbox.innerHTML = error_code;
+//             }
+//         }
+//     })
+//     .catch(function(error) {
+//         console.log(error);
+//     });
+// }
+
+// function onLogInButton() {
+//     /**
+//      * When user clicks the log in button, ...*
+//      */
+//     let user_name = document.getElementById(user name id); 
+//     let url =  `${getAPIBaseURL()}?user_name=${user_name.value}`;
+
+//     let msgbox = document.getElementById(message box id);
+//     let sucess_code = "logged in successfully"
+//     let error_code = "user name does not exists, please sign up first"
+
+//     fetch(url, {method: 'get'})
+//     .then((response) => response.json())
+//     .then((msg) => {
+//         if (msgbox){
+//             if (msg){
+//                 msgbox.innerHTML = sucess_code;
+//             }
+//             else{
+//                 msgbox.innerHTML = error_code;
+//             }
+//         }
+//     })
+//     .catch(function(error) {
+//         console.log(error);
+//     });
+// }

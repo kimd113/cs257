@@ -104,7 +104,7 @@ def sign_up():
         exit()
 
     if name_taken: 
-        return json.dumps(error_code)
+        return json.dumps(False)
         
     # if user_name does not exist, create a new one for the user
     else: 
@@ -123,7 +123,7 @@ def sign_up():
             print(e, file=sys.stderr)
             exit()
 
-        return json.dumps(sucess_code)
+        return json.dumps(True)
 
 @api.route('/log-in') 
 def log_in():
@@ -158,8 +158,8 @@ def log_in():
         print(e, file=sys.stderr)
         exit()
 
-    return json.dumps(sucess_code) if name_exists else json.dumps(error_code)
-
+    # return json.dumps(sucess_code) if name_exists else json.dumps(error_code)
+    return json.dumps(name_exists)
 
 ########### Help endpoints ###########
 @api.route('/help') 

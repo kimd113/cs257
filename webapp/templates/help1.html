@@ -1,0 +1,27 @@
+<!DOCTYPE html> 
+<html> 
+
+<head> 
+	<title>Read Text File</title> 
+    <script type="text/javascript"> 
+        var txtFile = new XMLHttpRequest();
+        var allText = "file not found";
+        txtFile.onreadystatechange = function () {
+            if (txtFile.readyState === XMLHttpRequest.DONE && txtFile.status == 200) {
+                allText = txtFile.responseText;
+            }
+            // allText = txtFile.responseText;
+            document.getElementById('txt').innerHTML = allText;
+        }
+        txtFile.open("GET", '/api-design.txt', true);
+        txtFile.send(null);
+	</script> 
+</head> 
+
+<body> 
+    
+	<div id="output">bruh</div> 
+	
+</body> 
+
+</html> 
