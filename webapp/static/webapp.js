@@ -33,6 +33,11 @@ function initialize() {
     if (signUpButton) {
         signUpButton.onclick = onSignUpButton;
     }
+
+    let logInButton = document.getElementById('logIn');
+    if (logInButton) {
+        logInButton.onclick = onSignUpButton;
+    }
 }
 
 function getAPIBaseURL() {
@@ -243,6 +248,17 @@ function onNextVideosButton() {
 function onSignUpButton() {
     let myModal = document.getElementById('signUpModal');
     let myInput = document.getElementById('signUp_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+    })
+}
+
+function onLogInButton() {
+    let myModal = document.getElementById('logInModal');
+    let myInput = document.getElementById('logIn_input');
 
     myInput.value = "";
 
