@@ -3,12 +3,12 @@ Harry Tian & Daeyeon Kim
 REQUEST: /
 GET parameter:
 	trending_date (Optional, default=18.31.05)
-RESPONSE: a JSON list of dictionaires, each of which representes a trending video on the user specified date. 
+RESPONSE: a JSON list of dictionaries, each of which representes a trending video on the user specified date. 
 Each video dictionary will have the following fields.
 	link: (string) a unique id that is part of the video link
 	title: (string) the title of the video
-	channel: (string) the channel of the videomy
-	pulish time: (string) the publish time of the video
+	channel: (string) the channel of the video
+	publish time: (string) the publish time of the video
 	views: (int) the number of views of the video
 	likes: (int) the number likes of the video
 	dislikes (int) the number of dislikes of the video

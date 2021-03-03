@@ -32,6 +32,6 @@ IMPLEMENTATION: We could add a "save" button to each of videos on the page, and 
 IMPLEMENTATION: A pop-up window comes out and makes user to create a playlist first so that the selected video can added to the playlist.
 
 
-5. STORY: A user has own "my page" that the user can find the videos that he/she saved previously. User can create a playlist to categorize the videos that user saved.
+5. STORY: A user has own "my page" that the user can find the videos that the user saved previously. User can create a playlist to categorize the videos that user saved.
 
 IMPLEMENTATION: We could show the name of the playlists on the left side, and by clicking each playlists, we switch the data and show the matching list of the playlist on the right side.
