@@ -9,6 +9,7 @@
 window.onload = initialize;
 
 let videos_list = [];
+let videos_list_total_number = 0;
 let videos_list_current_page = 0;
 
 function initialize() {
@@ -38,6 +39,11 @@ function initialize() {
     if (logInButton) {
         logInButton.onclick = onSignUpButton;
     }
+
+    let verticalButton = document.getElementById('vertical');
+    if (verticalButton) {
+        verticalButton.onclick = onVerticalViewButton;
+    }
 }
 
 function getAPIBaseURL() {
@@ -54,6 +60,8 @@ function getVideosListInMainPage() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((videos) => {
+        videos_list = videos;
+        videos_list_total_number = videos_list.length;
         let listBodyFirstRow = '';
         let listBodySecondRow = '';
         for (let i = 0; i < 10; i++) {
@@ -87,6 +95,9 @@ function getVideosListInMainPage() {
         if (videosListElementSecondRow) {
             videosListElementSecondRow.innerHTML = listBodySecondRow;
         }
+
+        console.log(videos_list_total_number);
+        onLoadVideoPages();
     })
     .catch(function(error) {
         console.log(error);
@@ -243,6 +254,58 @@ function onNextVideosButton() {
     if (videosListElementSecondRow) {
         videosListElementSecondRow.innerHTML = listBodySecondRow;
     }
+}
+
+function onLoadVideoPages() {
+    /**
+     * Implement the pagination of the video list.
+     */
+    let verticalVideosListElement = document.getElementById("vertical-videos-list");
+    console.log(videos_list_total_number);
+    let videos_list_total_pages = Math.ceil(videos_list_total_number / 10);
+    console.log(videos_list_total_pages)
+    let listBody = '<li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></li>';
+    for (let i = 0; i < videos_list_total_pages; i++) {
+        listBody += `<li class="page-item"><a class="page-link" href="#">${i+1}</a></li>`;
+    }
+    listBody += '<li class="page-item"><a class="page-link" href="#">Next</a></li>';
+ 
+
+    verticalVideosListElement.innerHTML = listBody;
+}
+
+function onVerticalViewButton() {
+    /**
+     * Change the view of the list into vertical view.
+     */
+    let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
+    let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+    let verticalTableElement = document.getElementById("vertical-table-box");
+    let verticalTableBodyElement = document.getElementById("vertical-table-body");
+    videosListElementFirstRow.innerHTML = '';
+    videosListElementSecondRow.innerHTML = '';
+    verticalTableElement.style.display = "block";
+
+    let listBody = '';
+    for (let i = videos_list_current_page; i < videos_list_current_page + 10; i++) {
+        console.log(videos_list[i]);
+        if (videos_list[i]) {
+            let video = videos_list[i];
+            const { publish_time } = video
+            listBody += 
+                `<tr>
+                    <td>${video.title}</td>
+                    <td>${video.channel}</td>
+                    <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
+                    <td>${video.views}</td>
+                    <td>${video.likes}</td>
+                    <td>${video.dislikes}</td>
+                    <td>${video.comment_count}</td>
+                </tr>`;
+        }
+    }
+
+    verticalTableBodyElement.innerHTML = listBody;
 }
 
 function onSignUpButton() {

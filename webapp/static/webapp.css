@@ -112,3 +112,7 @@ ul#now_trending_videos_list {
     width: 12rem;
     height: 9rem;
 }
+
+#vertical-table-box {
+    display: none;
+}
