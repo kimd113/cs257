@@ -240,6 +240,17 @@ function onNextVideosButton() {
     }
 }
 
+function onSignUpButton() {
+    let myModal = document.getElementById('signUpModal');
+    let myInput = document.getElementById('signUp_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+    })
+}
+
 // function onSignUpButton() {
 //     /**
 //      * When user clicks the sign up button, create an account for the user*
