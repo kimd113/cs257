@@ -116,3 +116,9 @@ ul#now_trending_videos_list {
 #vertical-table-box {
     display: none;
 }
+
+#page-nav {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
