@@ -15,6 +15,8 @@ let videos_list_current_page = 0;
 function initialize() {
     getVideosListInMainPage();
 
+    loadYearList();
+
     let elementPrevButton = document.getElementById('prev_button');
     if (elementPrevButton) {
         elementPrevButton.onclick = onPrevVideosButton;
@@ -121,17 +123,91 @@ function getVideosListInMainPage() {
     });
 }
 
+let search_day = "";
+let search_month = "";
+let search_year = "";
+
+//////////// search bar functions ////////////
+function loadYearList() {
+    var yearList = document.getElementById('year-list');
+    if (yearList) {
+        var defaultText = '<option value="" selected="selected">year</option>\n';
+        var listBody = defaultText + '<option value="2017">2017</option>\n<option value="2018">2018</option>\n';
+        yearList.innerHTML = listBody;
+        
+        yearList.onchange = function() {
+            search_year = this.value;
+            if (search_year == "2017"){
+                search_year = "17";
+            }
+            else if (search_year == "2018"){
+                search_year = "18";
+            }
+            console.log(search_year);
+            loadMonthList(search_year);
+        }
+    }
+}
+
+function loadMonthList(yearSelection) {
+    var monthList = document.getElementById('month-list');
+    if (monthList) {
+        var defaultText = '<option value="" selected="selected">month</option>\n';
+        var listBody = defaultText;
+        if (yearSelection == '17') {
+            listBody += '<option value="11">11</option>\n<option value="12">12</option>\n';
+        } else if (yearSelection == '18') {
+            listBody += '<option value="01">01</option>\n<option value="02">02</option>\n<option value="03">03</option>\n<option value="04">04</option>\n<option value="05">05</option>\n<option value="06">06</option>\n';
+        }
+        monthList.innerHTML = listBody;
+
+        monthList.onchange = function() {
+            search_month = this.value;
+            console.log(search_month);
+            loadDayList(search_month);
+        }
+    }
+}
+
+function loadDayList(monthSelection) {
+    var dayList = document.getElementById('day-list');
+    if (dayList) {
+        var defaultText = '<option value="" selected="selected">day</option>\n';
+        var listBody = defaultText;
+        for (var k=1; k <= 9; k++) {
+            listBody += '<option value="0' + k + '">0' + k + '</option>\n';
+        }
+        for (var k=10; k <= 28; k++) {
+            listBody += '<option value="' + k + '">' + k + '</option>\n';
+        }
+        if (monthSelection == '01' || monthSelection == '03' || monthSelection == '05' || monthSelection == '12'){
+            for (var k=28; k <= 31; k++) {
+                listBody += '<option value="' + k + '">' + k + '</option>\n';
+            }
+        }
+        else if (monthSelection == '04' || monthSelection == '06' || monthSelection == '11'){
+            for (var k=28; k <= 30; k++) {
+                listBody += '<option value="' + k + '">' + k + '</option>\n';
+            }
+        }
+
+        dayList.innerHTML = listBody;
+        dayList.onchange = function() {
+            search_day = this.value;
+            console.log(search_day);
+        }
+    }
+}
+
+
 function onSearchButton() {
     /**
      * When user enters the main page, send request to the server and get the list of trending videos.
      */
-    let day = document.getElementById('input_date');
-    let month = document.getElementById('input_month');
-    let year = document.getElementById('input_year');
-    
-    let date = year.value + '.' +  day.value + '.' + month.value;
-    let url =  `${getAPIBaseURL()}?trending_date=${date}`;
-    
+    let search_date = search_year + '.' +  search_day + '.' + search_month;
+    let url =  `${getAPIBaseURL()}?trending_date=${search_date}`;
+    console.log(url);
+
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((videos) => {
@@ -371,4 +447,3 @@ function onLogInButton() {
 //     .catch(function(error) {
 //         console.log(error);
 //     });
-// }

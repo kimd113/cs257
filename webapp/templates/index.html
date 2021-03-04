@@ -36,10 +36,19 @@
                     <h4 id="now_trending_header_title">Trending Videos on:</h4>
                 </div>
                 <div id="search_trending_time_box" class="col-4 row align-items-center ">
-                    <input id="input_date" class="search_trending_time_input col" placeholder="date"/>
-                    <input id="input_month" class="search_trending_time_input col" placeholder="month"/>
-                    <input id="input_year" class="search_trending_time_input col" placeholder="year"/>
-                    <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
+                    <label for="search_input">Choose a date:</label>
+                    <form name="search_input" id="search_input" action="/action_page.php" method='GET'>
+                        <select name="year-list" id="year-list">
+                            <option value="" selected="selected">year</option>
+                        </select>
+                        <select name="month-list" id="month-list">
+                            <option value="" selected="selected">month</option>
+                        </select>
+                        <select name="day-list" id="day-list">
+                            <option value="" selected="selected">day</option>
+                        </select>
+                        <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
+                    </form>
                 </div>
                 <div id="view_buttons_box" class="col">
                     <button class="view_button btn btn-sm btn-secondary" id="vertical" type="button">vertical</button>
