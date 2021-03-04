@@ -7,6 +7,7 @@ import config
 import psycopg2
 from pathlib import Path
 
+
 api = flask.Blueprint('api', __name__)
 
 ########### Connecting to the database ###########
@@ -164,4 +165,7 @@ def log_in():
 ########### Help endpoints ###########
 @api.route('/help') 
 def get_help():
-    return flask.render_template('help.html')
+    doc = Path("doc")
+    help_file = open(doc/'api-design.txt')
+    text = help_file.read()
+    return flask.render_template('help.html', help_text=text)
