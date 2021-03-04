@@ -46,6 +46,7 @@ function initialize() {
     if (verticalButton) {
         verticalButton.onclick = onVerticalViewButton;
     }
+
 }
 
 function getAPIBaseURL() {
@@ -124,9 +125,6 @@ function getVideosListInMainPage() {
     });
 }
 
-let search_day = "";
-let search_month = "";
-let search_year = "";
 
 //////////// search bar functions ////////////
 function loadYearList() {
@@ -137,15 +135,8 @@ function loadYearList() {
         yearList.innerHTML = listBody;
         
         yearList.onchange = function() {
-            search_year = this.value;
-            if (search_year == "2017"){
-                search_year = "17";
-            }
-            else if (search_year == "2018"){
-                search_year = "18";
-            }
-            console.log(search_year);
-            loadMonthList(search_year);
+            console.log(this.value);
+            loadMonthList(this.value);
         }
     }
 }
@@ -155,17 +146,16 @@ function loadMonthList(yearSelection) {
     if (monthList) {
         var defaultText = '<option value="" selected="selected">month</option>\n';
         var listBody = defaultText;
-        if (yearSelection == '17') {
+        if (yearSelection == '2017') {
             listBody += '<option value="11">11</option>\n<option value="12">12</option>\n';
-        } else if (yearSelection == '18') {
+        } else if (yearSelection == '2018') {
             listBody += '<option value="01">01</option>\n<option value="02">02</option>\n<option value="03">03</option>\n<option value="04">04</option>\n<option value="05">05</option>\n<option value="06">06</option>\n';
         }
         monthList.innerHTML = listBody;
 
         monthList.onchange = function() {
-            search_month = this.value;
-            console.log(search_month);
-            loadDayList(search_month);
+            console.log(this.value);
+            loadDayList(this.value);
         }
     }
 }
@@ -194,8 +184,7 @@ function loadDayList(monthSelection) {
 
         dayList.innerHTML = listBody;
         dayList.onchange = function() {
-            search_day = this.value;
-            console.log(search_day);
+            console.log(this.value);
         }
     }
 }
@@ -204,6 +193,18 @@ function onSearchButton() {
     /**
      * When user enters the main page, send request to the server and get the list of trending videos.
      */
+
+    let input_date = document.getElementById("search_input");
+    let search_year = input_date.elements[0].value;
+    if (search_year == "2017"){
+        search_year = "17";
+    }
+    else{
+        search_year = "18";
+    }
+    let search_month = input_date.elements[1].value;
+    let search_day = input_date.elements[2].value;
+
     let search_date = search_year + '.' +  search_day + '.' + search_month;
     let url =  `${getAPIBaseURL()}?trending_date=${search_date}`;
     console.log(url);
