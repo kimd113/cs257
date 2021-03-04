@@ -46,14 +46,6 @@ function initialize() {
     if (verticalButton) {
         verticalButton.onclick = onVerticalViewButton;
     }
-
-    // let pageItem = document.querySelectorAll(".page-item");
-    // if (pageItem) {
-    //     pageItem.forEach(function(element) {
-    //         element.onclick = onClickVideoPage;
-    //     });
-    // }
-
 }
 
 function getAPIBaseURL() {
@@ -62,6 +54,9 @@ function getAPIBaseURL() {
 }
 
 function renderHorizontalVideosList(page_count) {
+    /**
+     * return: an array of strings of tags, which renders the list of videos.
+     */
     let listBodyFirstRow = '';
     let listBodySecondRow = '';
 
@@ -117,6 +112,12 @@ function getVideosListInMainPage() {
         }
 
         onLoadVideoPages();
+        let pageItem = document.querySelectorAll(".page-item");
+        if (pageItem) {
+            pageItem.forEach(function(element) {
+                element.onclick = onClickVideoPage;
+            });
+        }
     })
     .catch(function(error) {
         console.log(error);
@@ -198,7 +199,6 @@ function loadDayList(monthSelection) {
         }
     }
 }
-
 
 function onSearchButton() {
     /**
@@ -298,36 +298,34 @@ function onLoadVideoPages() {
     let verticalVideosListElement = document.getElementById("vertical-videos-list");
     let videos_list_total_pages = Math.ceil(videos_list_total_number / 10);
 
-    // let listBody = '<button type="button" id="prev_button" class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a></button>';
     let listBody = '';
     for (let i = 0; i < videos_list_total_pages; i++) {
-        (i == 0) ? listBody += `<li id="page-num${i+1}" class="page-item active"><a class="page-link" href="#">${i+1}</a></li>`
-        : listBody += `<li id="page-num${i+1}" class="page-item"><a class="page-link" href="#">${i+1}</a></li>`;
+        (i == 0) ? listBody += `<li id="page-num${i+1}" class="page-item active"><a id="page-link-${i+1}" class="page-link" href="#">${i+1}</a></li>`
+        : listBody += `<li id="page-num${i+1}" class="page-item"><a id="page-link-${i+1}" class="page-link" href="#">${i+1}</a></li>`;
     }
-    // listBody += '<button type="button" id="next_button" class="page-item"><a class="page-link" href="#">Next</a></button>';
  
     verticalVideosListElement.innerHTML = listBody;
 }
 
-function onClickVideoPage() {
+function onClickVideoPage(event) {
     /**
      * Implement onClick function that navigates to the page clicked and switches the videos.
      */
-    console.log('hi');
     let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
     let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
     videosListElementFirstRow.innerHTML = '';
     videosListElementSecondRow.innerHTML = '';
-
-    videos_list_current_page += 1;
-    let selected_page_count = videos_list_current_page * 10;
     
-    let currentPageItemElement = document.getElementById(`page-num${videos_list_current_page}`);
+    let videos_list_selected_page = parseInt(event.target.id.split('-')[2]) - 1;
+    let selected_page_count = videos_list_selected_page * 10;
+    
+    let currentPageItemElement = document.getElementById(`page-num${videos_list_current_page+1}`);
     currentPageItemElement.classList.remove("active");
-    currentPageItemElement = document.getElementById(`page-num${videos_list_current_page+1}`);
+    currentPageItemElement = document.getElementById(`page-num${videos_list_selected_page+1}`);
     currentPageItemElement.classList.add("active");
 
-    let listBodies = renderHorizontalVideosList();
+    let listBodies = renderHorizontalVideosList(selected_page_count);
+    videos_list_current_page = videos_list_selected_page;
 
     if (videosListElementFirstRow) {
         videosListElementFirstRow.innerHTML = listBodies[0];
