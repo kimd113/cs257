@@ -1,6 +1,4 @@
 import csv
-from pathlib import Path
-data = Path("data")
 
 def extract_discrete_fields():
     ''' 
@@ -9,7 +7,7 @@ def extract_discrete_fields():
         the dictionaries are used to create other csvs
     '''
     
-    with open(data/'USvideos.csv', 'r', encoding='utf-8') as csvfile:
+    with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         trending_dates_dict = {}
         channels_dict = {}
@@ -34,7 +32,7 @@ def create_trending_dates_csv(trending_dates_dict):
     ''' creates trending_dates.csv '''
 
     # id = 1
-    with open(data/'trending_dates.csv', 'w', newline='') as csvfile:
+    with open('trending_dates.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for trending_date in trending_dates_dict:
             trending_date_id = trending_dates_dict[trending_date]
@@ -45,7 +43,7 @@ def create_channels_csv(channels_dict):
     ''' creates channels.csv '''
 
     # id = 1
-    with open(data/'channels.csv', 'w', newline='', encoding='utf-8') as csvfile:
+    with open('channels.csv', 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for channel in channels_dict:
             channel_id = channels_dict[channel]
@@ -62,7 +60,7 @@ def create_categories_csv():
     category_ids = []
     category_titles = []
     row_num = 1
-    with open(data/'US_category_id.json') as JSONfile:
+    with open('US_category_id.json') as JSONfile:
         for row in JSONfile:
             # the 8th, 18th, 28th ... row conatins the category_id
             if (row_num - 8) % 10 == 0:
@@ -76,7 +74,7 @@ def create_categories_csv():
 
             row_num += 1
     
-    with open(data/'categories.csv', 'w', newline='') as csvfile:
+    with open('categories.csv', 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
         for i in range(len(category_ids)):
             category_id = category_ids[i]
@@ -87,9 +85,9 @@ def create_videos_csv():
     ''' create videos.csv, each row contains relevant unique data for a video'''
     
     videos_dict = {} # this dictionary uses video titles as keys
-    with open(data/'USvideos.csv', 'r', encoding='utf-8') as csvfile:
+    with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open(data/'videos.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        with open('videos.csv', 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
@@ -97,7 +95,7 @@ def create_videos_csv():
                 title = row['title']
                 if title not in videos_dict:
                     videos_dict[title] = id
-                    
+
                     link = row['video_id']
                     title = row['title']
                     publish_time = row['publish_time']
@@ -114,9 +112,9 @@ def create_videos_trending_views_csv(videos_dict, trending_dates_dict):
         each row also contains views, likes, dislikes, and comment_count or each video trending on a date
     '''
     
-    with open(data/'USvideos.csv', 'r', encoding='utf-8') as csvfile:
+    with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open(data/'videos_trending_views.csv', 'w', newline='') as csvfile:
+        with open('videos_trending_views.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
@@ -137,9 +135,9 @@ def create_videos_trending_views_csv(videos_dict, trending_dates_dict):
 def create_videos_categories_channels_csv(videos_dict, channels_dict):
     ''' creates csv that links video id to category_id, channels_id '''
 
-    with open(data/'USvideos.csv', 'r', encoding='utf-8') as csvfile:
+    with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open(data/'videos_categories_channels.csv', 'w', newline='') as csvfile:
+        with open('videos_categories_channels.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
