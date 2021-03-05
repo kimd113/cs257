@@ -11,6 +11,7 @@ window.onload = initialize;
 let videos_list = [];
 let videos_list_total_number = 0;
 let videos_list_current_page = 0;
+let isHorizontalView = true;
 
 function initialize() {
     getVideosListInMainPage();
@@ -97,6 +98,31 @@ function renderHorizontalVideosList(page_count) {
     return [listBodyFirstRow, listBodySecondRow];
 }
 
+function renderVerticalVideosList(page_count) {
+    let listBody = '';
+    for (let i = page_count; i < page_count + 10; i++) {
+        console.log(videos_list[i]);
+        if (videos_list[i]) {
+            let video = videos_list[i];
+            const { publish_time } = video
+            listBody += 
+                `<tr>
+                    <td>${video.title}</td>
+                    <td>${video.channel}</td>
+                    <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
+                    <td>${video.views}</td>
+                    <td>${video.likes}</td>
+                    <td>${video.dislikes}</td>
+                    <td>${video.comment_count}</td>
+                </tr>`;
+        }
+    }
+
+    // let verticalTableBodyElement = document.getElementById("vertical-table-body");
+    return listBody;
+    // verticalTableBodyElement.innerHTML = listBody;
+}
+
 function getVideosListInMainPage() {
     /**
      * When user enters the main page, send request to the server and get the list of trending videos.
@@ -111,7 +137,6 @@ function getVideosListInMainPage() {
 
         let listBodies = renderHorizontalVideosList(0);
 
-        // let videosListElement = document.getElementById('now_trending_videos_list');
         let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
         let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
         if (videosListElementFirstRow) {
@@ -133,7 +158,6 @@ function getVideosListInMainPage() {
         console.log(error);
     });
 }
-
 
 //////////// search bar functions ////////////
 function loadYearList() {
@@ -223,16 +247,36 @@ function onSearchButton() {
     .then((videos) => {
         videos_list_current_page = 0;
         videos_list = videos;
-        let listBodies = renderHorizontalVideosList(0);
 
+        //
         let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
         let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
-        if (videosListElementFirstRow) {
-            videosListElementFirstRow.innerHTML = listBodies[0];
+        let verticalTableBodyElement = document.getElementById("vertical-table-body");
+        if (isHorizontalView) {
+            let listBodies = renderHorizontalVideosList(videos_list_current_page);
+            if (videosListElementFirstRow) {
+                videosListElementFirstRow.innerHTML = listBodies[0];
+            }
+            if (videosListElementSecondRow) {
+                videosListElementSecondRow.innerHTML = listBodies[1];
+            }
+        } else {
+            videosListElementFirstRow.innerHTML = '';
+            videosListElementSecondRow.innerHTML = '';
+            let listBody = renderVerticalVideosList(videos_list_current_page);
+            verticalTableBodyElement.innerHTML = listBody;
         }
-        if (videosListElementSecondRow) {
-            videosListElementSecondRow.innerHTML = listBodies[1];
-        }
+        //
+
+        // let listBodies = renderHorizontalVideosList(0);
+
+
+        // if (videosListElementFirstRow) {
+        //     videosListElementFirstRow.innerHTML = listBodies[0];
+        // }
+        // if (videosListElementSecondRow) {
+        //     videosListElementSecondRow.innerHTML = listBodies[1];
+        // }
     })
     .catch(function(error) {
         console.log(error);
@@ -250,6 +294,7 @@ function onPrevVideosButton() {
 
     let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
     let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+    let verticalTableBodyElement = document.getElementById("vertical-table-body");
     videosListElementFirstRow.innerHTML = '';
     videosListElementSecondRow.innerHTML = '';
 
@@ -260,14 +305,20 @@ function onPrevVideosButton() {
     currentPageItemElement.classList.remove("active");
     currentPageItemElement = document.getElementById(`page-num${videos_list_current_page+1}`);
     currentPageItemElement.classList.add("active");
-    
-    let listBodies = renderHorizontalVideosList(prev_page_count);
 
-    if (videosListElementFirstRow) {
-        videosListElementFirstRow.innerHTML = listBodies[0];
-    }
-    if (videosListElementSecondRow) {
-        videosListElementSecondRow.innerHTML = listBodies[1];
+    if (isHorizontalView) {
+        let listBodies = renderHorizontalVideosList(prev_page_count);
+        if (videosListElementFirstRow) {
+            videosListElementFirstRow.innerHTML = listBodies[0];
+        }
+        if (videosListElementSecondRow) {
+            videosListElementSecondRow.innerHTML = listBodies[1];
+        }
+    } else {
+        videosListElementFirstRow.innerHTML = '';
+        videosListElementSecondRow.innerHTML = '';
+        let listBody = renderVerticalVideosList(prev_page_count);
+        verticalTableBodyElement.innerHTML = listBody;
     }
 }
 
@@ -282,6 +333,7 @@ function onNextVideosButton() {
 
     let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
     let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+    let verticalTableBodyElement = document.getElementById("vertical-table-body");
     
     videos_list_current_page += 1;
     let next_page_count = videos_list_current_page * 10;
@@ -291,13 +343,19 @@ function onNextVideosButton() {
     currentPageItemElement = document.getElementById(`page-num${videos_list_current_page+1}`);
     currentPageItemElement.classList.add("active");
     
-    let listBodies = renderHorizontalVideosList(next_page_count);
-
-    if (videosListElementFirstRow) {
-        videosListElementFirstRow.innerHTML = listBodies[0];
-    }
-    if (videosListElementSecondRow) {
-        videosListElementSecondRow.innerHTML = listBodies[1];
+    if (isHorizontalView) {
+        let listBodies = renderHorizontalVideosList(next_page_count);
+        if (videosListElementFirstRow) {
+            videosListElementFirstRow.innerHTML = listBodies[0];
+        }
+        if (videosListElementSecondRow) {
+            videosListElementSecondRow.innerHTML = listBodies[1];
+        }
+    } else {
+        videosListElementFirstRow.innerHTML = '';
+        videosListElementSecondRow.innerHTML = '';
+        let listBody = renderVerticalVideosList(next_page_count);
+        verticalTableBodyElement.innerHTML = listBody;
     }
 }
 
@@ -352,31 +410,15 @@ function onVerticalViewButton() {
     let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
     let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
     let verticalTableElement = document.getElementById("vertical-table-box");
-    let verticalTableBodyElement = document.getElementById("vertical-table-body");
     videosListElementFirstRow.innerHTML = '';
     videosListElementSecondRow.innerHTML = '';
     verticalTableElement.style.display = "block";
 
-    let listBody = '';
-    for (let i = videos_list_current_page; i < videos_list_current_page + 10; i++) {
-        console.log(videos_list[i]);
-        if (videos_list[i]) {
-            let video = videos_list[i];
-            const { publish_time } = video
-            listBody += 
-                `<tr>
-                    <td>${video.title}</td>
-                    <td>${video.channel}</td>
-                    <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
-                    <td>${video.views}</td>
-                    <td>${video.likes}</td>
-                    <td>${video.dislikes}</td>
-                    <td>${video.comment_count}</td>
-                </tr>`;
-        }
-    }
-
+    let verticalTableBodyElement = document.getElementById("vertical-table-body");
+    let listBody = renderVerticalVideosList(0);
     verticalTableBodyElement.innerHTML = listBody;
+
+    isHorizontalView = false;
 }
 
 function onSignUpButton() {
