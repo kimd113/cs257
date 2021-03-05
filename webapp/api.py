@@ -38,7 +38,7 @@ def get_main_page():
     if not trending_date:
         trending_date = "18.31.05"
 
-    query = '''SELECT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
+    query = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
                       videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
                FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates
                WHERE trending_dates.date = '{}'
