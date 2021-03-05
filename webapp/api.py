@@ -86,9 +86,6 @@ def sign_up():
                           FROM users
                           WHERE users.username = '{}';'''.format(user_name)
 
-    sucess_code = "signed up successfully"
-    error_code = "this name is already taken"
-
     # check if user_name exists in the database
     name_taken = False
     try:
@@ -140,9 +137,6 @@ def log_in():
     check_user_query = '''SELECT users.username
                           FROM users
                           WHERE users.username = '{}';'''.format(user_name)
-
-    sucess_code = "logged in successfully"
-    error_code = "user name does not exists, please sign up first"
 
     # check if user_name exists in the database
     name_exists = False

@@ -47,6 +47,15 @@ function initialize() {
         verticalButton.onclick = onVerticalViewButton;
     }
 
+    let createAccountButton = document.getElementById("create-account-btn"); 
+    if (createAccountButton) {
+        createAccountButton.onclick = createAccount;
+    }
+
+    let logInUserButton = document.getElementById("log-in-btn"); 
+    if (logInUserButton) {
+        logInUserButton.onclick = logInUser;
+    }
 }
 
 function getAPIBaseURL() {
@@ -379,8 +388,12 @@ function onSignUpButton() {
     myModal.addEventListener('shown.bs.modal', function () {
         myInput.focus();
     })
+
+    let msgBox = document.getElementById('signUpMsg');
+    msgBox.innerHTML = "Type username to sign up:";
 }
 
+// TODO: fix bug
 function onLogInButton() {
     let myModal = document.getElementById('logInModal');
     let myInput = document.getElementById('logIn_input');
@@ -390,59 +403,69 @@ function onLogInButton() {
     myModal.addEventListener('shown.bs.modal', function () {
         myInput.focus();
     })
+
+    
+    let msgBox = document.getElementById('logInMsg');
+    msgBox.innerHTML = "Type username to log in:";
 }
 
-// function onSignUpButton() {
-//     /**
-//      * When user clicks the sign up button, create an account for the user*
-//      */
-//     let user_name = document.getElementById(user name id); 
-//     let url =  `${getAPIBaseURL()}?user_name=${user_name.value}`;
+function createAccount() {
+    /**
+     * When user clicks the sign up button, create an account for the user if the username is not taken*
+     */
+    let user_name = document.getElementById("signUp_input"); 
+    // let user_name = document.getElementById("signup-password"); 
+    let url =  `${getAPIBaseURL()}/sign-up?user_name=${user_name.value}`;
 
-//     let msgbox = document.getElementById(message box id);
-//     let sucess_code = "signed up successfully"
-//     let error_code = "this name is already taken"
+    let msgbox = document.getElementById("signUpMsg");
+    let sucess_code = "Signed up successfully"
+    let error_code = "This name is already taken"
 
-//     fetch(url, {method: 'get'})
-//     .then((response) => response.json())
-//     .then((msg) => {
-//         if (msgbox){
-//             if (msg){
-//                 msgbox.innerHTML = sucess_code;
-//             }
-//             else{
-//                 msgbox.innerHTML = error_code;
-//             }
-//         }
-//     })
-//     .catch(function(error) {
-//         console.log(error);
-//     });
-// }
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log(msg);
+        if (msgbox){
+            if (msg){
+                msgbox.innerHTML = sucess_code;
+                // TODO: add close modal box function?
+            }
+            else{
+                msgbox.innerHTML = error_code;
+            }
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
 
-// function onLogInButton() {
-//     /**
-//      * When user clicks the log in button, ...*
-//      */
-//     let user_name = document.getElementById(user name id); 
-//     let url =  `${getAPIBaseURL()}?user_name=${user_name.value}`;
+function logInUser() {
+    /**
+     * When user clicks the log in button, logs into the user's account*
+     */
+    let user_name = document.getElementById("logIn_input"); 
+    // let user_name = document.getElementById("signup-password"); 
+    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name.value}`;
 
-//     let msgbox = document.getElementById(message box id);
-//     let sucess_code = "logged in successfully"
-//     let error_code = "user name does not exists, please sign up first"
+    let msgbox = document.getElementById("logInMsg");
+    let sucess_code = "Logged in successfully"
+    let error_code = "User name does not exists, please sign up first"
 
-//     fetch(url, {method: 'get'})
-//     .then((response) => response.json())
-//     .then((msg) => {
-//         if (msgbox){
-//             if (msg){
-//                 msgbox.innerHTML = sucess_code;
-//             }
-//             else{
-//                 msgbox.innerHTML = error_code;
-//             }
-//         }
-//     })
-//     .catch(function(error) {
-//         console.log(error);
-//     });
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        if (msgbox){
+            if (msg){
+                msgbox.innerHTML = sucess_code;
+                // TODO: add close modal box function?
+            }
+            else{
+                msgbox.innerHTML = error_code;
+            }
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
