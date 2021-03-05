@@ -12,9 +12,10 @@ FEATURES CURRENTLY WORKING:
 - log out feature
 - My Page button redirects to my page
 - Vertical view: Shows the list of trending videos vertically.
+- My page: Shows a basic layout of the page.
 
 FEATURES NOT YET WORKING:
-- better formatting for views, likes, dislikes
+- better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
 - A more elegant sign up/log in feature using flask-login
 - Save to my playlist: button that saves a selected video to user's playlist.
 - My page: a page that shows the lists of the videos saved.
