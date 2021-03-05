@@ -126,7 +126,7 @@ function renderVerticalVideosList(page_count) {
             const { publish_time } = video
             listBody += 
                 `<tr>
-                    <td>${video.title}</td>
+                    <td><a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">${video.title}</a></td>
                     <td>${video.channel}</td>
                     <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
                     <td>${video.views}</td>
@@ -397,9 +397,7 @@ function onClickVideoPage(event) {
     videosListElementSecondRow.innerHTML = '';
     
     let videos_list_selected_page = parseInt(event.target.id.split('-')[2]) - 1;
-    console.log('videos_list_selected_page :', videos_list_selected_page);
     let selected_page_count = videos_list_selected_page * 10;
-    console.log('selected_page_count :', selected_page_count);
     
     let currentPageItemElement = document.getElementById(`page-num${videos_list_current_page+1}`);
     currentPageItemElement.classList.remove("active");
