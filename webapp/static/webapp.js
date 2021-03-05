@@ -18,6 +18,7 @@ let logged_in = false;
 let logged_in_user = "";
 
 function initialize() {
+    console.log(videos_list);
     getVideosListInMainPage();
 
     loadYearList();
