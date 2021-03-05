@@ -434,7 +434,7 @@ function onVerticalViewButton() {
     verticalTableElement.style.display = "block";
 
     let verticalTableBodyElement = document.getElementById("vertical-table-body");
-    let listBody = renderVerticalVideosList(videos_list_current_page);
+    let listBody = renderVerticalVideosList(videos_list_current_page * 10);
     verticalTableBodyElement.innerHTML = listBody;
 
     isHorizontalView = false;
@@ -500,10 +500,11 @@ function onSignUpSubmitButton() {
      */
     let user_name = document.getElementById("signUp_input"); 
     // let user_name = document.getElementById("signup-password"); 
+
     let url =  `${getAPIBaseURL()}/sign-up?user_name=${user_name.value}`;
 
     let msgbox = document.getElementById("signUpMsg");
-    let sucess_code = "Signed up successfully"
+    // let sucess_code = "Signed up successfully"
     let error_code = "This name is already taken"
 
     fetch(url, {method: 'get'})
@@ -512,8 +513,20 @@ function onSignUpSubmitButton() {
         console.log(msg);
         if (msgbox){
             if (msg){
-                msgbox.innerHTML = sucess_code;
-                // TODO: add close modal box function?
+                // msgbox.innerHTML = sucess_code;
+                document.getElementById('close-signup-modal').click();
+                let alert_box = document.getElementById('alert_box');
+                let success_alert = `<p class="alert alert-success alert-dismissible fade show
+                position-absolute overflow-visible start-50 translate-middle" role="alert">
+                <strong>Thank you, you are signed up! Please log in to continue!</strong>
+                <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </p>`;
+                alert_box.innerHTML = success_alert;
+                setTimeout(() => {
+                    if(document.getElementById('alert-close')) {
+                        document.getElementById('alert-close').click();
+                    }
+                }, 2000);
             }
             else{
                 msgbox.innerHTML = error_code;
@@ -545,6 +558,20 @@ function onLogInSubmitButton() {
             if (msg){
                 msgbox.innerHTML = sucess_code;
                 logInUser(user_name);
+                
+                document.getElementById('close-login-modal').click();
+                let alert_box = document.getElementById('alert_box');
+                let success_alert = `<p class="alert alert-success alert-dismissible fade show
+                position-absolute overflow-visible start-50 translate-middle" role="alert">
+                <strong>Welcome back, ${user_name.value}!</strong>
+                <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </p>`;
+                alert_box.innerHTML = success_alert;
+                setTimeout(() => {
+                    if(document.getElementById('alert-close')) {
+                        document.getElementById('alert-close').click();
+                    }
+                }, 2000);
             }
             else{
                 msgbox.innerHTML = error_code;
