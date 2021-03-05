@@ -203,20 +203,27 @@ function loadDayList(monthSelection) {
     if (dayList) {
         var defaultText = '<option value="" selected="selected">day</option>\n';
         var listBody = defaultText;
-        for (var k=1; k <= 9; k++) {
-            listBody += '<option value="0' + k + '">0' + k + '</option>\n';
-        }
-        for (var k=10; k <= 28; k++) {
-            listBody += '<option value="' + k + '">' + k + '</option>\n';
-        }
-        if (monthSelection == '01' || monthSelection == '03' || monthSelection == '05' || monthSelection == '12'){
-            for (var k=28; k <= 31; k++) {
+        if (monthSelection == "11"){
+            for (var k=14; k <= 30; k++) {
                 listBody += '<option value="' + k + '">' + k + '</option>\n';
             }
         }
-        else if (monthSelection == '04' || monthSelection == '06' || monthSelection == '11'){
-            for (var k=28; k <= 30; k++) {
+        else{
+            for (var k=1; k < 10; k++) {
+                listBody += '<option value="0' + k + '">0' + k + '</option>\n';
+            }
+            for (var k=10; k < 15; k++) {
                 listBody += '<option value="' + k + '">' + k + '</option>\n';
+            }
+            if (monthSelection == '01' || monthSelection == '03' || monthSelection == '05' || monthSelection == '12'){
+                for (var k=15; k <= 31; k++) {
+                    listBody += '<option value="' + k + '">' + k + '</option>\n';
+                }
+            }
+            else if (monthSelection == '04'){
+                for (var k=15; k <= 30; k++) {
+                    listBody += '<option value="' + k + '">' + k + '</option>\n';
+                }
             }
         }
 
@@ -518,6 +525,8 @@ function logInUser() {
     let sucess_code = "Logged in successfully"
     let error_code = "User name does not exists, please sign up first"
 
+    let log_in_modal = document.getElementById("logInModal");
+
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
@@ -525,6 +534,7 @@ function logInUser() {
             if (msg){
                 msgbox.innerHTML = sucess_code;
                 // TODO: add close modal box function?
+                log_in_modal.style.display = "block";
             }
             else{
                 msgbox.innerHTML = error_code;
