@@ -98,9 +98,15 @@ function renderHorizontalVideosList(page_count) {
                 </a>
                     <div class="video_channel">${video.channel}</div>
                     <div class="video_list_item_text">
-                        <span class="video_views">${video.views} </span>|
-                        <span class="video_likes">${video.likes} </span>|
-                        <span class="video_dislikes">${video.dislikes}</span>
+                        <span class="video_views">
+                        <img src="../static/imgs/eye.png" width="15px" height="15px" alt="eye">
+                        ${video.views}</span>
+                        <span class="video_likes">
+                        <img src="../static/imgs/like.png" width="15px" height="15px" alt="like">
+                        ${video.likes} </span>
+                        <span class="video_dislikes">
+                        <img src="../static/imgs/dislike.png" width="15px" height="15px" alt="dislike">
+                        ${video.dislikes}</span>
                     </div>
                     <button class="save_to_playlist_button btn btn-sm btn-outline-primary">Save to my playlist</button>
                 </div>`;
