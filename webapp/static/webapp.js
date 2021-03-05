@@ -248,7 +248,6 @@ function onSearchButton() {
         videos_list_current_page = 0;
         videos_list = videos;
 
-        //
         let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
         let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
         let verticalTableBodyElement = document.getElementById("vertical-table-body");
@@ -266,17 +265,6 @@ function onSearchButton() {
             let listBody = renderVerticalVideosList(videos_list_current_page);
             verticalTableBodyElement.innerHTML = listBody;
         }
-        //
-
-        // let listBodies = renderHorizontalVideosList(0);
-
-
-        // if (videosListElementFirstRow) {
-        //     videosListElementFirstRow.innerHTML = listBodies[0];
-        // }
-        // if (videosListElementSecondRow) {
-        //     videosListElementSecondRow.innerHTML = listBodies[1];
-        // }
     })
     .catch(function(error) {
         console.log(error);
