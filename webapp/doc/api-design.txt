@@ -30,7 +30,7 @@ RESPONSE: a success code if the video is not in the playlist and saved successfu
 
 REQUEST: /my-page
 GET parameter
-	user {Optional, default=None}
+	user_name
 RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
 
 #note: creating a new endpoint for vertical view? or use the same API endpoint.

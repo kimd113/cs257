@@ -7,16 +7,22 @@
  */
 
 window.onload = initialize;
+console.log("loading");
 
 let videos_list = [];
 let videos_list_total_number = 0;
 let videos_list_current_page = 0;
 let isHorizontalView = true;
 
+let logged_in = false;
+let logged_in_user = "";
+
 function initialize() {
     getVideosListInMainPage();
 
     loadYearList();
+
+    // updateButtons();// this doesn't work.. it's not remembered when page refreshes
 
     let elementPrevButton = document.getElementById('prev_button');
     if (elementPrevButton) {
@@ -53,14 +59,20 @@ function initialize() {
         horizontalButton.onclick = onHorizontalViewButton;
     }
 
-    let createAccountButton = document.getElementById("create-account-btn"); 
-    if (createAccountButton) {
-        createAccountButton.onclick = createAccount;
+    let signUpSubmitButton = document.getElementById("sign-up-submit"); 
+    if (signUpSubmitButton) {
+        signUpSubmitButton.onclick = onSignUpSubmitButton;
     }
 
-    let logInUserButton = document.getElementById("log-in-btn"); 
-    if (logInUserButton) {
-        logInUserButton.onclick = logInUser;
+    let logInSubmitButton = document.getElementById("log-in-submit"); 
+    if (logInSubmitButton) {
+        logInSubmitButton.onclick = onLogInSubmitButton;
+    }
+
+    
+    let logOutButton = document.getElementById("logOut"); 
+    if (logOutButton) {
+        logOutButton.onclick = onLogOutButton;
     }
 }
 
@@ -482,7 +494,7 @@ function onLogInButton() {
     msgBox.innerHTML = "Type username to log in:";
 }
 
-function createAccount() {
+function onSignUpSubmitButton() {
     /**
      * When user clicks the sign up button, create an account for the user if the username is not taken*
      */
@@ -513,9 +525,9 @@ function createAccount() {
     });
 }
 
-function logInUser() {
+function onLogInSubmitButton() {
     /**
-     * When user clicks the log in button, logs into the user's account*
+     * When user clicks the log in button, checks if the user exists in the database*
      */
     let user_name = document.getElementById("logIn_input"); 
     // let user_name = document.getElementById("signup-password"); 
@@ -525,7 +537,6 @@ function logInUser() {
     let sucess_code = "Logged in successfully"
     let error_code = "User name does not exists, please sign up first"
 
-    let log_in_modal = document.getElementById("logInModal");
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -533,8 +544,7 @@ function logInUser() {
         if (msgbox){
             if (msg){
                 msgbox.innerHTML = sucess_code;
-                // TODO: add close modal box function?
-                log_in_modal.style.display = "block";
+                logInUser(user_name);
             }
             else{
                 msgbox.innerHTML = error_code;
@@ -544,4 +554,35 @@ function logInUser() {
     .catch(function(error) {
         console.log(error);
     });
+}
+
+function logInUser(user_name) {
+    /**
+     * If the user exists, log them in and make some changes*
+     */
+    logged_in = true;
+    logged_in_user = user_name;
+    updateButtons();
+}
+
+function updateButtons(){
+    if (logged_in){
+        document.getElementById("logIn").setAttribute('hidden',true);
+        document.getElementById("signUp").setAttribute('hidden',true);
+        document.getElementById("myPage").removeAttribute("hidden");
+        document.getElementById("logOut").removeAttribute("hidden");
+    }
+    else{
+        document.getElementById("logIn").removeAttribute("hidden");
+        document.getElementById("signUp").removeAttribute("hidden");
+        document.getElementById("myPage").setAttribute('hidden',true);
+        document.getElementById("logOut").setAttribute('hidden',true);
+    }
+}
+
+// TODO: add msgbox "are you sure you want to log out?"
+function onLogOutButton(){
+    logged_in = false;
+    logged_in_user = "";
+    updateButtons();
 }

@@ -126,7 +126,7 @@ def sign_up():
 @api.route('/log-in') 
 def log_in():
     ''' 
-        The user logs in to their account the GET parameter
+        The user logs in to their account through the GET parameter
 
             http://.../?user_name=name
 
@@ -153,8 +153,33 @@ def log_in():
         print(e, file=sys.stderr)
         exit()
 
-    # return json.dumps(sucess_code) if name_exists else json.dumps(error_code)
     return json.dumps(name_exists)
+
+
+########### TODO endpoints ###########
+
+@api.route('/my-page') 
+def my_page():
+    ''' 
+        Returns the mypage of a user through the GET parameter
+
+            http://.../?user_name=name
+
+        Returns a JSON array of arrays, each of which represents a playlist. 
+        Each playlist array is a JSON list of dictionaries, each of represents a video.
+    '''
+
+    return json.dumps(None)
+
+    
+@api.route('/save-to-playlist') 
+def save_to_playlist():
+    ''' 
+        Adds a video to a user's playlist
+        Returns a success code if the video is not in the playlist and saved successfully, else an error code
+    '''
+
+    return json.dumps(None)
 
 ########### Help endpoints ###########
 @api.route('/help') 
