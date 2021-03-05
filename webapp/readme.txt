@@ -7,9 +7,11 @@ FEATURES CURRENTLY WORKING:
 - At the / endpoint, it renders the list of the most currently trending videos.
 - Maximum 10 videos are shown at once, and the prev/next buttons enable to switch to other videos in main page.
 - 3 inputs (date, month, year) to search the trending videos of the date & the search button will render the searched videos.
+- A very basic local sign up feature: creates an account for the user, stores it in the psql database, and returns a message 
+- A very basic local log in feature: checks the psql database if the username exists and returns a message
 
 FEATURES NOT YET WORKING:
-- Log in: Checks user info and sends user data from the server.
+- A more elegant sign up/log in feature using flaskilogin
 - Vertical view: Shows the list of trending videos vertically.
 - Save to my playlist: button that saves a selected video to user's playlist.
 - My page: a page that shows the lists of the videos saved.
