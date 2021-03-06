@@ -3,13 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='webapp.css') }}" /> -->
         <link rel="stylesheet" type="text/css" href="../static/webapp.css" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-        <!-- <script type="text/javascript" src="{{ url_for('static', filename='webapp.js') }}"></script> -->
-        <script type="text/javascript" src="../static/webapp.js"></script>
-        <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" /> -->
         <link rel="shortcut icon" href="../static/favicon.ico" />
+        <script type="text/javascript" src="../static/webapp.js"></script>
         <title>YouTube Trending Videos</title>
     </head>
 
@@ -24,7 +21,7 @@
                 <div id="header_user_box" class="">
                     <button class="button btn btn-outline-success" id="logIn" type="button" data-bs-toggle="modal" data-bs-target="#logInModal">Log in</button>
                     <button class="button btn btn-outline-success" id="signUp" type="button" data-bs-toggle="modal" data-bs-target="#signUpModal">Sign up</button>
-                    <a href="myPage.html">
+                    <a href="myPage.html" class="text-decoration-none">
                         <button hidden class="button btn btn-outline-success" id="myPage" type="button">My page</button>
                     </a>
                     <button hidden class="button btn btn-outline-success" id="logOut" type="button">Log out</button>
@@ -37,10 +34,11 @@
         <div id="now_trending_box" class="container-fluid">
             <div id="now_trending_header_box" class="row align-items-center">
                 <div id="now_trending_header_title_box" class="col-3">
-                    <h4 id="now_trending_header_title">Trending Videos on:</h4>
+                    <h4 id="now_trending_header_title">Trending Videos</h4>
                 </div>
-                <div id="search_trending_time_box" class="col-4 row align-items-center ">
-                    <label for="search_input">Choose a date:</label>
+                <!-- <div id="search_trending_time_box" class="col-4 row align-items-center "> -->
+                <div id="search_trending_time_box" class="col-4">
+                    <label id="serach_input_label" for="search_input">Choose a date:</label>
                     <form name="search_input" id="search_input" action="/action_page.php" method='GET'>
                         <select name="year-list" id="year-list">
                             <option value="" selected="selected">year</option>
@@ -107,7 +105,7 @@
                     </div>
                     <div class="modal-body">
                         <p id="signUpMsg"></p>
-                        <input type="text" id="signUp_input" placeholder="username" />
+                        <input type="text" id="signUp_input" placeholder="username"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="close-signup-modal" data-bs-dismiss="modal">Close</button>
@@ -132,6 +130,34 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="close-login-modal" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="log-in-submit">Log in</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save-to-playlist modal -->
+        <div class="modal" id="saveToPlaylistModal" tabindex="-1" aria-labelledby="saveToPlaylistLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="saveToPlaylistLabel">Save to my playlist</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row flex-column">
+                        <div class="col d-flex justify-content-start align-items-start">
+                            <p id="saveToPlaylistMsg" class="playlistModalMsg">Choose your playlist</p>
+                            <select name="playlist-options" id="playlist-options">
+                                <option value="" selected="selected">playlists</option>
+                            </select>
+                        </div>
+                        <div class="col d-flex justify-content-start align-items-start">
+                            <p id="createNewPlaylistMsg" class="playlistModalMsg">Create a new playlist</p>
+                            <input type="text" id="new_playlist_input" placeholder="new playlist" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="close-login-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="log-in-submit">Save</button>
                     </div>
                 </div>
             </div>

@@ -50,6 +50,13 @@ function initialize() {
         logInButton.onclick = onSignUpButton;
     }
 
+    // let closeButtons = document.querySelectorAll('btn-close');
+    // if (closeButtons) {
+    //     closeButtons.forEach(function(element) {
+    //         element.onclick = onCloseModal;
+    //     });
+    // }
+
     let verticalButton = document.getElementById('vertical');
     if (verticalButton) {
         verticalButton.onclick = onVerticalViewButton;
@@ -69,7 +76,6 @@ function initialize() {
     if (logInSubmitButton) {
         logInSubmitButton.onclick = onLogInSubmitButton;
     }
-
     
     let logOutButton = document.getElementById("logOut"); 
     if (logOutButton) {
@@ -109,7 +115,7 @@ function renderHorizontalVideosList(page_count) {
                         <img src="../static/imgs/dislike.png" width="15px" height="15px" alt="dislike">
                         ${video.dislikes}</span>
                     </div>
-                    <button class="save_to_playlist_button btn btn-sm btn-outline-primary">Save to my playlist</button>
+                    <button class="save_to_playlist_button btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveToPlaylistModal">Save to my playlist</button>
                 </div>`;
             if (i < page_count + 5 ) {
                 listBodyFirstRow += listBody;
@@ -177,6 +183,14 @@ function getVideosListInMainPage() {
                 element.onclick = onClickVideoPage;
             });
         }
+
+        let saveToPlaylistButton = document.querySelectorAll(".save_to_playlist_button");
+        if (saveToPlaylistButton) {
+            saveToPlaylistButton.forEach((element) => {
+                element.onclick = onSaveToPlaylistButton;
+            })
+        }
+
     })
     .catch(function(error) {
         console.log(error);
@@ -481,6 +495,9 @@ function onSignUpButton() {
 
     let msgBox = document.getElementById('signUpMsg');
     msgBox.innerHTML = "Type username to sign up:";
+
+    let closeButton = document.getElementById('close-signup-modal');
+    closeButton.onclick = onCloseModal;
 }
 
 // TODO: fix bug
@@ -493,11 +510,39 @@ function onLogInButton() {
     myModal.addEventListener('shown.bs.modal', function () {
         myInput.focus();
     })
-
-    
-    let msgBox = document.getElementById('logInMsg');
-    msgBox.innerHTML = "Type username to log in:";
 }
+
+function onSaveToPlaylistButton() {
+    /**
+     * render a "save to playlist" modal when the button is clicked.
+     */
+    console.log('hi');
+     let myModal = document.getElementById('saveToPlaylistModal');
+     let myInput = document.getElementById('new_playlist_input');
+ 
+     myInput.value = "";
+ 
+     myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+     })
+}
+
+// function onCloseModal () {
+//     console.log('hi')
+//     let signUpModal = document.getElementById('signUpModal');
+//     let signUp_input = document.getElementById('signUp_input');
+//     let logInModal = document.getElementById('logInModal');
+//     let logIn_input = document.getElementById('logIn_input');
+//     if (signUpModal) {
+//         let msgBox = document.getElementById('signUpMsg');
+//         msgBox.innerHTML = 'Type username to sign up:';
+//         signUp_input.value = '';
+//     } else if (logInModal) {
+//         let msgBox = document.getElementById('logInMsg');
+//         msgBox.innerHTML = 'Type username to log in:';
+//         logIn_input.value = '';
+//     }
+// }
 
 function onSignUpSubmitButton() {
     /**
@@ -613,7 +658,7 @@ function updateButtons(){
 }
 
 // TODO: add msgbox "are you sure you want to log out?"
-function onLogOutButton(){
+function onLogOutButton() {
     logged_in = false;
     logged_in_user = "";
     updateButtons();

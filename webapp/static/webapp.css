@@ -13,6 +13,10 @@ body {
     font-size: smaller; */
 }
 
+a {
+    text-decoration: none;
+}
+
 #header_box {
     /* height: 4rem; */
 }
@@ -52,6 +56,16 @@ body {
     height: 2.83rem;
     float: left;
     margin-top: 1.17rem; */
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#search_input_label {
+    width: 32% !important;
+}
+
+#search_input {
+    margin-left: 10px;
 }
 
 #view_buttons_box {
@@ -121,6 +135,10 @@ ul#now_trending_videos_list {
     display: flex;
     align-items: baseline;
     justify-content: center;
+}
+
+.playlistModalMsg {
+    margin-right: 10px;
 }
 
 #alert_box {
