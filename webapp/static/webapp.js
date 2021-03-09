@@ -98,7 +98,7 @@ function renderHorizontalVideosList(page_count) {
     for (let i = page_count; i < page_count + 10; i++) {
         if (videos_list[i]) {
             let video = videos_list[i];
-            let listBody = `<div class="now_trending_videos_list_item col card">
+            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.link}">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
                     <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
@@ -513,11 +513,17 @@ function onLogInButton() {
     })
 }
 
+function checkId(elem)
+{
+    return elem.parentNode.id;
+}
+
 function onSaveToPlaylistButton() {
     /**
      * render a "save to playlist" modal when the button is clicked.
      */
     console.log('hi');
+    let video_id = checkId(this);
     let myModal = document.getElementById('saveToPlaylistModal');
     let myInput = document.getElementById('new_playlist_input');
 
