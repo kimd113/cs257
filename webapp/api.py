@@ -186,15 +186,15 @@ def get_user_info():
     playlist_query = '''SELECT DISTINCT playlists.title, playlists_id
                FROM users, playlists, users_playlists
                WHERE users.username = '{}'
-               AND users_playlists.user_id = users.id
-               AND users_playlists_playlists_id = playlists_id;'''.format(user_name)
+               AND users_playlists.users_id = users.id
+               AND users_playlists.playlists_id = playlists_id;'''.format(user_name)
 
     try:
         cursor = connection.cursor()
         cursor.execute(playlist_query)
 
         # returns null if the user has no playlists yet
-        if not cursor.rowcount: json.dumps(None)
+        if not cursor.rowcount: return json.dumps(None)
 
         # populating some of user_info
         else:
@@ -240,7 +240,7 @@ def get_user_info():
             exit()
 
     connection.close()
-    json.dumps(user_info.playlists_videos)
+    return json.dumps(user_info.playlists_videos)
 
 @api.route('/create-playlist') 
 def create_playlist():
