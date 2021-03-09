@@ -683,16 +683,6 @@ function onLogOutButton() {
     updateButtons();
 }
 
-// function onCreatePlaySubmitButton(){
-//     let myModal = document.getElementById('create-playlist-submit');
-//     let  = document.getElementById('playlist_input');
-
-//     myInput.value = "";
-
-//     myModal.addEventListener('shown.bs.modal', function () {
-//         myInput.focus();
-//     })
-// }
 
 function createPlaylist(){
     let playlist_title = document.getElementById("playlist_input").value; 
