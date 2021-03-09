@@ -16,7 +16,7 @@ let isHorizontalView = true;
 
 let logged_in = false;
 let logged_in_user = "";
-let user_info = [];
+let user_playlists = {};
 
 function initialize() {
     console.log(videos_list);

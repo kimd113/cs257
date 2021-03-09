@@ -194,7 +194,7 @@ def get_user_info():
         cursor.execute(playlist_query)
 
         # returns null if the user has no playlists yet
-        if not cursor.rowcount: json.dumps(None)
+        if not cursor.rowcount: json.dumps(user_info.playlists_videos)
 
         # populating some of user_info
         else:
