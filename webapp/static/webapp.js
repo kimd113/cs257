@@ -517,8 +517,10 @@ function onLogInButton() {
     })
 }
 
-function checkId(elem)
-{
+function checkId(elem) {
+    /**
+     * returns id of the parentNode of current element.
+     */
     return elem.parentNode.id;
 }
 
@@ -617,6 +619,7 @@ function onLogInSubmitButton() {
         if (msgbox){
             if (msg){
                 msgbox.innerHTML = sucess_code;
+
                 logged_in = true;
                 logged_in_user = user_name;
                 updateUserInfo();
