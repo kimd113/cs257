@@ -16,10 +16,12 @@ let isHorizontalView = true;
 
 let logged_in = false;
 let logged_in_user = "";
-let user_playlists = {};
+let user_info = [];
 
 function initialize() {
     console.log(videos_list);
+    console.log("when initialize :", logged_in_user);
+
     getVideosListInMainPage();
 
     loadYearList();
@@ -146,6 +148,9 @@ function renderVerticalVideosList(page_count) {
                     <td>${video.likes}</td>
                     <td>${video.dislikes}</td>
                     <td>${video.comment_count}</td>
+                    <td class="td_playlist_button">
+                        <button class="save_to_playlist_button btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveToPlaylistModal">Save to my playlist</button>
+                    </td>
                 </tr>`;
         }
     }
@@ -612,9 +617,13 @@ function onLogInSubmitButton() {
         if (msgbox){
             if (msg){
                 msgbox.innerHTML = sucess_code;
+<<<<<<< HEAD
                 logged_in = true;
                 logged_in_user = user_name;
                 updateUserInfo();
+=======
+                logInUser(user_name.value);
+>>>>>>> 04d58b96f7328e8b878d48c8670bdb85e84c2a8c
                 
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
