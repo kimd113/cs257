@@ -152,7 +152,7 @@
                         <div class="col d-flex justify-content-start align-items-start">
                             <p id="saveToPlaylistMsg" class="playlistModalMsg">Choose your playlist</p>
                             <select name="playlist-options" id="playlist-options">
-                                <option value="" selected="selected">playlists</option>
+                                <!-- <option value="" selected="selected">playlists</option> -->
                             </select>
                         </div>
                         <p>or</p>
@@ -160,7 +160,8 @@
                             <p id="createNewPlaylistMsg" class="playlistModalMsg">Create a new playlist</p>
                             <input type="text" id="new_playlist_input" placeholder="new playlist" />
                         </div> -->
-                        <button type="button" class="btn btn-primary" id="create-playlist-btn">Create a new playlist</button>
+                        <button class="button btn btn-outline-success" id="createPlaylist" type="button" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create a new playlist</button>
+                        <!-- <button type="button" class="btn btn-primary" id="create-playlist-btn">Create a new playlist</button> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="close-save-modal" data-bs-dismiss="modal">Close</button>

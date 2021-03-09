@@ -75,6 +75,12 @@ function initialize() {
     if (logOutButton) {
         logOutButton.onclick = onLogOutButton;
     }
+    
+    let createPlaylistSubmitButton = document.getElementById('create-playlist-submit');
+    if (createPlaylistSubmitButton) {
+        createPlaylistSubmitButton.onclick = createPlaylist;
+    }
+
 }
 
 function getAPIBaseURL() {
@@ -516,15 +522,32 @@ function onSaveToPlaylistButton() {
      * render a "save to playlist" modal when the button is clicked.
      */
     console.log('hi');
-    let video_id = checkId(this);
-    let myModal = document.getElementById('saveToPlaylistModal');
-    let myInput = document.getElementById('new_playlist_input');
+    if (!logged_in){
+        console.log("not logged in yet");
+    }
+    else{
+        let video_id = checkId(this);
 
-    myInput.value = "";
+        let playlist_select = document.getElementById("playlist-options");
+        playlist_select.innerHTML = "";
+        if (isEmpty(user_info)){
+            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
+        }
+        else{
+            console.log("nope");
+            for(var playlist_title in user_info) {
+                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+            }
+        }
+        // let myModal = document.getElementById('saveToPlaylistModal');
+        // let myInput = document.getElementById('new_playlist_input');
 
-    myModal.addEventListener('shown.bs.modal', function () {
-       myInput.focus();
-    })
+        // myInput.value = "";
+
+        // myModal.addEventListener('shown.bs.modal', function () {
+        // myInput.focus();
+        // })
+    }
 }
 
 function onSignUpSubmitButton() {
@@ -575,9 +598,9 @@ function onLogInSubmitButton() {
     /**
      * When user clicks the log in button, checks if the user exists in the database*
      */
-    let user_name = document.getElementById("logIn_input"); 
+    let user_name = document.getElementById("logIn_input").value; 
     // let user_name = document.getElementById("signup-password"); 
-    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name.value}`;
+    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name}`;
 
     let msgbox = document.getElementById("logInMsg");
     let sucess_code = "Logged in successfully"
@@ -589,13 +612,15 @@ function onLogInSubmitButton() {
         if (msgbox){
             if (msg){
                 msgbox.innerHTML = sucess_code;
-                logInUser(user_name);
+                logged_in = true;
+                logged_in_user = user_name;
+                updateUserInfo();
                 
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
                 position-absolute overflow-visible start-50 translate-middle" role="alert">
-                <strong>Welcome back, ${user_name.value}!</strong>
+                <strong>Welcome back, ${user_name}!</strong>
                 <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </p>`;
                 alert_box.innerHTML = success_alert;
@@ -604,6 +629,8 @@ function onLogInSubmitButton() {
                         document.getElementById('alert-close').click();
                     }
                 }, 2000);
+
+                updateButtons();
             }
             else{
                 msgbox.innerHTML = error_code;
@@ -615,24 +642,18 @@ function onLogInSubmitButton() {
     });
 }
 
-function logInUser(user_name) {
-    /**
-     * If the user exists, log them in and get their information from the database*
-     */
-    let url =  `${getAPIBaseURL()}/user?user_name=${user_name}`;
+function updateUserInfo(){
+    let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((info) => {
+        console.log(info)
         user_info = info;
     })
     .catch(function(error) {
         console.log(error);
     });
-
-    logged_in = true;
-    logged_in_user = user_name;
-    updateButtons();
 }
 
 function updateButtons(){
@@ -657,8 +678,32 @@ function onLogOutButton() {
     updateButtons();
 }
 
-function creteaPlaylist(){
-    let user_name = document.getElementById("playlist_input"); 
-    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name.value}`;
+// function onCreatePlaySubmitButton(){
+//     let myModal = document.getElementById('create-playlist-submit');
+//     let  = document.getElementById('playlist_input');
 
+//     myInput.value = "";
+
+//     myModal.addEventListener('shown.bs.modal', function () {
+//         myInput.focus();
+//     })
+// }
+
+function createPlaylist(){
+    let playlist_title = document.getElementById("playlist_input").value; 
+    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        updateUserInfo();
+        console.log(user_info)
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
 }
+
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+  }
