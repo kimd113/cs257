@@ -137,6 +137,10 @@ ul#now_trending_videos_list {
     justify-content: center;
 }
 
+.td_playlist_button {
+    text-align: center !important;
+}
+
 .playlistModalMsg {
     margin-right: 10px;
 }
