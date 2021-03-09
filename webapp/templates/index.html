@@ -151,14 +151,37 @@
                                 <option value="" selected="selected">playlists</option>
                             </select>
                         </div>
-                        <div class="col d-flex justify-content-start align-items-start">
+                        <p>or</p>
+                        <!-- <div class="col d-flex justify-content-start align-items-start">
                             <p id="createNewPlaylistMsg" class="playlistModalMsg">Create a new playlist</p>
                             <input type="text" id="new_playlist_input" placeholder="new playlist" />
-                        </div>
+                        </div> -->
+                        <button type="button" class="btn btn-primary" id="create-playlist-btn">Create a new playlist</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="close-login-modal" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="log-in-submit">Save</button>
+                        <button type="button" class="btn btn-secondary" id="close-save-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="save-to-submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create-playlist modal -->
+        <div class="modal" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createPlaylistLabel">Create a new playlist</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row flex-column">
+                        <div class="col d-flex justify-content-start align-items-start">
+                            <p id="createPlaylistMsg" class="playlistModalMsg">Name your playlist</p>
+                            <input type="text" id="playlist_input" placeholder="playlist" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="close-create-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="create-playlist-submit">Save</button>
                     </div>
                 </div>
             </div>

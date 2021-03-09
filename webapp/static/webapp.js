@@ -16,6 +16,7 @@ let isHorizontalView = true;
 
 let logged_in = false;
 let logged_in_user = "";
+let user_info = [];
 
 function initialize() {
     console.log(videos_list);
@@ -626,7 +627,6 @@ function onLogInSubmitButton() {
     let sucess_code = "Logged in successfully"
     let error_code = "User name does not exists, please sign up first"
 
-
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
@@ -661,8 +661,19 @@ function onLogInSubmitButton() {
 
 function logInUser(user_name) {
     /**
-     * If the user exists, log them in and make some changes*
+     * If the user exists, log them in and get their information from the database*
      */
+    let url =  `${getAPIBaseURL()}/user?user_name=${user_name}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((info) => {
+        user_info = info;
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
     logged_in = true;
     logged_in_user = user_name;
     updateButtons();
@@ -688,4 +699,10 @@ function onLogOutButton() {
     logged_in = false;
     logged_in_user = "";
     updateButtons();
+}
+
+function creteaPlaylist(){
+    let user_name = document.getElementById("playlist_input"); 
+    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name.value}`;
+
 }
