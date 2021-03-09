@@ -698,6 +698,9 @@ function onLogOutButton() {
 // }
 
 function createPlaylist(){
+    // 1. Prevent adding duplicates, empty inputs
+    // 2. Apply new playlist options into dropdown immediately.
+
     let playlist_title = document.getElementById("playlist_input").value; 
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
