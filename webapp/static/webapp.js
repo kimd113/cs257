@@ -502,7 +502,6 @@ function onSignUpButton() {
     })
 }
 
-// TODO: fix bug
 function onLogInButton() {
     let msgBox = document.getElementById('logInMsg');
     msgBox.innerHTML = 'Type username to log in:';
@@ -686,17 +685,6 @@ function onLogOutButton() {
     updateButtons();
 }
 
-// function onCreatePlaySubmitButton(){
-//     let myModal = document.getElementById('create-playlist-submit');
-//     let  = document.getElementById('playlist_input');
-
-//     myInput.value = "";
-
-//     myModal.addEventListener('shown.bs.modal', function () {
-//         myInput.focus();
-//     })
-// }
-
 function createPlaylist(){
     // 1. Prevent adding duplicates, empty inputs
     // 2. Apply new playlist options into dropdown immediately.
@@ -713,6 +701,7 @@ function createPlaylist(){
     .catch(function(error) {
         console.log(error);
     });
+    document.getElementById('close-create-modal').click();
 }
 
 function isEmpty(obj) {
