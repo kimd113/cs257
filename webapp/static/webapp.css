@@ -116,8 +116,8 @@ ul#now_trending_videos_list {
     /* margin-left: 1.5rem;
     margin-right: 1.5rem;
     height: 17rem; */
-
-    /* margin: 10rem 1.5rem 0rem 1.5rem; */
+    margin: 10rem 0.5rem 1rem 0.5rem;
+    max-width: fit-content !important;
 }
 
 .video_img {
