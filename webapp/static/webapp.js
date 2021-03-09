@@ -497,7 +497,8 @@ function onSignUpButton() {
     msgBox.innerHTML = "Type username to sign up:";
 
     let closeButton = document.getElementById('close-signup-modal');
-    closeButton.onclick = onCloseModal;
+    closeButton.onclick = resetInputInModal;
+    // closeButton.onclick = onCloseModal;
 }
 
 // TODO: fix bug
@@ -517,14 +518,33 @@ function onSaveToPlaylistButton() {
      * render a "save to playlist" modal when the button is clicked.
      */
     console.log('hi');
-     let myModal = document.getElementById('saveToPlaylistModal');
-     let myInput = document.getElementById('new_playlist_input');
- 
-     myInput.value = "";
- 
-     myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus();
-     })
+    let myModal = document.getElementById('saveToPlaylistModal');
+    let myInput = document.getElementById('new_playlist_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+       myInput.focus();
+    })
+}
+
+function resetInputInModal() {
+    /**
+     * Resets all the inputs in modal page when data-dismiss button clicked.
+     * Source from: https://stackoverflow.com/questions/21151044/how-to-clear-all-input-fields-in-bootstrap-modal-when-clicking-data-dismiss-butt/35079811#:~:text=end()%20.-,find(%22input%5Btype%3Dcheckbox%5D%2C%20input%5B,fields%2C%20except%20the%20hidden%20ones.
+     */
+    $('[data-dismiss=modal]').on('click', function(e) {
+        var $t = $(this),
+            target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
+        
+        $(target)
+        .find("input,textarea,select")
+           .val('')
+           .end()
+        .find("input[type=checkbox], input[type=radio]")
+           .prop("checked", "")
+           .end();
+    })
 }
 
 // function onCloseModal () {
