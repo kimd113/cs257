@@ -502,7 +502,6 @@ function onSignUpButton() {
     })
 }
 
-// TODO: fix bug
 function onLogInButton() {
     let msgBox = document.getElementById('logInMsg');
     msgBox.innerHTML = 'Type username to log in:';
@@ -686,7 +685,6 @@ function onLogOutButton() {
     updateButtons();
 }
 
-
 function createPlaylist(){
     let playlist_title = document.getElementById("playlist_input").value; 
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
@@ -700,6 +698,7 @@ function createPlaylist(){
     .catch(function(error) {
         console.log(error);
     });
+    document.getElementById('close-create-modal').click();
 }
 
 function isEmpty(obj) {

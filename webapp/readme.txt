@@ -2,6 +2,13 @@ AUTHORS: Daniel Kim, Harry Tian
 
 DATA: Trending YouTube Video Statistics (https://www.kaggle.com/datasnaek/youtube-new?select=USvideos.csv)
 
+FEATURES TO BE IMPLEMENTED:
+- sharing data from index.html to mypage.html
+- My page: a page that shows the lists of the videos saved.
+- Save to my playlist: button that saves a selected video to user's playlist.
+- better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
+- A more elegant sign up/log in feature using flask-login
+
 FEATURES CURRENTLY WORKING:
 - The / endpoint takes a browser to the main page
 - At the / endpoint, it renders the list of the most currently trending videos.
@@ -13,9 +20,4 @@ FEATURES CURRENTLY WORKING:
 - My Page button redirects to my page
 - Vertical view: Shows the list of trending videos vertically.
 - My page: Shows a basic layout of the page.
-
-FEATURES NOT YET WORKING:
-- better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
-- A more elegant sign up/log in feature using flask-login
-- Save to my playlist: button that saves a selected video to user's playlist.
-- My page: a page that shows the lists of the videos saved.
+- create playlist feature
