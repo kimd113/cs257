@@ -164,7 +164,6 @@ class UserInfo():
         self.playlists_id = {}
         self.playlists_videos = {}
 
-########### TODO endpoints ###########
 @api.route('/user') 
 def get_user_info():
     ''' 
@@ -175,7 +174,7 @@ def get_user_info():
         Returns a JSON dictionary where the keys are the titles of the playlist 
         and the values are arrays of dictionaries where each dictionary represents a video.
 
-        The structure is: list of playlists -> playlist -> list of videos 
+        The structure is: dictionary of playlists -> playlist -> list of videos 
     '''
     connection = get_connection()
 
@@ -242,12 +241,58 @@ def get_user_info():
     connection.close()
     return json.dumps(user_info.playlists_videos)
 
+########### TODO endpoints ##########
 @api.route('/create-playlist') 
 def create_playlist():
     ''' 
-        Create a new playlist
-        Returns a success code if the video is not in the playlist and saved successfully, else an error code
+        Create a new playlist through the GET parameters
+
+            http://.../?user_name=name&playlist_title=title
+
+        returns None for now...
+        # Returns a success code if the playlist name is not taken and saved successfully, else an error code
     '''
+    connection = get_connection()
+    user_name = flask.request.args.get('user_name')
+    playlist_title = flask.request.args.get('playlist_title')
+
+    # query1: add a new playlist to the playlists table
+    query1 = '''INSERT INTO playlists
+               (title)
+                VALUES('{}');'''.format(playlist_title)
+
+    # query2: get users_id and playlists_id from database
+    query2 = '''SELECT users.id, playlists.id
+                FROM users, playlists
+                WHERE users.username = '{}'
+                AND playlists.title = '{}'; '''.format(user_name, playlist_title)
+
+    try:
+        cursor1 = connection.cursor()
+        cursor1.execute(query1)
+        cursor1.close()
+
+        cursor2 = connection.cursor()
+        cursor2.execute(query2)
+        for row in cursor2:
+            user_id, playlist_id = int(row[0]), int(row[1])
+        cursor2.close()
+
+        # query3: add a new line to users_playlists using users_id and playlists_id
+        query3 = '''INSERT INTO users_playlists
+                    (users_id, playlists_id)
+                    VALUES({},{});'''.format(user_id, playlist_id)
+
+        cursor3 = connection.cursor()
+        cursor3.execute(query3)
+        cursor3.close()
+
+    except Exception as e:
+        print(e, file=sys.stderr)
+        exit()
+
+    connection.commit() # very important line
+    connection.close()
 
     return json.dumps(None)
     
