@@ -41,22 +41,15 @@ function initialize() {
         searchButton.onclick = onSearchButton;
     }
 
-    let signUpButton = document.getElementById('signup');
+    let signUpButton = document.getElementById('signUp');
     if (signUpButton) {
         signUpButton.onclick = onSignUpButton;
     }
 
     let logInButton = document.getElementById('logIn');
     if (logInButton) {
-        logInButton.onclick = onSignUpButton;
+        logInButton.onclick = onLogInButton;
     }
-
-    // let closeButtons = document.querySelectorAll('btn-close');
-    // if (closeButtons) {
-    //     closeButtons.forEach(function(element) {
-    //         element.onclick = onCloseModal;
-    //     });
-    // }
 
     let verticalButton = document.getElementById('vertical');
     if (verticalButton) {
@@ -485,6 +478,9 @@ function onHorizontalViewButton() {
 }
 
 function onSignUpButton() {
+    let msgBox = document.getElementById('signUpMsg');
+    msgBox.innerHTML = "Type username to sign up:";
+
     let myModal = document.getElementById('signUpModal');
     let myInput = document.getElementById('signUp_input');
 
@@ -493,17 +489,13 @@ function onSignUpButton() {
     myModal.addEventListener('shown.bs.modal', function () {
         myInput.focus();
     })
-
-    let msgBox = document.getElementById('signUpMsg');
-    msgBox.innerHTML = "Type username to sign up:";
-
-    let closeButton = document.getElementById('close-signup-modal');
-    closeButton.onclick = resetInputInModal;
-    // closeButton.onclick = onCloseModal;
 }
 
 // TODO: fix bug
 function onLogInButton() {
+    let msgBox = document.getElementById('logInMsg');
+    msgBox.innerHTML = 'Type username to log in:';
+
     let myModal = document.getElementById('logInModal');
     let myInput = document.getElementById('logIn_input');
 
@@ -534,42 +526,6 @@ function onSaveToPlaylistButton() {
        myInput.focus();
     })
 }
-
-function resetInputInModal() {
-    /**
-     * Resets all the inputs in modal page when data-dismiss button clicked.
-     * Source from: https://stackoverflow.com/questions/21151044/how-to-clear-all-input-fields-in-bootstrap-modal-when-clicking-data-dismiss-butt/35079811#:~:text=end()%20.-,find(%22input%5Btype%3Dcheckbox%5D%2C%20input%5B,fields%2C%20except%20the%20hidden%20ones.
-     */
-    $('[data-dismiss=modal]').on('click', function(e) {
-        var $t = $(this),
-            target = $t[0].href || $t.data("target") || $t.parents('.modal') || [];
-        
-        $(target)
-        .find("input,textarea,select")
-           .val('')
-           .end()
-        .find("input[type=checkbox], input[type=radio]")
-           .prop("checked", "")
-           .end();
-    })
-}
-
-// function onCloseModal () {
-//     console.log('hi')
-//     let signUpModal = document.getElementById('signUpModal');
-//     let signUp_input = document.getElementById('signUp_input');
-//     let logInModal = document.getElementById('logInModal');
-//     let logIn_input = document.getElementById('logIn_input');
-//     if (signUpModal) {
-//         let msgBox = document.getElementById('signUpMsg');
-//         msgBox.innerHTML = 'Type username to sign up:';
-//         signUp_input.value = '';
-//     } else if (logInModal) {
-//         let msgBox = document.getElementById('logInMsg');
-//         msgBox.innerHTML = 'Type username to log in:';
-//         logIn_input.value = '';
-//     }
-// }
 
 function onSignUpSubmitButton() {
     /**
