@@ -511,8 +511,10 @@ function onLogInButton() {
     })
 }
 
-function checkId(elem)
-{
+function checkId(elem) {
+    /**
+     * returns id of the parentNode of current element.
+     */
     return elem.parentNode.id;
 }
 
@@ -595,7 +597,7 @@ function onLogInSubmitButton() {
             if (msg){
                 msgbox.innerHTML = sucess_code;
                 logInUser(user_name.value);
-                
+
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
