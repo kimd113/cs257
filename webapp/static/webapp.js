@@ -617,13 +617,9 @@ function onLogInSubmitButton() {
         if (msgbox){
             if (msg){
                 msgbox.innerHTML = sucess_code;
-<<<<<<< HEAD
                 logged_in = true;
                 logged_in_user = user_name;
                 updateUserInfo();
-=======
-                logInUser(user_name.value);
->>>>>>> 04d58b96f7328e8b878d48c8670bdb85e84c2a8c
                 
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
