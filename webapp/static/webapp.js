@@ -1,26 +1,22 @@
-/*
- * webapp.js
- * Daniel Kim, Harry Tian
- * 25 February 2021
- *
- * A little bit of Javascript for the tiny web app sample for CS257.
- */
+//Daniel Kim, Harry Tian
 
 window.onload = initialize;
 console.log("loading");
 
+// global variables
 let videos_list = [];
 let videos_list_total_number = 0;
 let videos_list_current_page = 0;
 let isHorizontalView = true;
 
+// user information
 let logged_in = false;
 let logged_in_user = "";
 let user_info = [];
 
 function initialize() {
-    console.log(videos_list);
-    console.log("when initialize :", logged_in_user);
+    // console.log(videos_list);
+    // console.log("when initialize :", logged_in_user);
 
     getVideosListInMainPage();
 
@@ -85,11 +81,7 @@ function initialize() {
 
 }
 
-function getAPIBaseURL() {
-    var baseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
-    return baseURL;
-}
-
+/////////////////////////// VIDEO LIST FUNCTIONS ///////////////////////////
 function renderHorizontalVideosList(page_count) {
     /**
      * return: an array of strings of tags, which renders the list of videos in horizontal view.
@@ -196,125 +188,6 @@ function getVideosListInMainPage() {
             })
         }
 
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-}
-
-//////////// search bar functions ////////////
-function loadYearList() {
-    var yearList = document.getElementById('year-list');
-    if (yearList) {
-        var defaultText = '<option value="" selected="selected">year</option>\n';
-        var listBody = defaultText + '<option value="2017">2017</option>\n<option value="2018">2018</option>\n';
-        yearList.innerHTML = listBody;
-        
-        yearList.onchange = function() {
-            console.log(this.value);
-            loadMonthList(this.value);
-        }
-    }
-}
-
-function loadMonthList(yearSelection) {
-    var monthList = document.getElementById('month-list');
-    if (monthList) {
-        var defaultText = '<option value="" selected="selected">month</option>\n';
-        var listBody = defaultText;
-        if (yearSelection == '2017') {
-            listBody += '<option value="11">11</option>\n<option value="12">12</option>\n';
-        } else if (yearSelection == '2018') {
-            listBody += '<option value="01">01</option>\n<option value="02">02</option>\n<option value="03">03</option>\n<option value="04">04</option>\n<option value="05">05</option>\n<option value="06">06</option>\n';
-        }
-        monthList.innerHTML = listBody;
-
-        monthList.onchange = function() {
-            console.log(this.value);
-            loadDayList(this.value);
-        }
-    }
-}
-
-function loadDayList(monthSelection) {
-    var dayList = document.getElementById('day-list');
-    if (dayList) {
-        var defaultText = '<option value="" selected="selected">day</option>\n';
-        var listBody = defaultText;
-        if (monthSelection == "11"){
-            for (var k=14; k <= 30; k++) {
-                listBody += '<option value="' + k + '">' + k + '</option>\n';
-            }
-        }
-        else{
-            for (var k=1; k < 10; k++) {
-                listBody += '<option value="0' + k + '">0' + k + '</option>\n';
-            }
-            for (var k=10; k < 15; k++) {
-                listBody += '<option value="' + k + '">' + k + '</option>\n';
-            }
-            if (monthSelection == '01' || monthSelection == '03' || monthSelection == '05' || monthSelection == '12'){
-                for (var k=15; k <= 31; k++) {
-                    listBody += '<option value="' + k + '">' + k + '</option>\n';
-                }
-            }
-            else if (monthSelection == '04'){
-                for (var k=15; k <= 30; k++) {
-                    listBody += '<option value="' + k + '">' + k + '</option>\n';
-                }
-            }
-        }
-
-        dayList.innerHTML = listBody;
-        dayList.onchange = function() {
-            console.log(this.value);
-        }
-    }
-}
-
-function onSearchButton() {
-    /**
-     * When user enters the main page, send request to the server and get the list of trending videos.
-     */
-
-    let input_date = document.getElementById("search_input");
-    let search_year = input_date.elements[0].value;
-    if (search_year == "2017"){
-        search_year = "17";
-    }
-    else{
-        search_year = "18";
-    }
-    let search_month = input_date.elements[1].value;
-    let search_day = input_date.elements[2].value;
-
-    let search_date = search_year + '.' +  search_day + '.' + search_month;
-    let url =  `${getAPIBaseURL()}?trending_date=${search_date}`;
-    console.log(url);
-
-    fetch(url, {method: 'get'})
-    .then((response) => response.json())
-    .then((videos) => {
-        videos_list_current_page = 0;
-        videos_list = videos;
-
-        let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
-        let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
-        let verticalTableBodyElement = document.getElementById("vertical-table-body");
-        if (isHorizontalView) {
-            let listBodies = renderHorizontalVideosList(videos_list_current_page);
-            if (videosListElementFirstRow) {
-                videosListElementFirstRow.innerHTML = listBodies[0];
-            }
-            if (videosListElementSecondRow) {
-                videosListElementSecondRow.innerHTML = listBodies[1];
-            }
-        } else {
-            videosListElementFirstRow.innerHTML = '';
-            videosListElementSecondRow.innerHTML = '';
-            let listBody = renderVerticalVideosList(videos_list_current_page);
-            verticalTableBodyElement.innerHTML = listBody;
-        }
     })
     .catch(function(error) {
         console.log(error);
@@ -488,6 +361,127 @@ function onHorizontalViewButton() {
     isHorizontalView = true;
 }
 
+/////////////////////////// SEARCH BAR FUNCTIONS ///////////////////////////
+function loadYearList() {
+    var yearList = document.getElementById('year-list');
+    if (yearList) {
+        var defaultText = '<option value="" selected="selected">year</option>\n';
+        var listBody = defaultText + '<option value="2017">2017</option>\n<option value="2018">2018</option>\n';
+        yearList.innerHTML = listBody;
+        
+        yearList.onchange = function() {
+            console.log(this.value);
+            loadMonthList(this.value);
+        }
+    }
+}
+
+function loadMonthList(yearSelection) {
+    var monthList = document.getElementById('month-list');
+    if (monthList) {
+        var defaultText = '<option value="" selected="selected">month</option>\n';
+        var listBody = defaultText;
+        if (yearSelection == '2017') {
+            listBody += '<option value="11">11</option>\n<option value="12">12</option>\n';
+        } else if (yearSelection == '2018') {
+            listBody += '<option value="01">01</option>\n<option value="02">02</option>\n<option value="03">03</option>\n<option value="04">04</option>\n<option value="05">05</option>\n<option value="06">06</option>\n';
+        }
+        monthList.innerHTML = listBody;
+
+        monthList.onchange = function() {
+            console.log(this.value);
+            loadDayList(this.value);
+        }
+    }
+}
+
+function loadDayList(monthSelection) {
+    var dayList = document.getElementById('day-list');
+    if (dayList) {
+        var defaultText = '<option value="" selected="selected">day</option>\n';
+        var listBody = defaultText;
+        if (monthSelection == "11"){
+            for (var k=14; k <= 30; k++) {
+                listBody += '<option value="' + k + '">' + k + '</option>\n';
+            }
+        }
+        else{
+            for (var k=1; k < 10; k++) {
+                listBody += '<option value="0' + k + '">0' + k + '</option>\n';
+            }
+            for (var k=10; k < 15; k++) {
+                listBody += '<option value="' + k + '">' + k + '</option>\n';
+            }
+            if (monthSelection == '01' || monthSelection == '03' || monthSelection == '05' || monthSelection == '12'){
+                for (var k=15; k <= 31; k++) {
+                    listBody += '<option value="' + k + '">' + k + '</option>\n';
+                }
+            }
+            else if (monthSelection == '04'){
+                for (var k=15; k <= 30; k++) {
+                    listBody += '<option value="' + k + '">' + k + '</option>\n';
+                }
+            }
+        }
+
+        dayList.innerHTML = listBody;
+        dayList.onchange = function() {
+            console.log(this.value);
+        }
+    }
+}
+
+function onSearchButton() {
+    /**
+     * When user enters the main page, send request to the server and get the list of trending videos.
+     */
+
+    let input_date = document.getElementById("search_input");
+    let search_year = input_date.elements[0].value;
+    if (search_year == "2017"){
+        search_year = "17";
+    }
+    else{
+        search_year = "18";
+    }
+    let search_month = input_date.elements[1].value;
+    let search_day = input_date.elements[2].value;
+
+    let search_date = search_year + '.' +  search_day + '.' + search_month;
+    let url =  `${getAPIBaseURL()}?trending_date=${search_date}`;
+    console.log(url);
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((videos) => {
+        videos_list_current_page = 0;
+        videos_list = videos;
+
+        let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
+        let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
+        let verticalTableBodyElement = document.getElementById("vertical-table-body");
+        if (isHorizontalView) {
+            let listBodies = renderHorizontalVideosList(videos_list_current_page);
+            if (videosListElementFirstRow) {
+                videosListElementFirstRow.innerHTML = listBodies[0];
+            }
+            if (videosListElementSecondRow) {
+                videosListElementSecondRow.innerHTML = listBodies[1];
+            }
+        } else {
+            videosListElementFirstRow.innerHTML = '';
+            videosListElementSecondRow.innerHTML = '';
+            let listBody = renderVerticalVideosList(videos_list_current_page);
+            verticalTableBodyElement.innerHTML = listBody;
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
+
+/////////////////////////// LOG IN FUNCTIONS ///////////////////////////
+
 function onSignUpButton() {
     let msgBox = document.getElementById('signUpMsg');
     msgBox.innerHTML = "Type username to sign up:";
@@ -516,45 +510,11 @@ function onLogInButton() {
     })
 }
 
-function checkId(elem) {
-    /**
-     * returns id of the parentNode of current element.
-     */
-    return elem.parentNode.id;
-}
-
-function onSaveToPlaylistButton() {
-    /**
-     * render a "save to playlist" modal when the button is clicked.
-     */
-    console.log('hi');
-    if (!logged_in){
-        // TODO
-        console.log("not logged in yet");
-    }
-    else{
-        let video_id = checkId(this);
-
-        let playlist_select = document.getElementById("playlist-options");
-        playlist_select.innerHTML = "";
-        if (isEmpty(user_info)){
-            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
-        }
-        else{
-            console.log("nope");
-            for(var playlist_title in user_info) {
-                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
-            }
-        }
-    }
-    let myModal = document.getElementById('saveToPlaylistModal');
-    let myInput = document.getElementById('playlist_input');
-
-    myInput.value = "";
-
-    myModal.addEventListener('shown.bs.modal', function () {
-    myInput.focus();
-    })
+// TODO: add msgbox "are you sure you want to log out?"
+function onLogOutButton() {
+    logged_in = false;
+    logged_in_user = "";
+    updateButtons();
 }
 
 function onSignUpSubmitButton() {
@@ -644,6 +604,84 @@ function onLogInSubmitButton() {
     });
 }
 
+/////////////////////////// PLAYLIST FUNCTIONS ///////////////////////////
+
+function onSaveToPlaylistButton() {
+    /**
+     * render a "save to playlist" modal when the button is clicked.
+     */
+    if (!logged_in){
+        // TODO
+        console.log("not logged in yet");
+    }
+    else{
+        let video_id = checkId(this);
+
+        let playlist_select = document.getElementById("playlist-options");
+        playlist_select.innerHTML = "";
+        if (isEmpty(user_info)){
+            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
+        }
+        else{
+            for(var playlist_title in user_info) {
+                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+            }
+        }
+    }
+    let myModal = document.getElementById('saveToPlaylistModal');
+    let myInput = document.getElementById('playlist_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+    })
+}
+
+function onCreatePlaylistButton(){
+    let playlist_title = document.getElementById("playlist_input").value; 
+    let alert_msg = document.getElementById("createPlaylistAlert");
+
+    // check for empty inputs
+    if (playlist_title == ""){
+        alert_msg.innerHTML = "Playlist name cannot be empty!";
+        return;
+    }
+
+    // check for duplicate naming
+    for(var p in user_info) {
+        if (p == playlist_title){
+            alert_msg.innerHTML = "Playlist already exists!";
+            return;
+        }
+    }
+    
+    createPlaylist(playlist_title)
+}
+
+function createPlaylist(playlist_title){
+    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        updateUserInfo();
+        console.log(user_info)
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    document.getElementById('close-create-modal').click();
+
+    // Apply new playlist options into dropdown immediately.
+    let playlist_select = document.getElementById("playlist-options");
+    playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+}
+
+///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
+
 function updateUserInfo(){
     let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
 
@@ -673,55 +711,20 @@ function updateButtons(){
     }
 }
 
-// TODO: add msgbox "are you sure you want to log out?"
-function onLogOutButton() {
-    logged_in = false;
-    logged_in_user = "";
-    updateButtons();
-}
+///////////////////////////  UTILITY FUNCTIONS ///////////////////////////
 
-function onCreatePlaylistButton(){
-    let playlist_title = document.getElementById("playlist_input").value; 
-    let alert_msg = document.getElementById("createPlaylistAlert");
-
-    // check for empty inputs
-    if (playlist_title == ""){
-        alert_msg.innerHTML = "Playlist name cannot be empty!";
-        return;
-    }
-
-    // check for duplicate naming
-    for(var p in user_info) {
-        if (p == playlist_title){
-            alert_msg.innerHTML = "Playlist already exists!";
-            return;
-        }
-    }
-    
-    createPlaylist(playlist_title)
-}
-
-
-function createPlaylist(playlist_title){
-    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
-
-    fetch(url, {method: 'get'})
-    .then((response) => response.json())
-    .then((msg) => {
-        updateUserInfo();
-        console.log(user_info)
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-    // TODO: maybe a success message that disappears after a fews seconds?
-    document.getElementById('close-create-modal').click();
-
-    // Apply new playlist options into dropdown immediately.
-    let playlist_select = document.getElementById("playlist-options");
-    playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+function getAPIBaseURL() {
+    var baseURL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
+    return baseURL;
 }
 
 function isEmpty(obj) {
     return Object.keys(obj).length === 0;
-  }
+}
+
+function checkId(elem) {
+    /**
+     * returns id of the parentNode of current element.
+     */
+    return elem.parentNode.id;
+}
