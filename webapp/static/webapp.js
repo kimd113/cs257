@@ -3,7 +3,7 @@
 window.onload = initialize;
 console.log("loading");
 
-// global variables
+/////////////////////////// GLOABL VARIABLES ///////////////////////////
 let videos_list = [];
 let videos_list_total_number = 0;
 let videos_list_current_page = 0;
