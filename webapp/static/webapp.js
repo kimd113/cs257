@@ -80,7 +80,7 @@ function initialize() {
     
     let createPlaylistSubmitButton = document.getElementById('create-playlist-submit');
     if (createPlaylistSubmitButton) {
-        createPlaylistSubmitButton.onclick = createPlaylist;
+        createPlaylistSubmitButton.onclick = onCreatePlaylistButton;
     }
 
 }
@@ -529,6 +529,7 @@ function onSaveToPlaylistButton() {
      */
     console.log('hi');
     if (!logged_in){
+        // TODO
         console.log("not logged in yet");
     }
     else{
@@ -545,15 +546,15 @@ function onSaveToPlaylistButton() {
                 playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
             }
         }
-        // let myModal = document.getElementById('saveToPlaylistModal');
-        // let myInput = document.getElementById('new_playlist_input');
-
-        // myInput.value = "";
-
-        // myModal.addEventListener('shown.bs.modal', function () {
-        // myInput.focus();
-        // })
     }
+    let myModal = document.getElementById('saveToPlaylistModal');
+    let myInput = document.getElementById('playlist_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+    myInput.focus();
+    })
 }
 
 function onSignUpSubmitButton() {
@@ -566,8 +567,6 @@ function onSignUpSubmitButton() {
     let url =  `${getAPIBaseURL()}/sign-up?user_name=${user_name.value}`;
 
     let msgbox = document.getElementById("signUpMsg");
-    // let sucess_code = "Signed up successfully"
-    let error_code = "This name is already taken"
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -575,7 +574,6 @@ function onSignUpSubmitButton() {
         console.log(msg);
         if (msgbox){
             if (msg){
-                // msgbox.innerHTML = sucess_code;
                 document.getElementById('close-signup-modal').click();
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
@@ -591,7 +589,7 @@ function onSignUpSubmitButton() {
                 }, 2000);
             }
             else{
-                msgbox.innerHTML = error_code;
+                msgbox.innerHTML = "This name is already taken";
             }
         }
     })
@@ -609,15 +607,12 @@ function onLogInSubmitButton() {
     let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name}`;
 
     let msgbox = document.getElementById("logInMsg");
-    let sucess_code = "Logged in successfully"
-    let error_code = "User name does not exists, please sign up first"
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
         if (msgbox){
             if (msg){
-                msgbox.innerHTML = sucess_code;
 
                 logged_in = true;
                 logged_in_user = user_name;
@@ -640,7 +635,7 @@ function onLogInSubmitButton() {
                 updateButtons();
             }
             else{
-                msgbox.innerHTML = error_code;
+                msgbox.innerHTML = "User name does not exists, please sign up first";
             }
         }
     })
@@ -685,11 +680,29 @@ function onLogOutButton() {
     updateButtons();
 }
 
-function createPlaylist(){
-    // 1. Prevent adding duplicates, empty inputs
-    // 2. Apply new playlist options into dropdown immediately.
-
+function onCreatePlaylistButton(){
     let playlist_title = document.getElementById("playlist_input").value; 
+    let alert_msg = document.getElementById("createPlaylistAlert");
+
+    // check for empty inputs
+    if (playlist_title == ""){
+        alert_msg.innerHTML = "Playlist name cannot be empty!";
+        return;
+    }
+
+    // check for duplicate naming
+    for(var p in user_info) {
+        if (p == playlist_title){
+            alert_msg.innerHTML = "Playlist already exists!";
+            return;
+        }
+    }
+    
+    createPlaylist(playlist_title)
+}
+
+
+function createPlaylist(playlist_title){
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
     fetch(url, {method: 'get'})
@@ -701,7 +714,12 @@ function createPlaylist(){
     .catch(function(error) {
         console.log(error);
     });
+    // TODO: maybe a success message that disappears after a fews seconds?
     document.getElementById('close-create-modal').click();
+
+    // Apply new playlist options into dropdown immediately.
+    let playlist_select = document.getElementById("playlist-options");
+    playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
 }
 
 function isEmpty(obj) {
