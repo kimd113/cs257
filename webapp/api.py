@@ -370,7 +370,7 @@ def save_to_playlist():
     connection = get_connection()
 
     playlist_id = flask.request.args.get('playlist_id')
-    video_link = flask.request.args.get('video_title')
+    video_link = flask.request.args.get('video_link')
 
     # query1: get videos_id from videos table
     query1 = '''SELECT videos.id
