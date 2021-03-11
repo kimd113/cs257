@@ -147,19 +147,23 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="saveToPlaylistLabel">Save to my playlist</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" id="close-save-modal" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body row flex-column">
                         <div class="col d-flex justify-content-start align-items-start">
                             <p id="saveToPlaylistMsg" class="playlistModalMsg">Choose your playlist</p>
-                            <select name="playlist-options" id="playlist-options"></select>
+                            <form name="playlist-form" id="playlist-form" action="/action_page.php" method='GET'>
+                                <select name="playlist-options" id="playlist-options"></select>
+                                <button type="button" class="btn btn-primary" id="save-to-submit">Save</button>
+                            </form>
                         </div>
+                        <p id="saveToPlaylistAlert" class = "alarming"></p>
                         <p>or</p>
                         <button class="button btn btn-outline-success" id="createPlaylist" type="button" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create a new playlist</button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="close-save-modal" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="save-to-submit">Save</button>
+                        <!-- <button type="button" class="btn btn-secondary" id="close-save-modal" data-bs-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-primary" id="save-to-submit1">Save</button>
                     </div>
                 </div>
             </div>

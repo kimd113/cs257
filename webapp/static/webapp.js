@@ -76,9 +76,13 @@ function initialize() {
     
     let createPlaylistSubmitButton = document.getElementById('create-playlist-submit');
     if (createPlaylistSubmitButton) {
-        createPlaylistSubmitButton.onclick = onCreatePlaylistButton;
+        createPlaylistSubmitButton.onclick = onCreatePlaylistSubmitButton;
     }
 
+    let saveToPlaylistSubmitButton = document.getElementById('save-to-submit');
+    if (saveToPlaylistSubmitButton) {
+        saveToPlaylistSubmitButton.onclick = onSaveToPlaylistSubmitButton;
+    }
 }
 
 /////////////////////////// VIDEO LIST FUNCTIONS ///////////////////////////
@@ -92,7 +96,7 @@ function renderHorizontalVideosList(page_count) {
     for (let i = page_count; i < page_count + 10; i++) {
         if (videos_list[i]) {
             let video = videos_list[i];
-            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.link}">
+            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.title}">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
                     <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
@@ -531,7 +535,7 @@ function onSignUpSubmitButton() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log(msg);
+        console.log("Signed in=" + msg);
         if (msgbox){
             if (msg){
                 document.getElementById('close-signup-modal').click();
@@ -606,39 +610,7 @@ function onLogInSubmitButton() {
 
 /////////////////////////// PLAYLIST FUNCTIONS ///////////////////////////
 
-function onSaveToPlaylistButton() {
-    /**
-     * render a "save to playlist" modal when the button is clicked.
-     */
-    if (!logged_in){
-        // TODO
-        console.log("not logged in yet");
-    }
-    else{
-        let video_id = checkId(this);
-
-        let playlist_select = document.getElementById("playlist-options");
-        playlist_select.innerHTML = "";
-        if (isEmpty(user_info)){
-            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
-        }
-        else{
-            for(var playlist_title in user_info) {
-                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
-            }
-        }
-    }
-    let myModal = document.getElementById('saveToPlaylistModal');
-    let myInput = document.getElementById('playlist_input');
-
-    myInput.value = "";
-
-    myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus();
-    })
-}
-
-function onCreatePlaylistButton(){
+function onCreatePlaylistSubmitButton(){
     let playlist_title = document.getElementById("playlist_input").value; 
     let alert_msg = document.getElementById("createPlaylistAlert");
 
@@ -678,6 +650,68 @@ function createPlaylist(playlist_title){
     // Apply new playlist options into dropdown immediately.
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+}
+
+function onSaveToPlaylistButton() {
+    /**
+     * render a "save to playlist" modal when the button is clicked.
+     */
+    if (!logged_in){
+        // TODO
+        console.log("not logged in yet");
+    }
+    else{
+        let video_id = checkId(this);
+
+        let playlist_select = document.getElementById("playlist-options");
+        playlist_select.innerHTML = "";
+        if (isEmpty(user_info)){
+            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
+        }
+        else{
+            for(var playlist_title in user_info) {
+                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+            }
+        }
+    }
+    let myModal = document.getElementById('saveToPlaylistModal');
+    let myInput = document.getElementById('playlist_input');
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+    })
+}
+
+function onSaveToPlaylistSubmitButton(){
+    let playlist_title = document.getElementById("playlist-form").elements[0].value; 
+    let alert_msg = document.getElementById("saveToPlaylistAlert");
+
+    // check for no playlists
+    if (isEmpty(user_info)){
+        alert_msg.innerHTML = "Create a playlist first!";
+        return;
+    }
+    
+    // createPlaylist(playlist_title)
+}
+
+function saveToPlaylist(playlist_title, video_title){
+    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}&video_title=${video_title}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        updateUserInfo();
+        console.log(user_info)
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    document.getElementById('close-save-modal').click();
 }
 
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
