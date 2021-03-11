@@ -78,7 +78,7 @@ def sign_up():
 
             http://.../?user_name=name
 
-        Returns a success code if the username is not taken, else an error code 
+        Returns true if the username is not taken, else false
     '''
     user_name = flask.request.args.get('user_name')
 
@@ -130,7 +130,7 @@ def log_in():
 
             http://.../?user_name=name
 
-        Returns a success code if the username exists, else an error code 
+        Returns true if the username exists, else false
     '''
     user_name = flask.request.args.get('user_name')
 
@@ -360,6 +360,7 @@ def create_playlist():
 
     return json.dumps(None)
     
+# TODO: non-English character bug
 @api.route('/save-to-playlist') 
 def save_to_playlist():
     ''' 
@@ -375,7 +376,7 @@ def save_to_playlist():
     # query1: get videos_id from videos table
     query1 = '''SELECT videos.id
                 FROM videos
-                WHERE videos.title = '{}'; '''.format(video_title)
+                WHERE videos.title = "{}"; '''.format(video_title)
 
     try:
         cursor1 = connection.cursor()

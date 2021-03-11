@@ -637,7 +637,6 @@ function onCreatePlaylistSubmitButton(){
     updateUserInfo();
 }
 
-// TODO: debug
 function createPlaylist(playlist_title){
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
@@ -719,7 +718,7 @@ function onSaveToPlaylistSubmitButton(){
 
 function saveToPlaylist(playlist_id, video_title){
     let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_title=${video_title}`;
-
+    console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {

@@ -14,23 +14,46 @@ Each video dictionary will have the following fields.
 	dislikes (int) the number of dislikes of the video
 	comments: (int) the number of comments of the video
 	thumbnail_link: (string) the link to the video thumbnail
+EXAMPLE: /?trending_date=18.30.05
+	[{"link": "VYOjWnS4cMY", "title": "Childish Gambino - This Is America (Official Video)", "publish_time": "2018-05-06T04:00:07.000Z", "thumbnail_link": "https://i.ytimg.com/vi/VYOjWnS4cMY/default.jpg", "channel": "ChildishGambinoVEVO", "views": 210338856, "likes": 4836448, "dislikes": 326902, "comment_count": 501722}, 
+	{"link": "7C2z4GqqS5E", "title": "BTS (\ubc29\ud0c4\uc18c\ub144\ub2e8) 'FAKE LOVE' Official MV", "publish_time": "2018-05-18T09:00:02.000Z", "thumbnail_link": "https://i.ytimg.com/vi/7C2z4GqqS5E/default.jpg", "channel": "ibighit", "views": 115664850, "likes": 5530568, "dislikes": 200995, "comment_count": 1213172},
+	...]
 
 REQUEST: /sign-up
-GET parameter:
-	user_name
-RESPONSE: a success code if the username is not taken, else an error code 
+GET parameter: user_name
+RESPONSE: true if the username is not taken, else false 
+EXAMPLE: /sign-up?user_name=me
+	true
 
 REQUEST: /log-in
-GET parameter:
-	user_name
-RESPONSE: a success code and user information if the username exists, else an error code
+GET parameter: user_name
+RESPONSE: true if the username exists, else false
+EXAMPLE: /log-in?user_name=yeet
+	false
 
-REQUEST: /save-to-playlist
-RESPONSE: a success code if the video is not in the playlist and saved successfully, else an error code
+REQUEST: /user
+GET parameter: user_name
+RESPONSE: a JSON dictionary where the keys are the titles of the playlist 
+        and the values are arrays of dictionaries where each dictionary represents a video.
+        The structure is: dictionary of playlists -> playlist -> list of videos 
+		A video dictionary contains its link, title, channel, publish_time, and thumbnail_link
+        The first dictionary in each playlist stores the playlist_id in the format {'playlist_id':id}
+EXAMPLE: /user?user_name=toot
+	{
+		"playlist1": [{"playlist_id": 1}, {"link": "ulNswX3If6U", "title": "Selena Gomez - Back To You (Lyric Video)", "publish_time": "2018-05-10T16:00:11.000Z", "thumbnail_link": "https://i.ytimg.com/vi/ulNswX3If6U/default.jpg", "channel": "Selena Gomez"}], 
+		"pl1": [{"playlist_id": 4}, {"link": "n_W54baizX8", "title": "Daddy Yankee - Hielo (Video Oficial)", "publish_time": "2018-05-18T14:00:04.000Z", "thumbnail_link": "https://i.ytimg.com/vi/n_W54baizX8/default.jpg", "channel": "Daddy Yankee"}]
+	}
 
-REQUEST: /my-page
+REQUEST: /create-playlist
 GET parameter
 	user_name
-RESPONSE: a JSON array of arrays, each of which represents a playlist. Each playlist array is a JSON list of dictionaries, each of represents a video.
+	playlist_title
+RESPONSE: None
+EXAMPLE: /create-playlist?user_name=me&playlist_title=playlist1
 
-#note: creating a new endpoint for vertical view? or use the same API endpoint.
+REQUEST: /save-to-playlist
+GET parameter
+	playlist_id
+	video_title
+RESPONSE: None
+EXAMPLE: save-to-playlist?playlist_id=1&video_title=Do You Hear Yanny or Laurel? (SOLVED with SCIENCE)
