@@ -533,6 +533,7 @@ function onLogOutButton() {
     logged_in_user = "";
     user_info = [];
     updateButtons();
+    localStorage.removeItem('username');
 }
 
 function onSignUpSubmitButton() {
