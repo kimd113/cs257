@@ -764,6 +764,23 @@ function deletePlaylist(playlist_id){
     updatePlaylistSelect()
 }
 
+function removeFromPlaylist(playlist_id, video_id){
+    let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
+    console.log(url);
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log("saveToPlaylist");
+        updateUserInfo();
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    // document.getElementById('close-save-modal').click();
+}
+
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
 
 function updateUserInfo(){

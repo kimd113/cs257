@@ -344,26 +344,6 @@ def save_to_playlist():
         cursor = connection.cursor()
         cursor.execute(query)
         cursor.close()
-
-    # # query1: get videos_id from videos table
-    # query1 = '''SELECT videos.id
-    #             FROM videos
-    #             WHERE videos.link = '{}'; '''.format(video_link)
-    # try:
-    #     cursor1 = connection.cursor()
-    #     cursor1.execute(query1)
-    #     for row in cursor1:
-    #         videos_id = int(row[0])
-    #     cursor1.close()
-
-    #     # query2: add videos_id, playlists_id to playlists_videos
-    #     query2 = '''INSERT INTO playlists_videos
-    #                 (videos_id, playlists_id)
-    #                 VALUES({},{});'''.format(videos_id, playlist_id)
-    #     cursor2 = connection.cursor()
-    #     cursor2.execute(query2)
-    #     cursor2.close()
-
     except Exception as e:
         print(e, file=sys.stderr)
         exit()
@@ -444,17 +424,17 @@ def remove_from_playlist():
     ''' 
         Removes a video from user's playlist through the GET parameters
 
-            http://.../?playlist_id=id&video_link=link
+            http://.../?playlist_id=id&video_id=link
     '''
     connection = get_connection()
 
     playlist_id = flask.request.args.get('playlist_id')
-    video_link = flask.request.args.get('video_link')
+    video_id = flask.request.args.get('video_id')
 
     # query1: get videos_id from videos table
     query1 = '''SELECT videos.id
                 FROM videos
-                WHERE videos.link = '{}'; '''.format(video_link)
+                WHERE videos.link = '{}'; '''.format(video_id)
     try:
         cursor1 = connection.cursor()
         cursor1.execute(query1)
