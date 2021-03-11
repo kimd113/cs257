@@ -98,7 +98,7 @@ function renderHorizontalVideosList(page_count) {
     for (let i = page_count; i < page_count + 10; i++) {
         if (videos_list[i]) {
             let video = videos_list[i];
-            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.title}">
+            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.link}">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
                     <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
@@ -716,8 +716,8 @@ function onSaveToPlaylistSubmitButton(){
     video_id = "";
 }
 
-function saveToPlaylist(playlist_id, video_title){
-    let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_title=${video_title}`;
+function saveToPlaylist(playlist_id, video_link){
+    let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_link=${video_link}`;
     console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())

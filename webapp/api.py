@@ -360,23 +360,27 @@ def create_playlist():
 
     return json.dumps(None)
     
-# TODO: non-English character bug
+# TODO: video_title vs video_link
 @api.route('/save-to-playlist') 
 def save_to_playlist():
     ''' 
         Adds a video to a user's playlist through the GET parameters
 
-            http://.../?playlist_id=id&video_title=video
+            http://.../?playlist_id=id&video_link=link
     '''
     connection = get_connection()
 
     playlist_id = flask.request.args.get('playlist_id')
-    video_title = flask.request.args.get('video_title')
+    video_link = flask.request.args.get('video_title')
 
     # query1: get videos_id from videos table
     query1 = '''SELECT videos.id
                 FROM videos
-                WHERE videos.title = "{}"; '''.format(video_title)
+                WHERE videos.link = '{}'; '''.format(video_link)
+    # # query1: get videos_id from videos table
+    # query1 = '''SELECT videos.id
+    #             FROM videos
+    #             WHERE videos.title = '{}'; '''.format(video_title)
 
     try:
         cursor1 = connection.cursor()
