@@ -54,6 +54,6 @@ EXAMPLE: /create-playlist?user_name=me&playlist_title=playlist1
 REQUEST: /save-to-playlist
 GET parameter
 	playlist_id
-	video_title
+	video_link
 RESPONSE: None
-EXAMPLE: save-to-playlist?playlist_id=1&video_title=Do You Hear Yanny or Laurel? (SOLVED with SCIENCE)
+EXAMPLE: save-to-playlist?playlist_id=1&video_link=7C2z4GqqS5E
