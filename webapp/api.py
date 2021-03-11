@@ -353,7 +353,6 @@ def save_to_playlist():
 
     return json.dumps(None)
 
-########### TODO endpoints ##########
 @api.route('/delete-playlist')
 def delete_playlist():
     ''' 
@@ -458,6 +457,8 @@ def remove_from_playlist():
     connection.close()
 
     return json.dumps(None)
+
+########### TODO endpoints ##########
 
 ########### Help endpoints ###########
 # debug???
