@@ -24,6 +24,10 @@ function initialize() {
 
     loadYearList();
 
+    // Check if user has logged in
+    if (localStorage.getItem('username')) {
+        preventLogInStatus();
+    }
     // updateButtons();// this doesn't work.. it's not remembered when page refreshes
 
     let elementPrevButton = document.getElementById('prev_button');
@@ -516,6 +520,13 @@ function onLogInButton() {
     })
 }
 
+function preventLogInStatus() {
+    logged_in = true;
+    logged_in_user = localStorage.getItem('username');
+    updateUserInfo();
+    updateButtons();
+}
+
 // TODO: add msgbox "are you sure you want to log out?"
 function onLogOutButton() {
     logged_in = false;
@@ -590,7 +601,7 @@ function onLogInSubmitButton() {
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
                 position-absolute overflow-visible start-50 translate-middle" role="alert">
-                <strong>Welcome back, ${user_name}!</strong>
+                <strong>Welcome back, ${logged_in_user}!</strong>
                 <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </p>`;
                 alert_box.innerHTML = success_alert;
@@ -601,6 +612,11 @@ function onLogInSubmitButton() {
                 }, 2000);
 
                 updateButtons();
+
+                // Set username into localstorage
+                if (!localStorage.getItem('username') || localStorage.getItem('username') != logged_in_user) {
+                    localStorage.setItem('username', logged_in_user);
+                }
             }
             else{
                 msgbox.innerHTML = "User name does not exists, please sign up first";
@@ -617,6 +633,8 @@ function onLogInSubmitButton() {
 function onCreatePlaylistSubmitButton(){
     let playlist_title = document.getElementById("playlist_input").value; 
     let alert_msg = document.getElementById("createPlaylistAlert");
+
+    playlist_title = "";
 
     // check for empty inputs
     if (playlist_title == ""){
