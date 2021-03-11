@@ -38,7 +38,8 @@ def get_main_page():
         trending_date = "18.31.05"
 
     query = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
-                      videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
+                      videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count,
+                      videos.id
                FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates
                WHERE trending_dates.date = '{}'
                AND trending_dates.id = videos_trending_views.trending_dates_id
@@ -57,7 +58,7 @@ def get_main_page():
 
         for row in cursor:
             video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4],
-                     'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8],}
+                     'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8], 'id':row[9]}
             video_list.append(video)
 
         cursor.close()
@@ -322,37 +323,46 @@ def create_playlist():
 
     return json.dumps(None)
     
-# TODO: video_title vs video_link
 @api.route('/save-to-playlist') 
 def save_to_playlist():
     ''' 
         Adds a video to a user's playlist through the GET parameters
 
-            http://.../?playlist_id=id&video_link=link
+            http://.../?playlist_id=id&video_id=id
     '''
     connection = get_connection()
 
     playlist_id = flask.request.args.get('playlist_id')
-    video_link = flask.request.args.get('video_link')
+    video_id = flask.request.args.get('video_id')
 
-    # query1: get videos_id from videos table
-    query1 = '''SELECT videos.id
-                FROM videos
-                WHERE videos.link = '{}'; '''.format(video_link)
+    # query: add videos_id, playlists_id to playlists_videos
+    query = '''INSERT INTO playlists_videos
+                (videos_id, playlists_id)
+                VALUES({},{});'''.format(video_id, playlist_id)
+
     try:
-        cursor1 = connection.cursor()
-        cursor1.execute(query1)
-        for row in cursor1:
-            videos_id = int(row[0])
-        cursor1.close()
+        cursor = connection.cursor()
+        cursor.execute(query)
+        cursor.close()
 
-        # query2: add videos_id, playlists_id to playlists_videos
-        query2 = '''INSERT INTO playlists_videos
-                    (videos_id, playlists_id)
-                    VALUES({},{});'''.format(videos_id, playlist_id)
-        cursor2 = connection.cursor()
-        cursor2.execute(query2)
-        cursor2.close()
+    # # query1: get videos_id from videos table
+    # query1 = '''SELECT videos.id
+    #             FROM videos
+    #             WHERE videos.link = '{}'; '''.format(video_link)
+    # try:
+    #     cursor1 = connection.cursor()
+    #     cursor1.execute(query1)
+    #     for row in cursor1:
+    #         videos_id = int(row[0])
+    #     cursor1.close()
+
+    #     # query2: add videos_id, playlists_id to playlists_videos
+    #     query2 = '''INSERT INTO playlists_videos
+    #                 (videos_id, playlists_id)
+    #                 VALUES({},{});'''.format(videos_id, playlist_id)
+    #     cursor2 = connection.cursor()
+    #     cursor2.execute(query2)
+    #     cursor2.close()
 
     except Exception as e:
         print(e, file=sys.stderr)
@@ -368,13 +378,65 @@ def save_to_playlist():
 def delete_playlist():
     ''' 
         Delete a playlist through the GET parameters
-            http://.../?user_name=user&playlist_title=playlist
+            http://.../?user_name=user&playlist_id=id
     '''
-    # query1: 
-    # query2: delete row in playlists table
-    # query3: delete row in users_playlists table
+    connection = get_connection()
 
+    user_name = flask.request.args.get('user_name')
+    playlist_id = flask.request.args.get('playlist_id')
 
+    # query1: delete row in playlists table
+    query1 = '''DELETE FROM playlists
+                WHERE playlists.id = {};'''.format(playlist_id)
+
+    # query2: get all video_id from playlists_videos table
+    query2 = '''SELECT DISTINCT videos.id 
+                FROM videos, playlists_videos
+                WHERE playlists_videos.playlists_id = {};'''.format(playlist_id)
+
+    try:
+        cursor1 = connection.cursor()
+        cursor1.execute(query1)
+        cursor1.close()
+
+        cursor2 = connection.cursor()
+        cursor2.execute(query2)
+        video_ids = []
+        for row in cursor2:
+            video_ids.append(row[0])
+        cursor2.close()
+
+        for video_id in video_ids:
+            # query3: delete rows in playlists_videos table
+            query3 = '''DELETE FROM users_playlists
+                        WHERE playlists.id = {}
+                        AND videos_id = {};'''.format(playlist_id,video_id)
+            cursor3 = connection.cursor()
+            cursor3.execute(query3)
+            cursor3.close()
+
+        # query4: get users_id from users table
+        query4 = '''SELECT users.id
+                    FROM users
+                    WHERE users.username = '{}'; '''.format(user_name)
+        cursor4 = connection.cursor()
+        cursor4.execute(query4)
+        for row in cursor4:
+            user_id = int(row[0])
+        cursor4.close()
+
+        # query4: delete row in users_playlists table
+        query5 = '''DELETE FROM users_playlists
+                    WHERE playlists.id = {}
+                    AND users_id = {};'''.format(playlist_id,user_id)
+        cursor5 = connection.cursor()
+        cursor5.execute(query5)
+        cursor5.close()
+
+    except Exception as e:
+        print(e, file=sys.stderr)
+        exit()
+        
     return json.dumps(None)
 
 @api.route('/remove-from-playlist')
