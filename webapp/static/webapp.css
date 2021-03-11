@@ -155,3 +155,8 @@ ul#now_trending_videos_list {
 .alarming{
     color: #FF0000;
 }
+
+#createPlaylist {
+    width: fit-content;
+    align-self: center;
+}
