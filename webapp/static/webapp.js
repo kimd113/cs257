@@ -26,7 +26,7 @@ function initialize() {
 
     // Check if user has logged in
     if (localStorage.getItem('username')) {
-        preventLogInStatus();
+        keepLogInStatus();
     }
     // updateButtons();// this doesn't work.. it's not remembered when page refreshes
 
@@ -520,7 +520,7 @@ function onLogInButton() {
     })
 }
 
-function preventLogInStatus() {
+function keepLogInStatus() {
     logged_in = true;
     logged_in_user = localStorage.getItem('username');
     updateUserInfo();
