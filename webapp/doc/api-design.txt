@@ -1,7 +1,7 @@
 Harry Tian & Daeyeon Kim
 
 REQUEST: /
-GET parameter:
+GET parameters:
 	trending_date (Optional, default=18.31.05)
 RESPONSE: a JSON list of dictionaries, each of which representes a trending video on the user specified date. 
 Each video dictionary will have the following fields.
@@ -20,19 +20,19 @@ EXAMPLE: /?trending_date=18.30.05
 	...]
 
 REQUEST: /sign-up
-GET parameter: user_name
+GET parameters: user_name
 RESPONSE: true if the username is not taken, else false 
 EXAMPLE: /sign-up?user_name=me
 	true
 
 REQUEST: /log-in
-GET parameter: user_name
+GET parameters: user_name
 RESPONSE: true if the username exists, else false
 EXAMPLE: /log-in?user_name=yeet
 	false
 
 REQUEST: /user
-GET parameter: user_name
+GET parameters: user_name
 RESPONSE: a JSON dictionary where the keys are the titles of the playlist 
         and the values are arrays of dictionaries where each dictionary represents a video.
         The structure is: dictionary of playlists -> playlist -> list of videos 
@@ -40,16 +40,28 @@ RESPONSE: a JSON dictionary where the keys are the titles of the playlist
         The first dictionary in each playlist stores the playlist_id in the format {'playlist_id':id}
 EXAMPLE: /user?user_name=toot
 	{
-		"playlist1": [{"playlist_id": 1}, {"link": "ulNswX3If6U", "title": "Selena Gomez - Back To You (Lyric Video)", "publish_time": "2018-05-10T16:00:11.000Z", "thumbnail_link": "https://i.ytimg.com/vi/ulNswX3If6U/default.jpg", "channel": "Selena Gomez"}], 
-		"pl1": [{"playlist_id": 4}, {"link": "n_W54baizX8", "title": "Daddy Yankee - Hielo (Video Oficial)", "publish_time": "2018-05-18T14:00:04.000Z", "thumbnail_link": "https://i.ytimg.com/vi/n_W54baizX8/default.jpg", "channel": "Daddy Yankee"}]
+		"playlist1": [{"playlist_id": 1}, 
+					  {"link": "ulNswX3If6U", "title": "Selena Gomez - Back To You (Lyric Video)", "publish_time": "2018-05-10T16:00:11.000Z", "thumbnail_link": "https://i.ytimg.com/vi/ulNswX3If6U/default.jpg", "channel": "Selena Gomez"}
+					 ], 
+		"pl1": [
+				{"playlist_id": 4}, 
+				{"link": "n_W54baizX8", "title": "Daddy Yankee - Hielo (Video Oficial)", "publish_time": "2018-05-18T14:00:04.000Z", "thumbnail_link": "https://i.ytimg.com/vi/n_W54baizX8/default.jpg", "channel": "Daddy Yankee"}
+			   ]
 	}
 
 REQUEST: /create-playlist
-GET parameter
+GET parameters:
 	user_name
 	playlist_title
 RESPONSE: None
 EXAMPLE: /create-playlist?user_name=me&playlist_title=playlist1
+
+REQUEST: /delete-playlist
+GET parameters: 
+	user_name
+	playlist_title
+RESPONSE: None
+EXAMPLE: /delete-playlist?user_name=me&playlist_title=playlist1
 
 REQUEST: /save-to-playlist
 GET parameter
@@ -57,3 +69,10 @@ GET parameter
 	video_link
 RESPONSE: None
 EXAMPLE: save-to-playlist?playlist_id=1&video_link=7C2z4GqqS5E
+
+REQUEST: /remove-from-playlist
+GET parameter
+	playlist_id
+	video_link
+RESPONSE: None
+EXAMPLE: remove-from-playlist?playlist_id=1&video_link=7C2z4GqqS5E

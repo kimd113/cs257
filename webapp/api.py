@@ -246,14 +246,6 @@ def get_user_info():
                          AND videos.id = videos_categories_channels.videos_id
                          AND videos_categories_channels.channels_id = channels.id;'''.format(playlist_id)
 
-        # query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
-        #                  videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
-        #                  FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates, playlists_videos
-        #                  WHERE playlists_videos.playlists_id = {}
-        #                  AND videos.id = playlists_videos.videos_id
-        #                  AND videos_trending_views.videos_id = videos.id
-        #                  AND videos.id = videos_categories_channels.videos_id
-        #                  AND videos_categories_channels.channels_id = channels.id;'''.format(playlist_id)
         try:
             cursor4 = connection.cursor()
             cursor4.execute(query4)
@@ -261,7 +253,6 @@ def get_user_info():
             # the inner layer of list of dictionaries
             for row in cursor4:
                 video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4]}
-                        # 'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8]}
                 user_info.playlists_videos[playlist_title].append(video)
 
             cursor4.close()
@@ -313,42 +304,14 @@ def create_playlist():
         for row in cursor3:
             playlists_id = int(row[0])
         cursor3.close()
-        
-        # # query3: get a potential list of playlist_id from playlist table
-        # query3 = '''SELECT playlists.id
-        #             FROM playlists
-        #             WHERE playlists.title = '{}'; '''.format(playlist_title)
-        # cursor3 = connection.cursor()
-        # cursor3.execute(query3)
-        # ids = []
-        # for row in cursor3:
-        #     ids.append(int(row[0]))
-        # cursor3.close()
 
-        # # TODO: differentiate between playlists if necessary:
-        # if len(ids) > 1:
-        #     # query4: get playlist_id from users_playlists table
-        #     query4 = '''SELECT users_playlists.playlists_id
-        #                 FROM playlists, users_playlists
-        #                 WHERE playlists.title = '{}'
-        #                 AND users_playlists.users_id = '{}'; '''.format(playlist_title, users_id)
-        #     cursor4 = connection.cursor()
-        #     cursor4.execute(query4)
-        #     for row in cursor4:
-        #         # print(000000000)
-        #         playlists_id = int(row[0])
-        #     cursor4.close()
-        #     print(playlists_id)
-        # else:
-        #     playlists_id = ids[0]
-
-        # query5: add a new line to users_playlists using users_id and playlists_id
-        query5 = '''INSERT INTO users_playlists
+        # query4: add a new line to users_playlists using users_id and playlists_id
+        query4 = '''INSERT INTO users_playlists
                     (users_id, playlists_id)
                     VALUES({},{});'''.format(users_id, playlists_id)
-        cursor5 = connection.cursor()
-        cursor5.execute(query5)
-        cursor5.close()
+        cursor4 = connection.cursor()
+        cursor4.execute(query4)
+        cursor4.close()
 
     except Exception as e:
         print(e, file=sys.stderr)
@@ -376,11 +339,6 @@ def save_to_playlist():
     query1 = '''SELECT videos.id
                 FROM videos
                 WHERE videos.link = '{}'; '''.format(video_link)
-    # # query1: get videos_id from videos table
-    # query1 = '''SELECT videos.id
-    #             FROM videos
-    #             WHERE videos.title = '{}'; '''.format(video_title)
-
     try:
         cursor1 = connection.cursor()
         cursor1.execute(query1)
@@ -406,6 +364,58 @@ def save_to_playlist():
     return json.dumps(None)
 
 ########### TODO endpoints ##########
+@api.route('/delete-playlist')
+def delete_playlist():
+    ''' 
+        Delete a playlist through the GET parameters
+            http://.../?user_name=user&playlist_title=playlist
+    '''
+    # query1: 
+    # query2: delete row in playlists table
+    # query3: delete row in users_playlists table
+
+
+    return json.dumps(None)
+
+@api.route('/remove-from-playlist')
+def remove_from_playlist():
+    ''' 
+        Removes a video from user's playlist through the GET parameters
+
+            http://.../?playlist_id=id&video_link=link
+    '''
+    connection = get_connection()
+
+    playlist_id = flask.request.args.get('playlist_id')
+    video_link = flask.request.args.get('video_link')
+
+    # query1: get videos_id from videos table
+    query1 = '''SELECT videos.id
+                FROM videos
+                WHERE videos.link = '{}'; '''.format(video_link)
+    try:
+        cursor1 = connection.cursor()
+        cursor1.execute(query1)
+        for row in cursor1:
+            videos_id = int(row[0])
+        cursor1.close()
+
+        # query2: delete videos_id, playlists_id to playlists_videos
+        query2 = '''DELETE FROM playlists_videos
+                    WHERE videos_id = {}
+                    AND playlists_id = {};'''.format(videos_id, playlist_id)
+        cursor2 = connection.cursor()
+        cursor2.execute(query2)
+        cursor2.close()
+
+    except Exception as e:
+        print(e, file=sys.stderr)
+        exit()
+
+    connection.commit() # very important line
+    connection.close()
+
+    return json.dumps(None)
 
 ########### Help endpoints ###########
 # debug???
