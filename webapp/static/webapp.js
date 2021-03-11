@@ -14,6 +14,8 @@ let logged_in = false;
 let logged_in_user = "";
 let user_info = [];
 
+let video_id = "";
+
 function initialize() {
     // console.log(videos_list);
     // console.log("when initialize :", logged_in_user);
@@ -518,6 +520,7 @@ function onLogInButton() {
 function onLogOutButton() {
     logged_in = false;
     logged_in_user = "";
+    user_info = [];
     updateButtons();
 }
 
@@ -580,6 +583,7 @@ function onLogInSubmitButton() {
 
                 logged_in = true;
                 logged_in_user = user_name;
+                console.log("onLogInSubmitButton");
                 updateUserInfo();
                 
                 document.getElementById('close-login-modal').click();
@@ -629,16 +633,19 @@ function onCreatePlaylistSubmitButton(){
     }
     
     createPlaylist(playlist_title)
+    console.log("onCreatePlaylistSubmitButton");
+    updateUserInfo();
 }
 
+// TODO: debug
 function createPlaylist(playlist_title){
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
+        console.log("createPlaylist");
         updateUserInfo();
-        console.log(user_info)
     })
     .catch(function(error) {
         console.log(error);
@@ -649,7 +656,7 @@ function createPlaylist(playlist_title){
 
     // Apply new playlist options into dropdown immediately.
     let playlist_select = document.getElementById("playlist-options");
-    playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+    playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
 }
 
 function onSaveToPlaylistButton() {
@@ -661,7 +668,7 @@ function onSaveToPlaylistButton() {
         console.log("not logged in yet");
     }
     else{
-        let video_id = checkId(this);
+        video_id = checkId(this);
 
         let playlist_select = document.getElementById("playlist-options");
         playlist_select.innerHTML = "";
@@ -670,7 +677,7 @@ function onSaveToPlaylistButton() {
         }
         else{
             for(var playlist_title in user_info) {
-                playlist_select.innerHTML += '<option value="">' + playlist_title + '</option>\n';
+                playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
             }
         }
     }
@@ -685,7 +692,10 @@ function onSaveToPlaylistButton() {
 }
 
 function onSaveToPlaylistSubmitButton(){
-    let playlist_title = document.getElementById("playlist-form").elements[0].value; 
+    console.log("onSaveToPlaylistSubmitButton");
+    updateUserInfo();
+    // let playlist_title = document.getElementById("playlist-form").elements[0].value; 
+    let playlist_title = document.getElementById("playlist-options").value; 
     let alert_msg = document.getElementById("saveToPlaylistAlert");
 
     // check for no playlists
@@ -693,18 +703,28 @@ function onSaveToPlaylistSubmitButton(){
         alert_msg.innerHTML = "Create a playlist first!";
         return;
     }
+
+    // TODO: check for duplicate
+    console.log("playlist title:" + playlist_title);
+    // console.log(user_info[playlist_title]);
+
+    let playlist_id = user_info[playlist_title][0]['playlist_id'];
+
+    console.log("playlist id:" + playlist_id);
+    console.log("video id:" + video_id);
     
-    // createPlaylist(playlist_title)
+    saveToPlaylist(playlist_id, video_id)
+    video_id = "";
 }
 
-function saveToPlaylist(playlist_title, video_title){
-    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}&video_title=${video_title}`;
+function saveToPlaylist(playlist_id, video_title){
+    let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_title=${video_title}`;
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
+        console.log("saveToPlaylist");
         updateUserInfo();
-        console.log(user_info)
     })
     .catch(function(error) {
         console.log(error);
@@ -722,12 +742,13 @@ function updateUserInfo(){
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((info) => {
-        console.log(info)
         user_info = info;
     })
     .catch(function(error) {
         console.log(error);
     });
+
+    console.log(user_info)
 }
 
 function updateButtons(){

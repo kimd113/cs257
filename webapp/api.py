@@ -175,6 +175,7 @@ def get_user_info():
         and the values are arrays of dictionaries where each dictionary represents a video.
 
         The structure is: dictionary of playlists -> playlist -> list of videos 
+        The first dictionary stores the playlist_id in the format {'playlist_id':id}
     '''
     connection = get_connection()
 
@@ -228,31 +229,40 @@ def get_user_info():
     for i in range(len(user_playlists_ids)):
         playlist_title = user_playlists_titles[i]
         playlist_id = user_playlists_ids[i]
+        # title_id = playlist_title + '_' + playlist_id
 
         user_info.playlists_id[playlist_title] = playlist_id
         user_info.playlists_videos[playlist_title] = []
 
-    playlists_ids = user_info.playlists_id
-    # populate the dictionary through a list of queries
-    for playlist_title in playlists_ids:
-        playlist_id = playlists_ids[playlist_title]
+    # playlists_ids = user_info.playlists_id
+    for playlist_title in user_info.playlists_videos:
+        playlist_id = user_info.playlists_id[playlist_title]
+        user_info.playlists_videos[playlist_title].append({'playlist_id':playlist_id})
         
-        video_query = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
-                         videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
-                         FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates, playlists_videos
+        # query4: get the videos in each playlist
+        query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title 
+                         FROM videos, videos_categories_channels, channels, playlists_videos
                          WHERE playlists_videos.playlists_id = {}
                          AND videos.id = playlists_videos.videos_id
-                         AND videos_trending_views.videos_id = videos.id
                          AND videos.id = videos_categories_channels.videos_id
                          AND videos_categories_channels.channels_id = channels.id;'''.format(playlist_id)
+
+        # query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
+        #                  videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count
+        #                  FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates, playlists_videos
+        #                  WHERE playlists_videos.playlists_id = {}
+        #                  AND videos.id = playlists_videos.videos_id
+        #                  AND videos_trending_views.videos_id = videos.id
+        #                  AND videos.id = videos_categories_channels.videos_id
+        #                  AND videos_categories_channels.channels_id = channels.id;'''.format(playlist_id)
         try:
             cursor4 = connection.cursor()
-            cursor4.execute(video_query)
+            cursor4.execute(query4)
 
             # the inner layer of list of dictionaries
             for row in cursor4:
-                video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4],
-                        'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8],}
+                video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4]}
+                        # 'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8]}
                 user_info.playlists_videos[playlist_title].append(video)
 
             cursor4.close()
@@ -273,7 +283,6 @@ def create_playlist():
 
     user_name = flask.request.args.get('user_name')
     playlist_title = flask.request.args.get('playlist_title')
-    playlists_id = 0
 
     # query1: add a new playlist to the playlists table
     query1 = '''INSERT INTO playlists
@@ -285,6 +294,10 @@ def create_playlist():
                 FROM users
                 WHERE users.username = '{}'; '''.format(user_name)
 
+    # query3: get playlist_id by getting the id of the last row
+    query3 = '''SELECT count(*)
+                FROM playlists;'''
+                
     try:
         cursor1 = connection.cursor()
         cursor1.execute(query1)
@@ -295,34 +308,40 @@ def create_playlist():
         for row in cursor2:
             users_id = int(row[0])
         cursor2.close()
-        
-        # query3: get a potential list of playlist_id from playlist table
-        query3 = '''SELECT playlists.id
-                    FROM playlists
-                    WHERE playlists.title = '{}'; '''.format(playlist_title)
+
         cursor3 = connection.cursor()
         cursor3.execute(query3)
-        ids = []
         for row in cursor3:
-            ids.append(int(row[0]))
+            playlists_id = int(row[0])
         cursor3.close()
+        
+        # # query3: get a potential list of playlist_id from playlist table
+        # query3 = '''SELECT playlists.id
+        #             FROM playlists
+        #             WHERE playlists.title = '{}'; '''.format(playlist_title)
+        # cursor3 = connection.cursor()
+        # cursor3.execute(query3)
+        # ids = []
+        # for row in cursor3:
+        #     ids.append(int(row[0]))
+        # cursor3.close()
 
-        # TODO: differentiate between playlists if necessary:
-        if len(ids) > 1:
-            # query4: get playlist_id from users_playlists table
-            query4 = '''SELECT users_playlists.playlists_id
-                        FROM playlists, users_playlists
-                        WHERE playlists.title = '{}'
-                        AND users_playlists.users_id = '{}'; '''.format(playlist_title, users_id)
-            cursor4 = connection.cursor()
-            cursor4.execute(query4)
-            for row in cursor4:
-                # print(000000000)
-                playlists_id = int(row[0])
-            cursor4.close()
-            print(playlists_id)
-        else:
-            playlists_id = ids[0]
+        # # TODO: differentiate between playlists if necessary:
+        # if len(ids) > 1:
+        #     # query4: get playlist_id from users_playlists table
+        #     query4 = '''SELECT users_playlists.playlists_id
+        #                 FROM playlists, users_playlists
+        #                 WHERE playlists.title = '{}'
+        #                 AND users_playlists.users_id = '{}'; '''.format(playlist_title, users_id)
+        #     cursor4 = connection.cursor()
+        #     cursor4.execute(query4)
+        #     for row in cursor4:
+        #         # print(000000000)
+        #         playlists_id = int(row[0])
+        #     cursor4.close()
+        #     print(playlists_id)
+        # else:
+        #     playlists_id = ids[0]
 
         # query5: add a new line to users_playlists using users_id and playlists_id
         query5 = '''INSERT INTO users_playlists
@@ -341,31 +360,22 @@ def create_playlist():
 
     return json.dumps(None)
     
-########### TODO endpoints ##########
 @api.route('/save-to-playlist') 
 def save_to_playlist():
     ''' 
         Adds a video to a user's playlist through the GET parameters
 
-            http://.../?user_name=user&playlist_title=playlist&video_title=video
+            http://.../?playlist_id=id&video_title=video
     '''
     connection = get_connection()
 
-    user_name = flask.request.args.get('user_name')
-    playlist_title = flask.request.args.get('playlist_title')
+    playlist_id = flask.request.args.get('playlist_id')
     video_title = flask.request.args.get('video_title')
-
-    playlists_id = 0
 
     # query1: get videos_id from videos table
     query1 = '''SELECT videos.id
                 FROM videos
                 WHERE videos.title = '{}'; '''.format(video_title)
-
-    # query2: get users_id from users table
-    query2 = '''SELECT users.id
-                FROM users
-                WHERE users.username = '{}'; '''.format(user_name)
 
     try:
         cursor1 = connection.cursor()
@@ -374,48 +384,13 @@ def save_to_playlist():
             videos_id = int(row[0])
         cursor1.close()
 
+        # query2: add videos_id, playlists_id to playlists_videos
+        query2 = '''INSERT INTO playlists_videos
+                    (videos_id, playlists_id)
+                    VALUES({},{});'''.format(videos_id, playlist_id)
         cursor2 = connection.cursor()
         cursor2.execute(query2)
-        for row in cursor2:
-            users_id = int(row[0])
         cursor2.close()
-        
-        # query3: get a potential list of playlist_id from playlist table
-        query3 = '''SELECT playlists.id
-                    FROM playlists
-                    WHERE playlists.title = '{}'; '''.format(playlist_title)
-        cursor3 = connection.cursor()
-        cursor3.execute(query3)
-        ids = []
-        for row in cursor3:
-            ids.append(int(row[0]))
-        cursor3.close()
-
-        # TODO: differentiate between playlists if necessary:
-        if len(ids) > 1:
-            # query4: get playlist_id from users_playlists table
-            query4 = '''SELECT users_playlists.playlists_id
-                        FROM playlists, users_playlists
-                        WHERE playlists.title = '{}'
-                        AND users_playlists.users_id = '{}'; '''.format(playlist_title, users_id)
-            cursor4 = connection.cursor()
-            cursor4.execute(query4)
-            for row in cursor4:
-                # print(000000000)
-                playlists_id = int(row[0])
-            cursor4.close()
-            print(playlists_id)
-        else:
-            playlists_id = ids[0]
-
-        # query5: add videos_id, playlists_id to playlists_videos
-        query5 = '''INSERT INTO playlists_videos
-                    (videos_id, playlists_id)
-                    VALUES({},{});'''.format(videos_id, playlists_id)
-
-        cursor5 = connection.cursor()
-        cursor5.execute(query5)
-        cursor5.close()
 
     except Exception as e:
         print(e, file=sys.stderr)
@@ -426,6 +401,7 @@ def save_to_playlist():
 
     return json.dumps(None)
 
+########### TODO endpoints ##########
 
 ########### Help endpoints ###########
 @api.route('/help') 
