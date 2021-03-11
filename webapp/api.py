@@ -7,7 +7,6 @@ import config
 import psycopg2
 from pathlib import Path
 
-
 api = flask.Blueprint('api', __name__)
 
 ########### Connecting to the database ###########
@@ -409,8 +408,10 @@ def save_to_playlist():
 ########### TODO endpoints ##########
 
 ########### Help endpoints ###########
+# debug???
 @api.route('/help') 
 def get_help():
+    return json.dumps("???????")
     doc = Path("doc")
     help_file = open(doc/'api-design.txt')
     text = help_file.read()
