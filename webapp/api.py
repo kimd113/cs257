@@ -241,7 +241,7 @@ def get_user_info():
         user_info.playlists_videos[playlist_title].append({'playlist_id':playlist_id})
         
         # query4: get the videos in each playlist
-        query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title 
+        query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, videos.id
                          FROM videos, videos_categories_channels, channels, playlists_videos
                          WHERE playlists_videos.playlists_id = {}
                          AND videos.id = playlists_videos.videos_id
@@ -254,7 +254,7 @@ def get_user_info():
 
             # the inner layer of list of dictionaries
             for row in cursor4:
-                video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4]}
+                video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4], 'id':row[5]}
                 user_info.playlists_videos[playlist_title].append(video)
 
             cursor4.close()
@@ -424,28 +424,18 @@ def remove_from_playlist():
     ''' 
         Removes a video from user's playlist through the GET parameters
 
-            http://.../?playlist_id=id&video_id=link
+            http://.../?playlist_id=id&video_id=id
     '''
     connection = get_connection()
 
     playlist_id = flask.request.args.get('playlist_id')
     video_id = flask.request.args.get('video_id')
 
-    # query1: get videos_id from videos table
-    query1 = '''SELECT videos.id
-                FROM videos
-                WHERE videos.link = '{}'; '''.format(video_id)
     try:
-        cursor1 = connection.cursor()
-        cursor1.execute(query1)
-        for row in cursor1:
-            videos_id = int(row[0])
-        cursor1.close()
-
         # query2: delete videos_id, playlists_id to playlists_videos
         query2 = '''DELETE FROM playlists_videos
                     WHERE videos_id = {}
-                    AND playlists_id = {};'''.format(videos_id, playlist_id)
+                    AND playlists_id = {};'''.format(video_id, playlist_id)
         cursor2 = connection.cursor()
         cursor2.execute(query2)
         cursor2.close()
