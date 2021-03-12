@@ -568,18 +568,7 @@ function onSignUpSubmitButton() {
         if (msgbox){
             if (msg){
                 document.getElementById('close-signup-modal').click();
-                let alert_box = document.getElementById('alert_box');
-                let success_alert = `<p class="alert alert-success alert-dismissible fade show
-                position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
-                <strong>Thank you, you are signed up! Please log in to continue!</strong>
-                <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </p>`;
-                alert_box.innerHTML = success_alert;
-                setTimeout(() => {
-                    if(document.getElementById('alert-close')) {
-                        document.getElementById('alert-close').click();
-                    }
-                }, 2000);
+                renderAlertBox("Thank you, you are signed up! Please log in to continue!");
             }
             else{
                 msgbox.innerHTML = "This name is already taken";
@@ -617,18 +606,7 @@ function onLogInSubmitButton() {
                 .catch((error) => console.log(error));
                 
                 document.getElementById('close-login-modal').click();
-                let alert_box = document.getElementById('alert_box');
-                let success_alert = `<p class="alert alert-success alert-dismissible fade show
-                position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
-                <strong>Welcome back, ${logged_in_user}!</strong>
-                <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </p>`;
-                alert_box.innerHTML = success_alert;
-                setTimeout(() => {
-                    if(document.getElementById('alert-close')) {
-                        document.getElementById('alert-close').click();
-                    }
-                }, 2000);
+                renderAlertBox(`Welcome back, ${logged_in_user}!`);
 
                 updateButtons();
 
