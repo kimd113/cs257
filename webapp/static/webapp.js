@@ -94,9 +94,9 @@ function initialize() {
         logInSubmitButton.onclick = onLogInSubmitButton;
     }
     
-    let logOutButton = document.getElementById("logOut"); 
-    if (logOutButton) {
-        logOutButton.onclick = onLogOutButton;
+    let logOutSubmitButton = document.getElementById("log-out-submit"); 
+    if (logOutSubmitButton) {
+        logOutSubmitButton.onclick = onLogOutSubmitButton;
     }
     
     let createPlaylistSubmitButton = document.getElementById('create-playlist-submit');
@@ -550,15 +550,6 @@ function keepLogInStatus() {
     updateButtons();
 }
 
-// TODO: add msgbox "are you sure you want to log out?"
-function onLogOutButton() {
-    logged_in = false;
-    logged_in_user = "";
-    user_info = [];
-    updateButtons();
-    localStorage.removeItem('username');
-}
-
 function onSignUpSubmitButton() {
     /**
      * When user clicks the sign up button, create an account for the user if the username is not taken*
@@ -656,6 +647,14 @@ function onLogInSubmitButton() {
     });
 }
 
+function onLogOutSubmitButton() {
+    logged_in = false;
+    logged_in_user = "";
+    user_info = [];
+    localStorage.removeItem('username');
+    updateButtons();
+    document.getElementById('close-logOut-modal').click();
+}
 /////////////////////////// PLAYLIST FUNCTIONS ///////////////////////////
 
 function onCreatePlaylistSubmitButton(){
@@ -676,7 +675,7 @@ function onCreatePlaylistSubmitButton(){
         }
     }
     
-    createPlaylist(playlist_title)
+    createPlaylist(logged_in_user, playlist_title)
     console.log("onCreatePlaylistSubmitButton");
     updateUserInfo()
     .then((info) => {
@@ -686,8 +685,8 @@ function onCreatePlaylistSubmitButton(){
     .catch((error) => console.log(error));
 }
 
-function createPlaylist(playlist_title){
-    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
+function createPlaylist(user_name, playlist_title){
+    let url =  `${getAPIBaseURL()}/create-playlist?user_name=${user_name}&playlist_title=${playlist_title}`;
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -704,12 +703,8 @@ function createPlaylist(playlist_title){
         console.log(error);
     });
 
-    // TODO: maybe a success message that disappears after a fews seconds?
     document.getElementById('close-create-modal').click();
-
-    // Apply new playlist options into dropdown immediately.
-    // let playlist_select = document.getElementById("playlist-options");
-    // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
+    renderAlertBox("Playlist created.");
 }
 
 function onSaveToPlaylistButton() {
@@ -717,8 +712,8 @@ function onSaveToPlaylistButton() {
      * render a "save to playlist" modal when the button is clicked.
      */
     if (!logged_in){
-        // TODO
-        console.log("not logged in yet");
+        document.getElementById('close-save-modal').click();
+        renderAlertBox("Please log in first!");
     }
     else{
         video_id = checkId(this);
@@ -741,7 +736,6 @@ function onSaveToPlaylistSubmitButton(){
         user_info = info;
     })
     .catch((error) => console.log(error));
-    // let playlist_title = document.getElementById("playlist-form").elements[0].value; 
     let playlist_title = document.getElementById("playlist-options").value; 
     let alert_msg = document.getElementById("saveToPlaylistAlert");
 
@@ -751,14 +745,24 @@ function onSaveToPlaylistSubmitButton(){
         return;
     }
 
-    // TODO: check for duplicate
-    console.log("playlist title:" + playlist_title);
+    // check for duplicate
+    let playlist = user_info[playlist_title];
+    if (playlist.length > 1) {
+        for (let j = 1; j < playlist.length; j++) {
+            if (parseInt(video_id) == playlist[j]['id']){
+                alert_msg.innerHTML = "This video is already in the playlist.";
+                return;
+            }
+        }
+    }
+
+    // console.log("playlist title:" + playlist_title);
     // console.log(user_info[playlist_title]);
 
     let playlist_id = user_info[playlist_title][0]['playlist_id'];
 
-    console.log("playlist id:" + playlist_id);
-    console.log("video id:" + video_id);
+    // console.log("playlist id:" + playlist_id);
+    // console.log("video id:" + video_id);
     
     saveToPlaylist(playlist_id, video_id)
     video_id = "";
@@ -781,21 +785,18 @@ function saveToPlaylist(playlist_id, video_id){
         console.log(error);
     });
 
-    // TODO: maybe a success message that disappears after a fews seconds?
     document.getElementById('close-save-modal').click();
+    renderAlertBox("Saved to playlist.");
 }
 
 function onDeletePlaylistButton(){
-    ids = checkId(this);
-    ids = ids.split("-");
-    playlist_id = ids[0];
-    video_id = ids[1];
-    console.log(playlist_id,video_id);
-    removeFromPlaylist(playlist_id, video_id)
+    playlist_id = checkId(this);
+    console.log(playlist_id);
+    deletePlaylist(logged_in_user, playlist_id)
 }
 
-function deletePlaylist(playlist_id){
-    let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
+function deletePlaylist(user_name, playlist_id){
+    let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${user_name}&playlist_id=${playlist_id}`;
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -812,7 +813,7 @@ function deletePlaylist(playlist_id){
     .catch(function(error) {
         console.log(error);
     });
-    // TODO: maybe a success message that disappears after a fews seconds?
+    renderAlertBox("Playlist deleted.");
     // document.getElementById('close-create-modal').click();
 }
 
@@ -837,15 +838,13 @@ function removeFromPlaylist(playlist_id, video_id){
             user_info = info;
             // console.log(user_info);
             updateMyPagePlaylists();
+            renderAlertBox("Removed from playlist.");
         })
         .catch((error) => console.log(error));
     })
     .catch(function(error) {
         console.log(error);
     });
-
-    // TODO: maybe a success message that disappears after a fews seconds?
-    // document.getElementById('close-save-modal').click();
 }   
 
 ///////////////////////////  MYPAGE FUNCTIONS ///////////////////////////
@@ -944,13 +943,15 @@ function renderUserPlaylistsItems() {
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
 
 async function updateUserInfo() {
-    let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
+    if (logged_in){
+        let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
 
-    return fetch(url, {method: 'get'})
-    .then((response) => response.json())
-    .catch(function(error) {
-        console.log(error);
-    });
+        return fetch(url, {method: 'get'})
+        .then((response) => response.json())
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
 }
 
 function updateButtons(){
@@ -1023,4 +1024,19 @@ function checkId(elem) {
 
 function formatPublishTimeString(publish_time) {
     return `${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}`;
+}
+
+function renderAlertBox(alert_msg){
+    let alert_box = document.getElementById('alert_box');
+    let success_alert = `<p class="large alert alert-success alert-dismissible fade show
+    position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
+    <strong>${alert_msg}</strong>
+    <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </p>`;
+    alert_box.innerHTML = success_alert;
+    setTimeout(() => {
+        if(document.getElementById('alert-close')) {
+            document.getElementById('alert-close').click();
+        }
+    }, 2000);
 }
