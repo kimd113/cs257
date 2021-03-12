@@ -116,7 +116,7 @@ function renderHorizontalVideosList(page_count) {
     for (let i = page_count; i < page_count + 10; i++) {
         if (videos_list[i]) {
             let video = videos_list[i];
-            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.link}">
+            let listBody = `<div class="now_trending_videos_list_item col card" id="${video.id}">
                 <a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">
                     <img class="video_img card-img-top" src=${video.thumbnail_link} alt="" />
                     <div class="video_title">${video.title}</div>
@@ -156,7 +156,7 @@ function renderVerticalVideosList(page_count) {
             let video = videos_list[i];
             const { publish_time } = video
             listBody += 
-                `<tr>
+                `<tr id="${video.id}">
                     <td><a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">${video.title}</a></td>
                     <td>${video.channel}</td>
                     <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
@@ -657,7 +657,7 @@ function onCreatePlaylistSubmitButton(){
     let playlist_title = document.getElementById("playlist_input").value; 
     let alert_msg = document.getElementById("createPlaylistAlert");
 
-    playlist_title = "";
+    // playlist_title = "";
 
     // check for empty inputs
     if (playlist_title == ""){
@@ -682,6 +682,7 @@ function onCreatePlaylistSubmitButton(){
     .catch((error) => console.log(error));
 }
 
+// TODO: debug
 function createPlaylist(playlist_title){
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
@@ -703,8 +704,9 @@ function createPlaylist(playlist_title){
     document.getElementById('close-create-modal').click();
 
     // Apply new playlist options into dropdown immediately.
-    let playlist_select = document.getElementById("playlist-options");
-    playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
+    updatePlaylistSelect()
+    // let playlist_select = document.getElementById("playlist-options");
+    // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
 }
 
 function onSaveToPlaylistButton() {
@@ -717,17 +719,7 @@ function onSaveToPlaylistButton() {
     }
     else{
         video_id = checkId(this);
-
-        let playlist_select = document.getElementById("playlist-options");
-        playlist_select.innerHTML = "";
-        if (isEmpty(user_info)){
-            playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
-        }
-        else{
-            for(var playlist_title in user_info) {
-                playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
-            }
-        }
+        updatePlaylistSelect()
     }
     let myModal = document.getElementById('saveToPlaylistModal');
     let myInput = document.getElementById('playlist_input');
@@ -769,8 +761,8 @@ function onSaveToPlaylistSubmitButton(){
     video_id = "";
 }
 
-function saveToPlaylist(playlist_id, video_link){
-    let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_link=${video_link}`;
+function saveToPlaylist(playlist_id, video_id){
+    let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
     console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -875,6 +867,41 @@ function renderUserPlaylistsItems() {
             table_body.innerHTML = listBody;
         }
     }
+function deletePlaylist(playlist_id){
+    let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log("createPlaylist");
+        updateUserInfo();
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    // document.getElementById('close-create-modal').click();
+
+    // Apply new playlist options into dropdown immediately.
+    updatePlaylistSelect()
+}
+
+function removeFromPlaylist(playlist_id, video_id){
+    let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
+    console.log(url);
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log("saveToPlaylist");
+        updateUserInfo();
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    // document.getElementById('close-save-modal').click();
 }
 
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
@@ -919,6 +946,19 @@ function updateButtons(){
         document.getElementById("signUp").removeAttribute("hidden");
         document.getElementById("myPage").setAttribute('hidden',true);
         document.getElementById("logOut").setAttribute('hidden',true);
+    }
+}
+
+function updatePlaylistSelect(){
+    let playlist_select = document.getElementById("playlist-options");
+    playlist_select.innerHTML = "";
+    if (isEmpty(user_info)){
+        playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
+    }
+    else{
+        for(var playlist_title in user_info) {
+            playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
+        }
     }
 }
 

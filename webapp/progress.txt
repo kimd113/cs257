@@ -3,8 +3,11 @@ AUTHORS: Daniel Kim, Harry Tian
 DATA: Trending YouTube Video Statistics (https://www.kaggle.com/datasnaek/youtube-new?select=USvideos.csv)
 
 FEATURES TO BE IMPLEMENTED:
-- sharing data from index.html to mypage.html
 - My page: a page that shows the lists of the videos saved.
+- delete playlist
+- remove from playlist
+- playlist features for the list view
+
 - better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
 - A more elegant sign up/log in feature using flask-login
 
@@ -21,3 +24,4 @@ FEATURES CURRENTLY WORKING:
 - My page: Shows a basic layout of the page.
 - create playlist feature
 - Save to my playlist: button that saves a selected video to user's playlist.
+- sharing data from index.html to mypage.html
