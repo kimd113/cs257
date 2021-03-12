@@ -42,12 +42,35 @@
         </div>
 
         <div class="d-flex align-items-start">
-            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link" id="v-pills-newPlaylist-tab" data-bs-toggle="pill" data-bs-target="#v-pills-newPlaylist" type="button" role="tab" aria-controls="v-pills-newPlaylist" aria-selected="false">Add new playlist</button> -->
+            <div id="playlist_nav_container" class="">
+                <ul class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"></ul>
+                <button class="button btn btn-outline-primary" id="v-pills-newPlaylist-tab" data-bs-toggle="modal" data-bs-target="#createPlaylistModal" type="button" aria-selected="false">+</button>
             </div>
-            <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-content" id="v-pills-tabContent"></div>
+        </div>
+    </div>
+
+    <!-- Create-playlist modal -->
+    <div class="modal" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPlaylistTitle">Create a new playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row flex-column">
+                    <div class="col d-flex justify-content-start align-items-start">
+                        <p id="createPlaylistMsg" class="playlistModalMsg">Name your playlist</p>
+                        <input type="text" id="playlist_input" placeholder="playlist" />
+                    </div>
+                </div>
+                <p id="createPlaylistAlert" class = "alarming"></p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-create-modal" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="create-playlist-submit">Save</button>
+                </div>
             </div>
-          </div>
+        </div>
     </div>
 
     <div id="alert_box"></div>

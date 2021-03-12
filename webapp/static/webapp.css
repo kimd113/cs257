@@ -181,4 +181,30 @@ ul#now_trending_videos_list {
     align-self: center;
 }
 
+#createPlaylistAlert {
+    margin-left: 1rem;
+}
 
+#playlist_nav_container {
+    text-align: center;
+    /* height: fit-content; */
+}
+
+#v-pills-tab {
+    overflow-y: auto !important;
+    height: 700px !important;
+    flex-wrap: nowrap !important;
+}
+
+
+#v-pills-newPlaylist-tab {
+    /* border-radius: 25%; */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 82%;
+}
+
+.remove-playlist-btn {
+    max-width: fit-content;
+    border-radius: 0.25rem !important;
+}

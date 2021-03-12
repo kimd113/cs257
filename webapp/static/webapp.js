@@ -108,6 +108,11 @@ function initialize() {
     if (saveToPlaylistSubmitButton) {
         saveToPlaylistSubmitButton.onclick = onSaveToPlaylistSubmitButton;
     }
+
+    let addNewPlaylistButton = document.getElementById('v-pills-newPlaylist-tab');
+    if (addNewPlaylistButton) {
+        addNewPlaylistButton.onclick = onSaveToPlaylistButton;
+    }
 }
 
 /////////////////////////// VIDEO LIST FUNCTIONS ///////////////////////////
@@ -683,6 +688,9 @@ function onCreatePlaylistSubmitButton(){
     updateUserInfo()
     .then((info) => {
         user_info = info;
+        if (window.location.pathname == '/myPage.html') {
+            renderUserPlaylistsTabs();
+        }
     })
     .catch((error) => console.log(error));
 }
@@ -709,7 +717,9 @@ function createPlaylist(playlist_title){
     document.getElementById('close-create-modal').click();
 
     // Apply new playlist options into dropdown immediately.
-    updatePlaylistSelect()
+    if (window.location.pathname == '/') {
+        updatePlaylistSelect();
+    }
     // let playlist_select = document.getElementById("playlist-options");
     // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
 }
@@ -722,11 +732,11 @@ function onSaveToPlaylistButton() {
         // TODO
         console.log("not logged in yet");
     }
-    else{
+    else if (window.location.pathname == '/') {
         video_id = checkId(this);
         updatePlaylistSelect()
     }
-    let myModal = document.getElementById('saveToPlaylistModal');
+    let myModal = document.getElementById('createPlaylistModal');
     let myInput = document.getElementById('playlist_input');
 
     myInput.value = "";
@@ -861,15 +871,34 @@ function renderUserPlaylistsTabs() {
 
     for (let i = 0; i < playlists_tabs.length; i++) {
         const { playlist_id } = playlists_items[i][0];
-        if (i == 0) {
-            listBody += `<button class="nav-link active "`;
-        } else {
-            listBody += `<button class="nav-link "`;
 
+        //
+        if (i == 0) {
+            listBody += `<li class="nav-item btn-group justify-content-between mb-2" role="group" aria-label="btn-group-${playlist_id}">
+            <button class="nav-link active" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
+            aria-selected="true">${playlists_tabs[i]}</button>
+            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button>
+            </li>
+            `;
+        } else {
+            listBody += `<li class="nav-item btn-group justify-content-between mb-2" role="group" aria-label="btn-group-${playlist_id}">
+            <button class="nav-link" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
+            aria-selected="true">${playlists_tabs[i]}</button>
+            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button>
+            </li>
+            `;
         }
-        listBody += `id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" 
-        data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
-        aria-selected="true">${playlists_tabs[i]}</button>`;
+        //
+
+        // if (i == 0) {
+        //     listBody += `<button class="nav-link active "`;
+        // } else {
+        //     listBody += `<button class="nav-link "`;
+
+        // }
+        // listBody += `id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" 
+        // data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
+        // aria-selected="true">${playlists_tabs[i]}</button>`;
     }
 
     let playlist_tab = document.getElementById('v-pills-tab');
@@ -935,7 +964,7 @@ function renderUserPlaylistsItems() {
                     <td><a href="https://www.youtube.com/watch?v=${link}" target="_blank">${title}</a></td>
                     <td>${channel}</td>
                     <td>${formatPublishTimeString(publish_time)}</td>
-                    <td id=${playlist_id}-${id}><button type="button" class="remove_from_playlist_button btn btn-sm btn-outline-danger">Remove from playlist</button></td>
+                    <td id=${playlist_id}-${id}><button type="button" class="remove_from_playlist_button btn btn-sm btn-outline-danger">–</button></td>
                 </tr>`
             }
             table_body.innerHTML = listBody;
