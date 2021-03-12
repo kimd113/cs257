@@ -40,14 +40,14 @@
                 <!-- <div id="search_trending_time_box" class="col-4 row align-items-center "> -->
                 <div id="search_trending_time_box" class="col-4">
                     <label id="serach_input_label" for="search_input">Choose a date:</label>
-                    <form name="search_input" id="search_input" action="/action_page.php" method='GET'>
-                        <select name="year-list" id="year-list">
+                    <form name="search_input" id="search_input" class="d-flex" action="/action_page.php" method='GET'>
+                        <select name="year-list" id="year-list" class="form-select">
                             <option value="" selected="selected">year</option>
                         </select>
-                        <select name="month-list" id="month-list">
+                        <select name="month-list" id="month-list" class="form-select">
                             <option value="" selected="selected">month</option>
                         </select>
-                        <select name="day-list" id="day-list">
+                        <select name="day-list" id="day-list" class="form-select">
                             <option value="" selected="selected">day</option>
                         </select>
                         <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
@@ -152,8 +152,8 @@
                     <div class="modal-body row flex-column">
                         <div class="col d-flex justify-content-start align-items-start">
                             <p id="saveToPlaylistMsg" class="playlistModalMsg">Choose your playlist</p>
-                            <form name="playlist-form" id="playlist-form" action="/action_page.php" method='GET'>
-                                <select name="playlist-options" id="playlist-options"></select>
+                            <form name="playlist-form" id="playlist-form" class="d-flex" action="/action_page.php" method='GET'>
+                                <select name="playlist-options" id="playlist-options" class="form-select form-select-sm"></select>
                                 <button type="button" class="btn btn-primary" id="save-to-submit">Save</button>
                             </form>
                         </div>

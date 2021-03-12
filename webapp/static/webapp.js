@@ -574,7 +574,7 @@ function onSignUpSubmitButton() {
                 document.getElementById('close-signup-modal').click();
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
-                position-absolute overflow-visible start-50 translate-middle" role="alert">
+                position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
                 <strong>Thank you, you are signed up! Please log in to continue!</strong>
                 <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </p>`;
@@ -623,7 +623,7 @@ function onLogInSubmitButton() {
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
                 let success_alert = `<p class="alert alert-success alert-dismissible fade show
-                position-absolute overflow-visible start-50 translate-middle" role="alert">
+                position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
                 <strong>Welcome back, ${logged_in_user}!</strong>
                 <button type="button" id="alert-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </p>`;
@@ -865,21 +865,23 @@ function renderUserPlaylistsTable() {
     let listBody = '';
     for (let i = 0; i < playlists_tabs.length; i++) {
         const { playlist_id } = playlists_items[i][0];
-        // console.log("playlist_id2 :", playlist_id)
         i == 0 ? listBody += `<div class="tab-pane fade show active" ` : listBody += `<div class="tab-pane fade" `;
-        listBody += `id="v-pills-${playlist_id}" role="tabpanel" aria-labelledby="v-pills-${playlist_id}-tab">
-            <table id="dtHorizontalVerticalExample" class="table table-striped table-bordered table-sm table-hover" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Channel</th>
-                        <th>Publish time</th>
-
-                    </tr>
-                </thead>
-                <tbody id="vertical-table-body-${playlist_id}"></tbody>
-            </table>
-        </div>`;
+        listBody += `id="v-pills-${playlist_id}" role="tabpanel" aria-labelledby="v-pills-${playlist_id}-tab">`
+        if (playlists_items[i].length > 1) {        
+                listBody += `<table id="dtHorizontalVerticalExample" class="table table-striped table-bordered table-sm table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Channel</th>
+                            <th>Publish time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vertical-table-body-${playlist_id}"></tbody>
+                </table>
+            </div>`;
+        } else {
+            listBody += `<p>No videos in this playlist yet.</p></div>`;
+        }
     }
     tabContent.innerHTML = listBody;
 }

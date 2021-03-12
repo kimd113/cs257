@@ -145,6 +145,10 @@ ul#now_trending_videos_list {
     margin-right: 10px;
 }
 
+#saveToPlaylistMsg {
+    margin-top: 0.5rem;
+}
+
 #alert_box {
     text-align: -webkit-center;
 }
