@@ -783,7 +783,7 @@ function saveToPlaylist(playlist_id, video_id){
 }
 
 function onDeletePlaylistButton(){
-    playlist_id = checkId(this);
+    let playlist_id = checkId(this).split("-")[2];
     console.log(playlist_id);
     deletePlaylist(logged_in_user, playlist_id)
 }
@@ -811,10 +811,9 @@ function deletePlaylist(user_name, playlist_id){
 }
 
 function onRemoveFromPlaylistButton(){
-    ids = checkId(this);
-    ids = ids.split("-");
-    playlist_id = ids[0];
-    video_id = ids[1];
+    let ids = checkId(this).split("-");
+    let playlist_id = ids[0];
+    let video_id = ids[1];
     console.log(playlist_id,video_id);
     removeFromPlaylist(playlist_id, video_id)
 }
@@ -852,37 +851,27 @@ function renderUserPlaylistsTabs() {
     for (let i = 0; i < playlists_tabs.length; i++) {
         const { playlist_id } = playlists_items[i][0];
 
-        //
+        listBody += `<li class="nav-item btn-group justify-content-between mb-2" id="playlist-tab-${playlist_id}" role="group" aria-label="btn-group-${playlist_id}">
+        <button class="nav-link`;
+
         if (i == 0) {
-            listBody += `<li class="nav-item btn-group justify-content-between mb-2" role="group" aria-label="btn-group-${playlist_id}">
-            <button class="nav-link active" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
-            aria-selected="true">${playlists_tabs[i]}</button>
-            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button>
-            </li>
-            `;
-        } else {
-            listBody += `<li class="nav-item btn-group justify-content-between mb-2" role="group" aria-label="btn-group-${playlist_id}">
-            <button class="nav-link" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
-            aria-selected="true">${playlists_tabs[i]}</button>
-            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button>
-            </li>
-            `;
-        }
-        //
-
-        // if (i == 0) {
-        //     listBody += `<button class="nav-link active "`;
-        // } else {
-        //     listBody += `<button class="nav-link "`;
-
-        // }
-        // listBody += `id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" 
-        // data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
-        // aria-selected="true">${playlists_tabs[i]}</button>`;
+            listBody += ` active"`;
+        } 
+        listBody += `" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}"
+            type="button" role="tab" aria-controls="v-pills-${playlist_id}" aria-selected="true">${playlists_tabs[i]}</button>
+            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button></li>`;
     }
 
     let playlist_tab = document.getElementById('v-pills-tab');
     playlist_tab.innerHTML = listBody;
+
+    // console.log(document.getElementById('v-pills-2-tab'))
+    let removePlaylistButton = document.querySelectorAll(".remove-playlist-btn");
+    if (removePlaylistButton) {
+        removePlaylistButton.forEach((element) => {
+            element.onclick = onDeletePlaylistButton;
+        })
+    }
 }
 
 function renderUserPlaylistsTable() {
@@ -997,7 +986,7 @@ function updatePlaylistSelect(){
     if (isEmpty(user_info)){
         playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
     }
-    else{
+    else {
         for(var playlist_title in user_info) {
             playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
         }
