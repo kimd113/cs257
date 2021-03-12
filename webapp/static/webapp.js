@@ -782,6 +782,51 @@ function saveToPlaylist(playlist_id, video_id){
     document.getElementById('close-save-modal').click();
 }
 
+
+function deletePlaylist(playlist_id){
+    let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
+
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log("saveToPlaylist");
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+        })
+        .catch((error) => console.log(error));
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+    // TODO: maybe a success message that disappears after a fews seconds?
+    // document.getElementById('close-create-modal').click();
+
+    // Apply new playlist options into dropdown immediately.
+    updatePlaylistSelect()
+}
+
+function removeFromPlaylist(playlist_id, video_id){
+    let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
+    console.log(url);
+    fetch(url, {method: 'get'})
+    .then((response) => response.json())
+    .then((msg) => {
+        console.log("saveToPlaylist");
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+        })
+        .catch((error) => console.log(error));
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+    // TODO: maybe a success message that disappears after a fews seconds?
+    // document.getElementById('close-save-modal').click();
+}   
+
 ///////////////////////////  MYPAGE FUNCTIONS ///////////////////////////
 function renderUserPlaylistsTabs() {
     /**
@@ -867,41 +912,6 @@ function renderUserPlaylistsItems() {
             table_body.innerHTML = listBody;
         }
     }
-function deletePlaylist(playlist_id){
-    let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
-
-    fetch(url, {method: 'get'})
-    .then((response) => response.json())
-    .then((msg) => {
-        console.log("createPlaylist");
-        updateUserInfo();
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-
-    // TODO: maybe a success message that disappears after a fews seconds?
-    // document.getElementById('close-create-modal').click();
-
-    // Apply new playlist options into dropdown immediately.
-    updatePlaylistSelect()
-}
-
-function removeFromPlaylist(playlist_id, video_id){
-    let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
-    console.log(url);
-    fetch(url, {method: 'get'})
-    .then((response) => response.json())
-    .then((msg) => {
-        console.log("saveToPlaylist");
-        updateUserInfo();
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-
-    // TODO: maybe a success message that disappears after a fews seconds?
-    // document.getElementById('close-save-modal').click();
 }
 
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
