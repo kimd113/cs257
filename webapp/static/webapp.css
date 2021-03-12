@@ -196,6 +196,9 @@ ul#now_trending_videos_list {
     flex-wrap: nowrap !important;
 }
 
+.large{
+    font-size: 20px;
+}
 
 #v-pills-newPlaylist-tab {
     /* border-radius: 25%; */
