@@ -662,8 +662,6 @@ function onCreatePlaylistSubmitButton(){
     let playlist_title = document.getElementById("playlist_input").value; 
     let alert_msg = document.getElementById("createPlaylistAlert");
 
-    // playlist_title = "";
-
     // check for empty inputs
     if (playlist_title == ""){
         alert_msg.innerHTML = "Playlist name cannot be empty!";
@@ -683,11 +681,11 @@ function onCreatePlaylistSubmitButton(){
     updateUserInfo()
     .then((info) => {
         user_info = info;
+        // console.log(user_info);
     })
     .catch((error) => console.log(error));
 }
 
-// TODO: debug
 function createPlaylist(playlist_title){
     let url =  `${getAPIBaseURL()}/create-playlist?user_name=${logged_in_user}&playlist_title=${playlist_title}`;
 
@@ -698,6 +696,7 @@ function createPlaylist(playlist_title){
         updateUserInfo()
         .then((info) => {
             user_info = info;
+            updatePlaylistSelect()
         })
         .catch((error) => console.log(error));
     })
@@ -709,7 +708,6 @@ function createPlaylist(playlist_title){
     document.getElementById('close-create-modal').click();
 
     // Apply new playlist options into dropdown immediately.
-    updatePlaylistSelect()
     // let playlist_select = document.getElementById("playlist-options");
     // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
 }
@@ -971,7 +969,16 @@ function updateButtons(){
 }
 
 function updatePlaylistSelect(){
-    updateUserInfo();
+    console.log("updatePlaylistSelect");
+    updateUserInfo()
+    .then((info) => {
+        user_info = info;
+        console.log(user_info);
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML = "";
     if (isEmpty(user_info)){
