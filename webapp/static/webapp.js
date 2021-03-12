@@ -37,9 +37,13 @@ function initialize() {
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            renderUserPlaylistsTabs();
-            renderUserPlaylistsTable();
-            renderUserPlaylistsItems();
+            updateMyPagePlaylists();
+            let removeFromPlaylistButton = document.querySelectorAll(".remove_from_playlist_button");
+            if (removeFromPlaylistButton) {
+                removeFromPlaylistButton.forEach((element) => {
+                    element.onclick = onRemoveFromPlaylistButton;
+                })
+            }
         })
         .catch((error) => console.log(error));
     }
@@ -782,6 +786,14 @@ function saveToPlaylist(playlist_id, video_id){
     document.getElementById('close-save-modal').click();
 }
 
+function onDeletePlaylistButton(){
+    ids = checkId(this);
+    ids = ids.split("-");
+    playlist_id = ids[0];
+    video_id = ids[1];
+    console.log(playlist_id,video_id);
+    removeFromPlaylist(playlist_id, video_id)
+}
 
 function deletePlaylist(playlist_id){
     let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
@@ -793,6 +805,7 @@ function deletePlaylist(playlist_id){
         updateUserInfo()
         .then((info) => {
             user_info = info;
+            updateMyPagePlaylists();
         })
         .catch((error) => console.log(error));
     })
@@ -806,18 +819,29 @@ function deletePlaylist(playlist_id){
     updatePlaylistSelect()
 }
 
+function onRemoveFromPlaylistButton(){
+    ids = checkId(this);
+    ids = ids.split("-");
+    playlist_id = ids[0];
+    video_id = ids[1];
+    console.log(playlist_id,video_id);
+    removeFromPlaylist(playlist_id, video_id)
+}
+
 function removeFromPlaylist(playlist_id, video_id){
     let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
     console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("saveToPlaylist");
+        console.log("removeFromPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
+            // console.log(user_info);
         })
         .catch((error) => console.log(error));
+        updateMyPagePlaylists();
     })
     .catch(function(error) {
         console.log(error);
@@ -887,6 +911,13 @@ function renderUserPlaylistsTable() {
 }
 
 function renderUserPlaylistsItems() {
+    console.log("renderUserPlaylistsItems");
+    updateUserInfo()
+    .then((info) => {
+        user_info = info;
+        // console.log(user_info);
+    })
+    .catch((error) => console.log(error));
     /**
      * Renders saved videos list in the table in each tabs.
      */
@@ -900,12 +931,12 @@ function renderUserPlaylistsItems() {
             let listBody = '';
     
             for (let j = 1; j < playlists_items[i].length; j++) {
-                const { link, title, channel, publish_time } = playlists_items[i][j];
+                const { link, title, channel, publish_time, id } = playlists_items[i][j];
                 listBody += `<tr>
                     <td><a href="https://www.youtube.com/watch?v=${link}" target="_blank">${title}</a></td>
                     <td>${channel}</td>
                     <td>${formatPublishTimeString(publish_time)}</td>
-                    <td><button type="button" class="btn btn-sm btn-outline-danger">Remove from playlist</button></td>
+                    <td id=${playlist_id}-${id}><button type="button" class="remove_from_playlist_button btn btn-sm btn-outline-danger">Remove from playlist</button></td>
                 </tr>`
             }
             table_body.innerHTML = listBody;
@@ -952,6 +983,12 @@ function updatePlaylistSelect(){
             playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
         }
     }
+}
+
+function updateMyPagePlaylists(){
+    renderUserPlaylistsTabs();
+    renderUserPlaylistsTable();
+    renderUserPlaylistsItems();
 }
 
 ///////////////////////////  UTILITY FUNCTIONS ///////////////////////////
