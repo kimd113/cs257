@@ -1005,6 +1005,7 @@ function formatPublishTimeString(publish_time) {
 }
 
 function renderAlertBox(alert_msg){
+    // TODO: stylistic features?
     let alert_box = document.getElementById('alert_box');
     let success_alert = `<p class="large alert alert-success alert-dismissible fade show
     position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
