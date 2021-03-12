@@ -112,12 +112,24 @@ ul#now_trending_videos_list {
     padding: 0; */
 }
 
+.now_trending_videos_list_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .now_trending_videos_list_item {
     /* margin-left: 1.5rem;
     margin-right: 1.5rem;
     height: 17rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     margin: 10rem 0.5rem 1rem 0.5rem;
-    max-width: fit-content !important;
+    min-width: 20rem; 
+    max-width: 20rem;
+    min-height: 20rem; 
+    max-height: 20rem;
 }
 
 .video_img {
@@ -125,6 +137,10 @@ ul#now_trending_videos_list {
     height: 90px; */
     width: 12rem;
     height: 9rem;
+}
+
+.video_title {
+    font-size: 1vw;
 }
 
 #vertical-table-box {
@@ -164,3 +180,5 @@ ul#now_trending_videos_list {
     width: fit-content;
     align-self: center;
 }
+
+
