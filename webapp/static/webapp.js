@@ -37,9 +37,7 @@ function initialize() {
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            renderUserPlaylistsTabs();
-            renderUserPlaylistsTable();
-            renderUserPlaylistsItems();
+            updateMyPagePlaylists();
             let removeFromPlaylistButton = document.querySelectorAll(".remove_from_playlist_button");
             if (removeFromPlaylistButton) {
                 removeFromPlaylistButton.forEach((element) => {
@@ -788,6 +786,14 @@ function saveToPlaylist(playlist_id, video_id){
     document.getElementById('close-save-modal').click();
 }
 
+function onDeletePlaylistButton(){
+    ids = checkId(this);
+    ids = ids.split("-");
+    playlist_id = ids[0];
+    video_id = ids[1];
+    console.log(playlist_id,video_id);
+    removeFromPlaylist(playlist_id, video_id)
+}
 
 function deletePlaylist(playlist_id){
     let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
@@ -799,6 +805,7 @@ function deletePlaylist(playlist_id){
         updateUserInfo()
         .then((info) => {
             user_info = info;
+            updateMyPagePlaylists();
         })
         .catch((error) => console.log(error));
     })
@@ -834,8 +841,7 @@ function removeFromPlaylist(playlist_id, video_id){
             // console.log(user_info);
         })
         .catch((error) => console.log(error));
-        renderUserPlaylistsTable();
-        renderUserPlaylistsItems();
+        updateMyPagePlaylists();
     })
     .catch(function(error) {
         console.log(error);
@@ -977,6 +983,12 @@ function updatePlaylistSelect(){
             playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
         }
     }
+}
+
+function updateMyPagePlaylists(){
+    renderUserPlaylistsTabs();
+    renderUserPlaylistsTable();
+    renderUserPlaylistsItems();
 }
 
 ///////////////////////////  UTILITY FUNCTIONS ///////////////////////////
