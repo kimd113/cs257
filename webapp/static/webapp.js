@@ -20,15 +20,29 @@ function initialize() {
     // console.log(videos_list);
     // console.log("when initialize :", logged_in_user);
 
-    getVideosListInMainPage();
-
-    loadYearList();
-
     // Check if user has logged in
     if (localStorage.getItem('username')) {
         keepLogInStatus();
     }
-    // updateButtons();// this doesn't work.. it's not remembered when page refreshes
+
+    // call the functions at the root path(/).
+    if (window.location.pathname == '/') {
+        getVideosListInMainPage();
+
+        loadYearList();
+    }
+
+    // call the functions at the relative path(/myPage.html).
+    if (window.location.pathname == '/myPage.html') {
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+            renderUserPlaylistsTabs();
+            renderUserPlaylistsTable();
+            renderUserPlaylistsItems();
+        })
+        .catch((error) => console.log(error));
+    }
 
     let elementPrevButton = document.getElementById('prev_button');
     if (elementPrevButton) {
@@ -523,7 +537,11 @@ function onLogInButton() {
 function keepLogInStatus() {
     logged_in = true;
     logged_in_user = localStorage.getItem('username');
-    updateUserInfo();
+    updateUserInfo()
+    .then((info) => {
+        user_info = info;
+    })
+    .catch((error) => console.log(error));
     updateButtons();
 }
 
@@ -596,7 +614,11 @@ function onLogInSubmitButton() {
                 logged_in = true;
                 logged_in_user = user_name;
                 console.log("onLogInSubmitButton");
-                updateUserInfo();
+                updateUserInfo()
+                .then((info) => {
+                    user_info = info;
+                })
+                .catch((error) => console.log(error));
                 
                 document.getElementById('close-login-modal').click();
                 let alert_box = document.getElementById('alert_box');
@@ -653,7 +675,11 @@ function onCreatePlaylistSubmitButton(){
     
     createPlaylist(playlist_title)
     console.log("onCreatePlaylistSubmitButton");
-    updateUserInfo();
+    updateUserInfo()
+    .then((info) => {
+        user_info = info;
+    })
+    .catch((error) => console.log(error));
 }
 
 // TODO: debug
@@ -664,7 +690,11 @@ function createPlaylist(playlist_title){
     .then((response) => response.json())
     .then((msg) => {
         console.log("createPlaylist");
-        updateUserInfo();
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+        })
+        .catch((error) => console.log(error));
     })
     .catch(function(error) {
         console.log(error);
@@ -703,7 +733,11 @@ function onSaveToPlaylistButton() {
 
 function onSaveToPlaylistSubmitButton(){
     console.log("onSaveToPlaylistSubmitButton");
-    updateUserInfo();
+    updateUserInfo()
+    .then((info) => {
+        user_info = info;
+    })
+    .catch((error) => console.log(error));
     // let playlist_title = document.getElementById("playlist-form").elements[0].value; 
     let playlist_title = document.getElementById("playlist-options").value; 
     let alert_msg = document.getElementById("saveToPlaylistAlert");
@@ -734,7 +768,11 @@ function saveToPlaylist(playlist_id, video_id){
     .then((response) => response.json())
     .then((msg) => {
         console.log("saveToPlaylist");
-        updateUserInfo();
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+        })
+        .catch((error) => console.log(error));
     })
     .catch(function(error) {
         console.log(error);
@@ -744,6 +782,91 @@ function saveToPlaylist(playlist_id, video_id){
     document.getElementById('close-save-modal').click();
 }
 
+///////////////////////////  MYPAGE FUNCTIONS ///////////////////////////
+function renderUserPlaylistsTabs() {
+    /**
+     * Render user's playlist when the user enters myPage.html.
+     */
+    let playlists_tabs =  Object.keys(user_info);
+    let playlists_items =  Object.values(user_info);
+    let listBody = '';
+
+    for (let i = 0; i < playlists_tabs.length; i++) {
+        const { playlist_id } = playlists_items[i][0];
+        if (i == 0) {
+            listBody += `<button class="nav-link active "`;
+        } else {
+            listBody += `<button class="nav-link "`;
+
+        }
+        listBody += `id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" 
+        data-bs-target="#v-pills-${playlist_id}" type="button" role="tab" aria-controls="v-pills-${playlist_id}" 
+        aria-selected="true">${playlists_tabs[i]}</button>`;
+    }
+
+    let playlist_tab = document.getElementById('v-pills-tab');
+    playlist_tab.innerHTML = listBody;
+}
+
+function renderUserPlaylistsTable() {
+    /**
+     * Renders table layout in each playlist tabs.
+     */
+    let tabContent = document.getElementById('v-pills-tabContent');
+
+    let playlists_tabs =  Object.keys(user_info);
+    let playlists_items =  Object.values(user_info);
+
+    for (let i = 0; i < playlists_tabs.length; i++) {
+        let listBody = '';
+        const { playlist_id } = playlists_items[i][0];
+        // console.log("playlist_id2 :", playlist_id)
+        i == 0 ? listBody += `<div class="tab-pane fade show active" ` : listBody += `<div class="tab-pane fade" `;
+        listBody += `id="v-pills-${playlist_id}" role="tabpanel" aria-labelledby="v-pills-${playlist_id}-tab">
+            <table id="dtHorizontalVerticalExample" class="table table-striped table-bordered table-sm table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Channel</th>
+                        <th>Publish time</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="vertical-table-body-${playlist_id}"></tbody>
+            </table>
+        </div>`;
+        tabContent.innerHTML = listBody;
+    }
+}
+
+function renderUserPlaylistsItems() {
+    /**
+     * Renders saved videos list in the table in each tabs.
+     */
+    debugger;
+    let playlists_tabs =  Object.keys(user_info);
+    let playlists_items =  Object.values(user_info);
+    console.log(playlists_items);
+    for (let i = 0; i < playlists_tabs.length; i++) {
+        console.log("items :", playlists_items[i][1])
+        if (playlists_items[i].length > 1) {
+            const { playlist_id } = playlists_items[i][0];
+            console.log(playlist_id);
+            let table_body = document.getElementById(`table-body-${playlist_id}`);
+            let listBody = '';
+    
+            for (let j = 1; j < playlists_items[i].length; j++) {
+                const { link, title, channel, publish_time } = playlists_items[i][j];
+                listBody += `<tr>
+                    <td><a href="https://www.youtube.com/watch?v=${link}" target="_blank">${title}</a></td>
+                    <td>${channel}</td>
+                    <td>${publish_time}</td>
+                    <td><button>Remove from playlist</button></td>
+                </tr>`
+            }
+            table_body.innerHTML = listBody;
+        }
+    }
 function deletePlaylist(playlist_id){
     let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${logged_in_user}&playlist_id=${playlist_id}`;
 
@@ -783,19 +906,32 @@ function removeFromPlaylist(playlist_id, video_id){
 
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
 
-function updateUserInfo(){
+// function updateUserInfo() {
+//     let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
+
+//     fetch(url, {method: 'get'})
+//     .then((response) => response.json())
+//     .then((info) => {
+//         user_info = info;
+//     })
+//     .catch(function(error) {
+//         console.log(error);
+//     });
+
+//     console.log(user_info);
+// }
+
+async function updateUserInfo() {
     let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
 
-    fetch(url, {method: 'get'})
+    return fetch(url, {method: 'get'})
     .then((response) => response.json())
-    .then((info) => {
-        user_info = info;
-    })
+    // .then((info) => {
+    //     user_info = info;
+    // })
     .catch(function(error) {
         console.log(error);
     });
-
-    console.log(user_info)
 }
 
 function updateButtons(){
