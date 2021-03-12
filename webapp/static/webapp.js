@@ -30,6 +30,13 @@ function initialize() {
         getVideosListInMainPage();
 
         loadYearList();
+        updateUserInfo()
+        // .then((info) => {
+        //     user_info = info;
+        //     console.log(user_info);
+        //     updateMyPagePlaylists();
+        // })
+        // .catch((error) => console.log(error));
     }
 
     // call the functions at the relative path(/myPage.html).
@@ -37,6 +44,7 @@ function initialize() {
         updateUserInfo()
         .then((info) => {
             user_info = info;
+            console.log(user_info);
             updateMyPagePlaylists();
             let removeFromPlaylistButton = document.querySelectorAll(".remove_from_playlist_button");
             if (removeFromPlaylistButton) {
@@ -801,11 +809,12 @@ function deletePlaylist(playlist_id){
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("saveToPlaylist");
+        console.log("deletPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
             updateMyPagePlaylists();
+            updatePlaylistSelect()
         })
         .catch((error) => console.log(error));
     })
@@ -814,9 +823,6 @@ function deletePlaylist(playlist_id){
     });
     // TODO: maybe a success message that disappears after a fews seconds?
     // document.getElementById('close-create-modal').click();
-
-    // Apply new playlist options into dropdown immediately.
-    updatePlaylistSelect()
 }
 
 function onRemoveFromPlaylistButton(){
@@ -839,9 +845,9 @@ function removeFromPlaylist(playlist_id, video_id){
         .then((info) => {
             user_info = info;
             // console.log(user_info);
+            updateMyPagePlaylists();
         })
         .catch((error) => console.log(error));
-        updateMyPagePlaylists();
     })
     .catch(function(error) {
         console.log(error);

@@ -5,7 +5,6 @@ DATA: Trending YouTube Video Statistics (https://www.kaggle.com/datasnaek/youtub
 FEATURES TO BE IMPLEMENTED:
 - My page: a page that shows the lists of the videos saved.
 - delete playlist
-- remove from playlist
 
 - A more elegant sign up/log in feature using flask-login
 
@@ -24,3 +23,4 @@ FEATURES CURRENTLY WORKING:
 - Save to my playlist: button that saves a selected video to user's playlist.
 - sharing data from index.html to mypage.html
 - better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
+- remove from playlist
