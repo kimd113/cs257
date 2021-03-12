@@ -159,7 +159,7 @@ function renderVerticalVideosList(page_count) {
                 `<tr id="${video.id}">
                     <td><a href="https://www.youtube.com/watch?v=${video.link}" target="_blank">${video.title}</a></td>
                     <td>${video.channel}</td>
-                    <td>${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}</td>
+                    <td>${formatPublishTimeString(publish_time)}</td>
                     <td>${video.views}</td>
                     <td>${video.likes}</td>
                     <td>${video.dislikes}</td>
@@ -862,8 +862,8 @@ function renderUserPlaylistsTable() {
     let playlists_tabs =  Object.keys(user_info);
     let playlists_items =  Object.values(user_info);
 
+    let listBody = '';
     for (let i = 0; i < playlists_tabs.length; i++) {
-        let listBody = '';
         const { playlist_id } = playlists_items[i][0];
         // console.log("playlist_id2 :", playlist_id)
         i == 0 ? listBody += `<div class="tab-pane fade show active" ` : listBody += `<div class="tab-pane fade" `;
@@ -874,30 +874,27 @@ function renderUserPlaylistsTable() {
                         <th>Title</th>
                         <th>Channel</th>
                         <th>Publish time</th>
-                        <th>Remove</th>
+
                     </tr>
                 </thead>
                 <tbody id="vertical-table-body-${playlist_id}"></tbody>
             </table>
         </div>`;
-        tabContent.innerHTML = listBody;
     }
+    tabContent.innerHTML = listBody;
 }
 
 function renderUserPlaylistsItems() {
     /**
      * Renders saved videos list in the table in each tabs.
      */
-    debugger;
     let playlists_tabs =  Object.keys(user_info);
     let playlists_items =  Object.values(user_info);
-    console.log(playlists_items);
+
     for (let i = 0; i < playlists_tabs.length; i++) {
-        console.log("items :", playlists_items[i][1])
         if (playlists_items[i].length > 1) {
             const { playlist_id } = playlists_items[i][0];
-            console.log(playlist_id);
-            let table_body = document.getElementById(`table-body-${playlist_id}`);
+            let table_body = document.getElementById(`vertical-table-body-${playlist_id}`);
             let listBody = '';
     
             for (let j = 1; j < playlists_items[i].length; j++) {
@@ -905,8 +902,8 @@ function renderUserPlaylistsItems() {
                 listBody += `<tr>
                     <td><a href="https://www.youtube.com/watch?v=${link}" target="_blank">${title}</a></td>
                     <td>${channel}</td>
-                    <td>${publish_time}</td>
-                    <td><button>Remove from playlist</button></td>
+                    <td>${formatPublishTimeString(publish_time)}</td>
+                    <td><button type="button" class="btn btn-sm btn-outline-danger">Remove from playlist</button></td>
                 </tr>`
             }
             table_body.innerHTML = listBody;
@@ -916,29 +913,11 @@ function renderUserPlaylistsItems() {
 
 ///////////////////////////  UPDATE FUNCTIONS ///////////////////////////
 
-// function updateUserInfo() {
-//     let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
-
-//     fetch(url, {method: 'get'})
-//     .then((response) => response.json())
-//     .then((info) => {
-//         user_info = info;
-//     })
-//     .catch(function(error) {
-//         console.log(error);
-//     });
-
-//     console.log(user_info);
-// }
-
 async function updateUserInfo() {
     let url =  `${getAPIBaseURL()}/user?user_name=${logged_in_user}`;
 
     return fetch(url, {method: 'get'})
     .then((response) => response.json())
-    // .then((info) => {
-    //     user_info = info;
-    // })
     .catch(function(error) {
         console.log(error);
     });
@@ -989,4 +968,8 @@ function checkId(elem) {
      * returns id of the parentNode of current element.
      */
     return elem.parentNode.id;
+}
+
+function formatPublishTimeString(publish_time) {
+    return `${publish_time.substring(0,4)}/${publish_time.substring(5,7)}/${publish_time.substring(8,10)}`;
 }
