@@ -31,12 +31,11 @@ function initialize() {
 
         loadYearList();
         updateUserInfo()
-        // .then((info) => {
-        //     user_info = info;
-        //     console.log(user_info);
-        //     updateMyPagePlaylists();
-        // })
-        // .catch((error) => console.log(error));
+        .then((info) => {
+            user_info = info;
+            console.log(user_info);
+        })
+        .catch((error) => console.log(error));
     }
 
     // call the functions at the relative path(/myPage.html).
@@ -46,12 +45,6 @@ function initialize() {
             user_info = info;
             console.log(user_info);
             updateMyPagePlaylists();
-            let removeFromPlaylistButton = document.querySelectorAll(".remove_from_playlist_button");
-            if (removeFromPlaylistButton) {
-                removeFromPlaylistButton.forEach((element) => {
-                    element.onclick = onRemoveFromPlaylistButton;
-                })
-            }
         })
         .catch((error) => console.log(error));
     }
@@ -995,6 +988,12 @@ function updateMyPagePlaylists(){
     renderUserPlaylistsTabs();
     renderUserPlaylistsTable();
     renderUserPlaylistsItems();
+    let removeFromPlaylistButton = document.querySelectorAll(".remove_from_playlist_button");
+    if (removeFromPlaylistButton) {
+        removeFromPlaylistButton.forEach((element) => {
+            element.onclick = onRemoveFromPlaylistButton;
+        })
+    }
 }
 
 ///////////////////////////  UTILITY FUNCTIONS ///////////////////////////
