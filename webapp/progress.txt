@@ -6,9 +6,7 @@ FEATURES TO BE IMPLEMENTED:
 - My page: a page that shows the lists of the videos saved.
 - delete playlist
 - remove from playlist
-- playlist features for the list view
 
-- better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
 - A more elegant sign up/log in feature using flask-login
 
 FEATURES CURRENTLY WORKING:
@@ -25,3 +23,4 @@ FEATURES CURRENTLY WORKING:
 - create playlist feature
 - Save to my playlist: button that saves a selected video to user's playlist.
 - sharing data from index.html to mypage.html
+- better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)

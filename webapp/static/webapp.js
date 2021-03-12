@@ -814,6 +814,7 @@ function updateButtons(){
 }
 
 function updatePlaylistSelect(){
+    updateUserInfo();
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML = "";
     if (isEmpty(user_info)){

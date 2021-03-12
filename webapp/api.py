@@ -58,7 +58,8 @@ def get_main_page():
 
         for row in cursor:
             video = {'link':row[0], 'title':row[1], 'publish_time':row[2],'thumbnail_link':row[3], 'channel':row[4],
-                     'views':row[5], 'likes':row[6], 'dislikes':row[7], 'comment_count':row[8], 'id':row[9]}
+                     'views':convert_num(row[5]), 'likes':convert_num(row[6]), 'dislikes':convert_num(row[7]), 'comment_count':convert_num(row[8]), 
+                     'id':row[9]}
             video_list.append(video)
 
         cursor.close()
@@ -469,3 +470,66 @@ def get_help():
     help_file = open(doc/'api-design.txt')
     text = help_file.read()
     return flask.render_template('help.html', help_text=text)
+
+########### Helper functions ###########
+def convert_num(num):
+    digits = len(str(num))
+    
+    # hundreds and below
+    if digits < 4:
+        return num
+    
+    # thousands
+    elif digits == 4:
+        num_rounded = round(num,-2)
+        thousands = str(num_rounded)[:2]
+        if thousands[1] == '0':
+            results = thousands[0] + 'K'
+        else:
+            results = thousands[0] + '.' + thousands[1] + 'K'
+    elif digits == 5:
+        num_rounded = round(num,-3)
+        thousands = str(num_rounded)[:2]
+        results = thousands+ 'K'
+    elif digits == 6:
+        num_rounded = round(num,-3)
+        thousands = str(num_rounded)[:3]
+        results = thousands + 'K'
+        
+    # millions
+    elif digits == 7:
+        num_rounded = round(num,-5)
+        millions = str(num_rounded)[:2]
+        if millions[1] == '0':
+            results = millions[0] + 'M'
+        else:
+            results = millions[0] + '.' + millions[1] + 'M'
+    elif digits == 8:
+        num_rounded = round(num,-6)
+        millions = str(num_rounded)[:2]
+        results = millions + 'M'
+    elif digits == 9:
+        num_rounded = round(num,-6)
+        millions = str(num_rounded)[:3]
+        results = millions + 'M'
+        
+    # billions
+    elif digits == 10:
+        num_rounded = round(num,-8)
+        billions = str(num_rounded)[:2]
+        if billions[1] == '0':
+            results = billions[0] + 'B'
+        else:
+            results = billions[0] + '.' + billions[1] + 'B'
+    elif digits == 11:
+        num_rounded = round(num,-9)
+        billions = str(num_rounded)[:2]
+        results = billions + 'B'
+    elif digits == 12:
+        num_rounded = round(num,-9)
+        billions = str(num_rounded)[:3]
+        results = billions + 'B'
+    else:
+        results = num
+        
+    return results
