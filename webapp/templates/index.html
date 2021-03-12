@@ -41,13 +41,13 @@
                 <div id="search_trending_time_box" class="col-4">
                     <label id="serach_input_label" for="search_input">Choose a date:</label>
                     <form name="search_input" id="search_input" class="d-flex" action="/action_page.php" method='GET'>
-                        <select name="year-list" id="year-list" class="form-select">
+                        <select name="year-list" id="year-list" class="">
                             <option value="" selected="selected">year</option>
                         </select>
-                        <select name="month-list" id="month-list" class="form-select">
+                        <select name="month-list" id="month-list" class="">
                             <option value="" selected="selected">month</option>
                         </select>
-                        <select name="day-list" id="day-list" class="form-select">
+                        <select name="day-list" id="day-list" class="">
                             <option value="" selected="selected">day</option>
                         </select>
                         <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
@@ -66,8 +66,10 @@
             <div id="now_trending_videos_box" class="justify-content-center">
 
                 <div id="now_trending_videos_list_box" class="align-self-center">
-                    <div id="now_trending_videos_list_1" class="row justify-content-center"></div>
-                    <div id="now_trending_videos_list_2" class="row justify-content-center"></div>
+                    <div class="now_trending_videos_list_container">
+                        <div id="now_trending_videos_list_1" class="row justify-content-center"></div>
+                        <div id="now_trending_videos_list_2" class="row justify-content-center"></div>
+                    </div>
 
                     <div id="vertical-table-box" class="table-responsive">
 
