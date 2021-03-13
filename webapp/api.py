@@ -202,12 +202,12 @@ def get_user_info():
                 
         cursor2 = connection.cursor()
         cursor2.execute(query2)
-        user_playlists_ids = []
         for row in cursor2:
             user_playlists_ids.append(row[0])
         cursor2.close()
 
         # returns null if the user has no playlists yet
+        print(user_playlists_ids)
         if not user_playlists_ids: json.dumps(user_info.playlists_videos)
 
         user_playlists_titles = []
@@ -407,8 +407,8 @@ def delete_playlist():
         
         # query4: delete row in users_playlists table
         query5 = '''DELETE FROM users_playlists
-                    WHERE playlists_id = {}
-                    AND users_id = {};'''.format(playlist_id,user_id)
+                    WHERE users_playlists.playlists_id = {}
+                    AND users_playlists.users_id = {};'''.format(playlist_id,user_id)
         cursor5 = connection.cursor()
         cursor5.execute(query5)
         cursor5.close()
