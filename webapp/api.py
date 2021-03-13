@@ -156,6 +156,7 @@ def log_in():
 
     return json.dumps(name_exists)
 
+# TODO: simplify this code
 class UserInfo():
     '''
         A helper class that contains a user's username, playlists, and videos in the playlists
@@ -208,7 +209,7 @@ def get_user_info():
         cursor2.close()
 
         # returns null if the user has no playlists yet
-        print(user_playlists_ids)
+        # print(user_playlists_ids)
         if not user_playlists_ids: json.dumps(user_info.playlists_videos)
 
         user_playlists_titles = []
@@ -226,17 +227,15 @@ def get_user_info():
     except Exception as e:
         print(e, file=sys.stderr)
         exit()
-
+    # print(user_playlists_titles)
     # populating some of user_info
     for i in range(len(user_playlists_ids)):
         playlist_title = user_playlists_titles[i]
         playlist_id = user_playlists_ids[i]
-        # title_id = playlist_title + '_' + playlist_id
 
         user_info.playlists_id[playlist_title] = playlist_id
         user_info.playlists_videos[playlist_title] = []
 
-    # playlists_ids = user_info.playlists_id
     for playlist_title in user_info.playlists_videos:
         playlist_id = user_info.playlists_id[playlist_title]
         user_info.playlists_videos[playlist_title].append({'playlist_id':playlist_id})
@@ -288,8 +287,11 @@ def create_playlist():
                 WHERE users.username = '{}'; '''.format(user_name)
 
     # query3: get playlist_id by getting the id of the last row
-    query3 = '''SELECT count(*)
-                FROM playlists;'''
+    query3 = '''SELECT playlists.id 
+                FROM playlists 
+                ORDER BY ID 
+                DESC 
+                LIMIT 1;'''
                 
     try:
         cursor1 = connection.cursor()
@@ -406,7 +408,7 @@ def delete_playlist():
             user_id = int(row[0])
         cursor4.close()
         
-        # query4: delete row in users_playlists table
+        # query5: delete row in users_playlists table
         query5 = '''DELETE FROM users_playlists
                     WHERE users_playlists.playlists_id = {}
                     AND users_playlists.users_id = {};'''.format(playlist_id,user_id)
@@ -435,14 +437,15 @@ def remove_from_playlist():
     playlist_id = flask.request.args.get('playlist_id')
     video_id = flask.request.args.get('video_id')
 
+    # query: delete videos_id, playlists_id to playlists_videos
+    query = '''DELETE FROM playlists_videos
+                WHERE videos_id = {}
+                AND playlists_id = {};'''.format(video_id, playlist_id)
+                
     try:
-        # query2: delete videos_id, playlists_id to playlists_videos
-        query2 = '''DELETE FROM playlists_videos
-                    WHERE videos_id = {}
-                    AND playlists_id = {};'''.format(video_id, playlist_id)
-        cursor2 = connection.cursor()
-        cursor2.execute(query2)
-        cursor2.close()
+        cursor = connection.cursor()
+        cursor.execute(query)
+        cursor.close()
 
     except Exception as e:
         print(e, file=sys.stderr)
@@ -456,7 +459,6 @@ def remove_from_playlist():
 ########### TODO endpoints ##########
 
 ########### Help endpoints ###########
-# debug???
 @api.route('/help') 
 def get_help():
     doc = Path("doc")

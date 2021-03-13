@@ -783,8 +783,8 @@ function saveToPlaylist(playlist_id, video_id){
 }
 
 function onDeletePlaylistButton(){
-    let playlist_id = checkId(this).split("-")[2];
-    console.log(playlist_id);
+    let playlist_id = this.id;
+    console.log("platlist_id = " + playlist_id);
     deletePlaylist(logged_in_user, playlist_id)
 }
 
@@ -806,7 +806,6 @@ function deletePlaylist(user_name, playlist_id){
         console.log(error);
     });
     renderAlertBox("Playlist deleted.");
-    // document.getElementById('close-create-modal').click();
 }
 
 function onRemoveFromPlaylistButton(){
@@ -858,7 +857,8 @@ function renderUserPlaylistsTabs() {
         } 
         listBody += `" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}"
             type="button" role="tab" aria-controls="v-pills-${playlist_id}" aria-selected="true">${playlists_tabs[i]}</button>
-            <button type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button></li>`;
+            <button id=${playlist_id} type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button></li>`;
+            // data-bs-toggle="modal" data-bs-target="#deletePlaylistModal"
     }
 
     let playlist_tab = document.getElementById('v-pills-tab');
