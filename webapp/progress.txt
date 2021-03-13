@@ -3,8 +3,6 @@ AUTHORS: Daniel Kim, Harry Tian
 DATA: Trending YouTube Video Statistics (https://www.kaggle.com/datasnaek/youtube-new?select=USvideos.csv)
 
 FEATURES TO BE IMPLEMENTED:
-- delete playlist
-
 - A more elegant sign up/log in feature using flask-login
 
 FEATURES CURRENTLY WORKING:
@@ -24,3 +22,4 @@ FEATURES CURRENTLY WORKING:
 - better formatting for views, likes, dislikes (e.g. Format 1200 to 1.2k)
 - My page: a page that shows the lists of the videos saved.
 - remove from playlist
+- delete playlist
