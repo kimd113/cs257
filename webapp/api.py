@@ -202,6 +202,7 @@ def get_user_info():
                 
         cursor2 = connection.cursor()
         cursor2.execute(query2)
+        user_playlists_ids = []
         for row in cursor2:
             user_playlists_ids.append(row[0])
         cursor2.close()
