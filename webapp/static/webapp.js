@@ -799,7 +799,6 @@ function deletePlaylist(user_name, playlist_id){
         .then((info) => {
             user_info = info;
             updateMyPagePlaylists();
-            updatePlaylistSelect()
         })
         .catch((error) => console.log(error));
     })

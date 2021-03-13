@@ -370,31 +370,31 @@ def delete_playlist():
                 WHERE playlists.id = {};'''.format(playlist_id)
 
     # query2: get all video_id from playlists_videos table
-    query2 = '''SELECT DISTINCT videos.id 
-                FROM videos, playlists_videos
+    query2 = '''SELECT DISTINCT playlists_videos.videos_id 
+                FROM playlists_videos
                 WHERE playlists_videos.playlists_id = {};'''.format(playlist_id)
 
     try:
         cursor1 = connection.cursor()
         cursor1.execute(query1)
         cursor1.close()
-
+        
         cursor2 = connection.cursor()
         cursor2.execute(query2)
         video_ids = []
         for row in cursor2:
             video_ids.append(row[0])
         cursor2.close()
-
+        
         for video_id in video_ids:
             # query3: delete rows in playlists_videos table
-            query3 = '''DELETE FROM users_playlists
-                        WHERE playlists.id = {}
-                        AND videos_id = {};'''.format(playlist_id,video_id)
+            query3 = '''DELETE FROM playlists_videos
+                        WHERE playlists_videos.playlists_id = {}
+                        AND playlists_videos.videos_id = {};'''.format(playlist_id,video_id)
             cursor3 = connection.cursor()
             cursor3.execute(query3)
             cursor3.close()
-
+            
         # query4: get users_id from users table
         query4 = '''SELECT users.id
                     FROM users
@@ -404,7 +404,7 @@ def delete_playlist():
         for row in cursor4:
             user_id = int(row[0])
         cursor4.close()
-
+        
         # query4: delete row in users_playlists table
         query5 = '''DELETE FROM users_playlists
                     WHERE playlists_id = {}
@@ -412,10 +412,13 @@ def delete_playlist():
         cursor5 = connection.cursor()
         cursor5.execute(query5)
         cursor5.close()
-
+        
     except Exception as e:
         print(e, file=sys.stderr)
         exit()
+
+    connection.commit() # very important line
+    connection.close()
         
     return json.dumps(None)
 
