@@ -458,7 +458,6 @@ def remove_from_playlist():
 # debug???
 @api.route('/help') 
 def get_help():
-    return json.dumps("???????")
     doc = Path("doc")
     help_file = open(doc/'api-design.txt')
     text = help_file.read()
