@@ -2,7 +2,7 @@ Harry Tian & Daeyeon Kim
 
 REQUEST: /
 GET parameters:
-	trending_date (Optional, default=18.31.05)
+	trending_date (Optional, default=18.14.06)
 RESPONSE: a JSON list of dictionaries, each of which representes a trending video on the user specified date. 
 Each video dictionary will have the following fields.
 	link: (string) a unique id that is part of the video link
@@ -59,20 +59,20 @@ EXAMPLE: /create-playlist?user_name=me&playlist_title=playlist1
 REQUEST: /delete-playlist
 GET parameters: 
 	user_name
-	playlist_title
+	playlist_id
 RESPONSE: None
-EXAMPLE: /delete-playlist?user_name=me&playlist_title=playlist1
+EXAMPLE: /delete-playlist?user_name=me&playlist_id=10
 
 REQUEST: /save-to-playlist
 GET parameter
 	playlist_id
-	video_link
+	video_id
 RESPONSE: None
-EXAMPLE: save-to-playlist?playlist_id=1&video_link=7C2z4GqqS5E
+EXAMPLE: save-to-playlist?playlist_id=1&video_id=5201
 
 REQUEST: /remove-from-playlist
 GET parameter
 	playlist_id
-	video_link
+	video_id
 RESPONSE: None
-EXAMPLE: remove-from-playlist?playlist_id=1&video_link=7C2z4GqqS5E
+EXAMPLE: remove-from-playlist?playlist_id=1&video_id=5202

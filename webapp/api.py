@@ -35,7 +35,7 @@ def get_main_page():
 
     trending_date = flask.request.args.get('trending_date')
     if not trending_date:
-        trending_date = "18.31.05"
+        trending_date = "18.14.06"
 
     query = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
                       videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count,
