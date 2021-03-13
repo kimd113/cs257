@@ -407,7 +407,7 @@ def delete_playlist():
 
         # query4: delete row in users_playlists table
         query5 = '''DELETE FROM users_playlists
-                    WHERE playlists.id = {}
+                    WHERE playlists_id = {}
                     AND users_id = {};'''.format(playlist_id,user_id)
         cursor5 = connection.cursor()
         cursor5.execute(query5)
