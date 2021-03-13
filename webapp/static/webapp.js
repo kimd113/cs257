@@ -14,7 +14,8 @@ let logged_in = false;
 let logged_in_user = "";
 let user_info = [];
 
-let video_id = "";
+let video_id = 0;
+let playlist_id = 0;
 
 function initialize() {
     // console.log(videos_list);
@@ -112,6 +113,11 @@ function initialize() {
     let addNewPlaylistButton = document.getElementById('v-pills-newPlaylist-tab');
     if (addNewPlaylistButton) {
         addNewPlaylistButton.onclick = onSaveToPlaylistButton;
+    }
+    
+    let deletePlaylistSubmitButton = document.getElementById('delete-playlist-submit');
+    if (deletePlaylistSubmitButton) {
+        deletePlaylistSubmitButton.onclick = onDeletePlaylistButton;
     }
 }
 
@@ -758,7 +764,7 @@ function onSaveToPlaylistSubmitButton(){
     // console.log("video id:" + video_id);
     
     saveToPlaylist(playlist_id, video_id)
-    video_id = "";
+    video_id = 0;
 }
 
 function saveToPlaylist(playlist_id, video_id){
@@ -783,9 +789,11 @@ function saveToPlaylist(playlist_id, video_id){
 }
 
 function onDeletePlaylistButton(){
-    let playlist_id = this.id;
-    console.log("platlist_id = " + playlist_id);
+    console.log("playlist_id = " + playlist_id);
     deletePlaylist(logged_in_user, playlist_id)
+    document.getElementById('close-delete-modal').click();
+    renderAlertBox("Playlist deleted.");
+    playlist_id = 0;
 }
 
 function deletePlaylist(user_name, playlist_id){
@@ -805,7 +813,6 @@ function deletePlaylist(user_name, playlist_id){
     .catch(function(error) {
         console.log(error);
     });
-    renderAlertBox("Playlist deleted.");
 }
 
 function onRemoveFromPlaylistButton(){
@@ -857,7 +864,7 @@ function renderUserPlaylistsTabs() {
         } 
         listBody += `" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}"
             type="button" role="tab" aria-controls="v-pills-${playlist_id}" aria-selected="true">${playlists_tabs[i]}</button>
-            <button id=${playlist_id} type="button" class="button btn btn-outline-danger remove-playlist-btn">–</button></li>`;
+            <button id=${playlist_id} type="button" class="button btn btn-outline-danger remove-playlist-btn" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">–</button></li>`;
             // data-bs-toggle="modal" data-bs-target="#deletePlaylistModal"
     }
 
@@ -868,7 +875,7 @@ function renderUserPlaylistsTabs() {
     let removePlaylistButton = document.querySelectorAll(".remove-playlist-btn");
     if (removePlaylistButton) {
         removePlaylistButton.forEach((element) => {
-            element.onclick = onDeletePlaylistButton;
+            element.onclick = function(){playlist_id = this.id};
         })
     }
 }
