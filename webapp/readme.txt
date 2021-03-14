@@ -2,16 +2,10 @@ AUTHORS: Harry Tian & Daniel Kim
 
 DATA: information about trending Youtube videos from 2017.11.14 to 2018.06.14
 
-[copyright info, plus a description of how I could get your raw
-data myself, including relevant links]
-
 The license for this data is CC0: Public Domain.
 The dataset can be downloaded here https://www.kaggle.com/datasnaek/youtube-new
 
-STATUS: [a concise description of what works, what's not working
-yet, and any other information that might help me
-test and evaluate your work]
-
+STATUS: 
 FEATURES CURRENTLY WORKING:
 - At mainpage, renders trending videos from a default date.
 - Maximum 10 videos are shown at once, and the prev/next buttons enable to switch to other videos in main page.
@@ -30,7 +24,7 @@ FEATURES CURRENTLY WORKING:
 FEATURES NOT WORKING:
     User signup and login feature using flask-login
 
-NOTES: [(Optional) anything else you'd like to add]
+NOTES:
     Instead of using flask-login, we implemented login feature using localStorage: we store username into localStorage
     and access to it whenever we have to verify the user or keep the user data from refreshing the page. We remove the
     data from the localStorage when the user clicks the Log out button.
