@@ -17,7 +17,10 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div id="header_box" class="container-fluid">
                 <div id="header_title_box" class="">
-                    <a id="header_title" class="navbar-brand" href="/">YouTube Trending Videos</a>
+                    <a id="header_title" class="navbar-brand" href="/">
+                        <h4>
+                            YouTube Trending Videos
+                        </h4></a>
                 </div>
                 <div id="header_user_box" class="">
                     <button class="button btn btn-outline-success" id="logIn" type="button" data-bs-toggle="modal" data-bs-target="#logInModal">Log in</button>
@@ -35,19 +38,20 @@
         <div id="now_trending_box" class="container-fluid">
             <div id="now_trending_header_box" class="row align-items-center">
                 <div id="now_trending_header_title_box" class="col-3">
-                    <h4 id="now_trending_header_title">Trending Videos</h4>
+                    <!-- <h4 id="now_trending_header_title">Trending Videos</h4> -->
+                    <h5 id="now_trending_header_title">Trending Videos</h5>
                 </div>
                 <!-- <div id="search_trending_time_box" class="col-4 row align-items-center "> -->
                 <div id="search_trending_time_box" class="col-4">
                     <label id="serach_input_label" for="search_input">Choose a date:</label>
                     <form name="search_input" id="search_input" class="d-flex" action="/action_page.php" method='GET'>
-                        <select name="year-list" id="year-list" class="">
+                        <select name="year-list" id="year-list" class="serach_input_options form-select">
                             <option value="" selected="selected">year</option>
                         </select>
-                        <select name="month-list" id="month-list" class="">
+                        <select name="month-list" id="month-list" class="serach_input_options form-select">
                             <option value="" selected="selected">month</option>
                         </select>
-                        <select name="day-list" id="day-list" class="">
+                        <select name="day-list" id="day-list" class="serach_input_options form-select">
                             <option value="" selected="selected">day</option>
                         </select>
                         <button id="search_trending_time_button" class="col btn btn-sm btn-secondary" type="button">Search</button>
