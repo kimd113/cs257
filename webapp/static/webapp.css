@@ -6,59 +6,23 @@
     CSS for the tiny web app for CS257.
 */
 
-body {
-    /* margin: 20px;
-    font-family: Helvetica;
-    background: #ddffdd;
-    font-size: smaller; */
-}
-
 a {
     text-decoration: none;
 }
 
-#header_box {
-    /* height: 4rem; */
-}
-
 #header_title_box {
-    /* width: 50%;
-    float: left; */
     height: 35px !important;
 }
 
-#header_user_box {
-    /* width: 50%;
-    height: 4rem;
-    float: left;
-    text-align: right; */
-}
-
-.clear {
-    clear: both;
-}
-
-#now_trending_box {
-    /* width: 100%;
-    height: 16rem; */
-}
-
 #now_trending_header_box {
-    /* height: 4rem; */
     height: 50px;
 }
 
 #now_trending_header_title_box {
-    /* width: 17%;
-    float: left; */
     width: fit-content;
 }
 
 #search_trending_time_box {
-    /* width: 63%;
-    height: 2.83rem;
-    float: left;
-    margin-top: 1.17rem; */
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -81,48 +45,9 @@ a {
 }
 
 #view_buttons_box {
-    /* width: 20%;
-    height: 2.83rem;
-    float: left;
-    margin-top: 1.17rem;
-    text-align: right; */
     text-align: end;
 }
 
-#now_trending_videos_box {
-    /* width: 100%;
-    height: 34rem; */
-}
-
-.now_videos_button_box {
-    /* width: 5%;
-    height: 2rem;
-    float: left;
-    margin-top: 16rem;
-    margin-bottom: 16rem; */
-}
-
-#now_trending_videos_list_box {
-    /* height: 34rem;
-    width: 90%;
-    text-align: center;
-    margin: 0 auto;
-    float: left; */
-}
-
-ul#now_trending_videos_list {
-    /* list-style: none;
-    height: 34rem;
-    margin: 0 auto;
-    padding: 0;
-    column-count: 5; */
-
-    /* display: -webkit-inline-box;
-    width: fit-content;
-    height: 17rem;
-    margin: 0 auto;
-    padding: 0; */
-}
 
 .now_trending_videos_list_container {
     display: flex;
@@ -131,9 +56,6 @@ ul#now_trending_videos_list {
 }
 
 .now_trending_videos_list_item {
-    /* margin-left: 1.5rem;
-    margin-right: 1.5rem;
-    height: 17rem; */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -145,8 +67,6 @@ ul#now_trending_videos_list {
 }
 
 .video_img {
-    /* width: 120px;
-    height: 90px; */
     width: 12rem;
     height: 9rem;
 }
@@ -199,7 +119,6 @@ ul#now_trending_videos_list {
 
 #playlist_nav_container {
     text-align: center;
-    /* height: fit-content; */
 }
 
 #v-pills-tab {
@@ -213,7 +132,6 @@ ul#now_trending_videos_list {
 }
 
 #v-pills-newPlaylist-tab {
-    /* border-radius: 25%; */
     margin-top: 10px;
     margin-bottom: 10px;
     width: fit-content;
