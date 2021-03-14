@@ -3,11 +3,6 @@ CREATE TABLE trending_dates (
   date text
 );
 
-CREATE TABLE categories (
-  id int,
-  title text
-);
-
 CREATE TABLE videos (
   id SERIAL,
   link text,
@@ -31,9 +26,8 @@ CREATE TABLE channels (
   title text
 );
 
-CREATE TABLE videos_categories_channels (
+CREATE TABLE videos_channels (
   videos_id int,
-  categories_id int,
   channels_id int
 );
 
