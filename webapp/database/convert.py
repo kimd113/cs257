@@ -102,11 +102,11 @@ def create_videos_trending_views_csv(videos_dict, trending_dates_dict):
                 id += 1
 
 def create_videos_channels_csv(videos_dict, channels_dict):
-    ''' creates csv that links video id to category_id, channels_id '''
+    ''' creates csv that links video id to channels_id '''
 
     with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        with open('videos_categories_channels.csv', 'w', newline='') as csvfile:
+        with open('videos_channels.csv', 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             
             id = 1
