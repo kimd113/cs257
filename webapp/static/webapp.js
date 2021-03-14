@@ -853,7 +853,6 @@ function renderUserPlaylistsTabs() {
         listBody += `" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}"
             type="button" role="tab" aria-controls="v-pills-${playlist_id}" aria-selected="true">${playlists_tabs[i]}</button>
             <button id=${playlist_id} type="button" class="button btn btn-outline-danger remove-playlist-btn" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">–</button></li>`;
-            // data-bs-toggle="modal" data-bs-target="#deletePlaylistModal"
     }
 
     let playlist_tab = document.getElementById('v-pills-tab');

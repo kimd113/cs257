@@ -208,7 +208,6 @@ def get_user_info():
         cursor2.close()
 
         # returns null if the user has no playlists yet
-        # print(user_playlists_ids)
         if not user_playlists_ids: json.dumps(user_info.playlists_videos)
 
         user_playlists_titles = []
@@ -226,7 +225,6 @@ def get_user_info():
     except Exception as e:
         print(e, file=sys.stderr)
         exit()
-    # print(user_playlists_titles)
 
     # Note: this code is very redundant but I'm too sacred to change it
     for i in range(len(user_playlists_ids)):
