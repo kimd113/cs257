@@ -24,6 +24,7 @@ a {
 #header_title_box {
     /* width: 50%;
     float: left; */
+    height: 35px !important;
 }
 
 #header_user_box {
@@ -44,11 +45,13 @@ a {
 
 #now_trending_header_box {
     /* height: 4rem; */
+    height: 50px;
 }
 
 #now_trending_header_title_box {
     /* width: 17%;
     float: left; */
+    width: fit-content;
 }
 
 #search_trending_time_box {
@@ -58,10 +61,19 @@ a {
     margin-top: 1.17rem; */
     display: flex;
     flex-wrap: nowrap;
+    align-items: center;
 }
 
 #search_input_label {
     width: 32% !important;
+}
+
+.serach_input_options {
+    padding: 0% !important;
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+    width: 100px !important;
+    margin-right: 4px;
 }
 
 #search_input {
@@ -128,8 +140,8 @@ ul#now_trending_videos_list {
     margin: 10rem 0.5rem 1rem 0.5rem;
     min-width: 20rem; 
     max-width: 20rem;
-    min-height: 20rem; 
-    max-height: 20rem;
+    min-height: 19.5rem; 
+    max-height: 19.5rem;
 }
 
 .video_img {

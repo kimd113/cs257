@@ -50,37 +50,6 @@ def create_channels_csv(channels_dict):
             writer.writerow([channel_id, channel])
             # id += 1
 
-def create_categories_csv():
-    ''' 
-        creates categories.csv by reading from US_category_id.json 
-        returns a dictionary where the keys are category_title and the values are category_id
-        NOTE: category_id are not continuous, they are based on the ids specified in the JSON file
-    '''
-
-    category_ids = []
-    category_titles = []
-    row_num = 1
-    with open('US_category_id.json') as JSONfile:
-        for row in JSONfile:
-            # the 8th, 18th, 28th ... row conatins the category_id
-            if (row_num - 8) % 10 == 0:
-                category_id = row[10:-3]
-                category_ids.append(category_id)
-
-            # the 11th, 21th, 31th ... row contains the category_title
-            if (row_num - 1) % 10 == 0 and row_num != 1:
-                category = row[14:-3]
-                category_titles.append(category)
-
-            row_num += 1
-    
-    with open('categories.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile)
-        for i in range(len(category_ids)):
-            category_id = category_ids[i]
-            category_title = category_titles[i]
-            writer.writerow([category_id, category_title])
-
 def create_videos_csv():
     ''' create videos.csv, each row contains relevant unique data for a video'''
     
@@ -132,7 +101,7 @@ def create_videos_trending_views_csv(videos_dict, trending_dates_dict):
                 writer.writerow([id, videos_id, trending_dates_id, views, likes, dislikes, comment_count])
                 id += 1
 
-def create_videos_categories_channels_csv(videos_dict, channels_dict):
+def create_videos_channels_csv(videos_dict, channels_dict):
     ''' creates csv that links video id to category_id, channels_id '''
 
     with open('USvideos.csv', 'r', encoding='utf-8') as csvfile:
@@ -143,23 +112,21 @@ def create_videos_categories_channels_csv(videos_dict, channels_dict):
             id = 1
             for row in reader:
                 title = row['title']
-                categories_id = row['category_id']
                 channel = row['channel_title']
 
                 videos_id = videos_dict[title]
                 channels_id = channels_dict[channel]
 
-                writer.writerow([videos_id, categories_id, channels_id])
+                writer.writerow([videos_id,  channels_id])
                 id += 1
 
 def main():
     trending_dates_dict, channels_dict = extract_discrete_fields()
-    create_categories_csv()
     videos_dict = create_videos_csv()
 
     create_trending_dates_csv(trending_dates_dict)
     create_channels_csv(channels_dict)
     create_videos_trending_views_csv(videos_dict, trending_dates_dict)
-    create_videos_categories_channels_csv(videos_dict, channels_dict)
+    create_videos_channels_csv(videos_dict, channels_dict)
 
 main()
