@@ -1,8 +1,5 @@
 //Daniel Kim, Harry Tian
 
-window.onload = initialize;
-console.log("loading");
-
 /////////////////////////// GLOABL VARIABLES ///////////////////////////
 let videos_list = [];
 let videos_list_total_number = 0;
@@ -16,6 +13,10 @@ let user_info = [];
 
 let video_id = 0;
 let playlist_id = 0;
+
+/////////////////////////// INITIALIZE FUNCTION ///////////////////////////
+window.onload = initialize;
+console.log("loading");
 
 function initialize() {
     // console.log(videos_list);
