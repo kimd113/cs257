@@ -27,7 +27,8 @@
                 <a href="/" class="text-decoration-none">
                     <button hidden class="button btn btn-outline-success" id="myPage" type="button">Main</button>
                 </a>
-                <button hidden class="button btn btn-outline-success" id="logOut" type="button">Log out</button>
+                <!-- <button hidden class="button btn btn-outline-success" id="logOut" type="button">Log out</button> -->
+                <button hidden class="button btn btn-outline-success" id="logOut" type="button" data-bs-toggle="modal" data-bs-target="#logOutModal">Log out</button>
             </div>
         </div>
     </nav>
@@ -43,8 +44,8 @@
 
         <div class="d-flex align-items-start">
             <div id="playlist_nav_container" class="">
-                <ul class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"></ul>
                 <button class="button btn btn-outline-primary" id="v-pills-newPlaylist-tab" data-bs-toggle="modal" data-bs-target="#createPlaylistModal" type="button" aria-selected="false">+</button>
+                <ul class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"></ul>
             </div>
             <div class="tab-content" id="v-pills-tabContent"></div>
         </div>
@@ -89,6 +90,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="close-delete-modal" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="delete-playlist-submit">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log-out modal -->
+    <div class="modal" id="logOutModal" tabindex="-1" aria-labelledby="logOutLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logOutTitle">Log Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row flex-column">
+                    <div class="col d-flex justify-content-start align-items-start">
+                        <p id="logOutMsg" class="playlistModalMsg">Are you sure you want to log out?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-logOut-modal" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="log-out-submit">Yes</button>
                 </div>
             </div>
         </div>

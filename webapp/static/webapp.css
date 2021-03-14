@@ -204,7 +204,7 @@ ul#now_trending_videos_list {
     /* border-radius: 25%; */
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 82%;
+    width: fit-content;
 }
 
 .remove-playlist-btn {

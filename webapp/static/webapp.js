@@ -100,6 +100,11 @@ function initialize() {
         logOutSubmitButton.onclick = onLogOutSubmitButton;
     }
     
+    let createPlaylistButton = document.getElementById('createPlaylist');
+    if (createPlaylistButton) {
+        createPlaylistButton.onclick = onCreatePlaylistButton;
+    }
+
     let createPlaylistSubmitButton = document.getElementById('create-playlist-submit');
     if (createPlaylistSubmitButton) {
         createPlaylistSubmitButton.onclick = onCreatePlaylistSubmitButton;
@@ -489,7 +494,6 @@ function onSearchButton() {
 
     let search_date = search_year + '.' +  search_day + '.' + search_month;
     let url =  `${getAPIBaseURL()}?trending_date=${search_date}`;
-    console.log(url);
 
     fetch(url, {method: 'get'})
     .then((response) => response.json())
@@ -526,28 +530,14 @@ function onSignUpButton() {
     let msgBox = document.getElementById('signUpMsg');
     msgBox.innerHTML = "Type username to sign up:";
 
-    let myModal = document.getElementById('signUpModal');
-    let myInput = document.getElementById('signUp_input');
-
-    myInput.value = "";
-
-    myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus();
-    })
+    clearInput('signUpModal', 'signUp_input');
 }
 
 function onLogInButton() {
     let msgBox = document.getElementById('logInMsg');
     msgBox.innerHTML = 'Type username to log in:';
 
-    let myModal = document.getElementById('logInModal');
-    let myInput = document.getElementById('logIn_input');
-
-    myInput.value = "";
-
-    myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus();
-    })
+    clearInput('logInModal', 'logIn_input');
 }
 
 function keepLogInStatus() {
@@ -643,10 +633,17 @@ function onLogOutSubmitButton() {
     localStorage.removeItem('username');
     updateButtons();
     document.getElementById('close-logOut-modal').click();
+    if (window.location.pathname == '/myPage.html') {
+        window.location.href = '/';
+    }
 }
 /////////////////////////// PLAYLIST FUNCTIONS ///////////////////////////
 
-function onCreatePlaylistSubmitButton(){
+function onCreatePlaylistButton() {
+    clearInput('createPlaylistModal', 'playlist_input');
+}
+
+function onCreatePlaylistSubmitButton() {
     let playlist_title = document.getElementById("playlist_input").value; 
     let alert_msg = document.getElementById("createPlaylistAlert");
 
@@ -672,7 +669,6 @@ function onCreatePlaylistSubmitButton(){
         if (window.location.pathname == '/myPage.html') {
             renderUserPlaylistsTabs();
         }
-        // console.log(user_info);
     })
     .catch((error) => console.log(error));
 }
@@ -687,7 +683,7 @@ function createPlaylist(user_name, playlist_title){
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            updatePlaylistSelect()
+            updatePlaylistSelect();
         })
         .catch((error) => console.log(error));
     })
@@ -697,12 +693,6 @@ function createPlaylist(user_name, playlist_title){
 
     document.getElementById('close-create-modal').click();
 
-    // Apply new playlist options into dropdown immediately.
-    if (window.location.pathname == '/') {
-        updatePlaylistSelect();
-    }
-    // let playlist_select = document.getElementById("playlist-options");
-    // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
     renderAlertBox("Playlist created.");
 }
 
@@ -716,16 +706,9 @@ function onSaveToPlaylistButton() {
     }
     else if (window.location.pathname == '/') {
         video_id = checkId(this);
-        updatePlaylistSelect()
+        console.log("at onSaveToPlaylistButton :", user_info);
+        updatePlaylistSelect();
     }
-    let myModal = document.getElementById('createPlaylistModal');
-    let myInput = document.getElementById('playlist_input');
-
-    myInput.value = "";
-
-    myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus();
-    })
 }
 
 function onSaveToPlaylistSubmitButton(){
@@ -978,14 +961,6 @@ function updateButtons(){
 
 function updatePlaylistSelect(){
     console.log("updatePlaylistSelect");
-    updateUserInfo()
-    .then((info) => {
-        user_info = info;
-        console.log(user_info);
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
 
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML = "";
@@ -1047,4 +1022,15 @@ function renderAlertBox(alert_msg){
             document.getElementById('alert-close').click();
         }
     }, 2000);
+}
+
+function clearInput(modalId, inputId) {
+    let myModal = document.getElementById(modalId);
+    let myInput = document.getElementById(inputId);
+
+    myInput.value = "";
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus();
+    })
 }
