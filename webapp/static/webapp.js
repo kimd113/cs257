@@ -219,13 +219,7 @@ function getVideosListInMainPage() {
             videosListElementSecondRow.innerHTML = listBodies[1];
         }
 
-        onLoadVideoPages();
-        let pageItem = document.querySelectorAll(".page-item");
-        if (pageItem) {
-            pageItem.forEach(function(element) {
-                element.onclick = onClickVideoPage;
-            });
-        }
+        resetPagination();
 
         let saveToPlaylistButton = document.querySelectorAll(".save_to_playlist_button");
         if (saveToPlaylistButton) {
@@ -321,6 +315,8 @@ function onLoadVideoPages() {
      * Implement the pagination of the video list.
      */
     let verticalVideosListElement = document.getElementById("vertical-videos-list");
+    verticalVideosListElement.innerHTML = '';
+
     let videos_list_total_pages = Math.ceil(videos_list_total_number / 10);
 
     let listBody = '';
@@ -499,8 +495,9 @@ function onSearchButton() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((videos) => {
-        videos_list_current_page = 0;
         videos_list = videos;
+        videos_list_current_page = 0;
+        videos_list_total_number = videos_list.length;
 
         let videosListElementFirstRow = document.getElementById('now_trending_videos_list_1');
         let videosListElementSecondRow = document.getElementById('now_trending_videos_list_2');
@@ -519,6 +516,7 @@ function onSearchButton() {
             let listBody = renderVerticalVideosList(videos_list_current_page);
             verticalTableBodyElement.innerHTML = listBody;
         }
+        resetPagination();
     })
     .catch(function(error) {
         console.log(error);
@@ -1038,4 +1036,14 @@ function clearInput(modalId, inputId) {
     myModal.addEventListener('shown.bs.modal', function () {
         myInput.focus();
     })
+}
+
+function resetPagination() {
+    onLoadVideoPages();
+    let pageItem = document.querySelectorAll(".page-item");
+    if (pageItem) {
+        pageItem.forEach(function(element) {
+            element.onclick = onClickVideoPage;
+        });
+    }
 }
