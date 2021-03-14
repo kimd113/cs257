@@ -694,12 +694,17 @@ function createPlaylist(user_name, playlist_title){
     document.getElementById('close-create-modal').click();
 
     renderAlertBox("Playlist created.");
+    let alert_msg = document.getElementById("saveToPlaylistAlert");
+    alert_msg.innerHTML = "";
 }
 
 function onSaveToPlaylistButton() {
     /**
      * render a "save to playlist" modal when the button is clicked.
      */
+    let alert_msg = document.getElementById("saveToPlaylistAlert");
+    alert_msg.innerHTML = "";
+
     if (!logged_in){
         document.getElementById('close-save-modal').click();
         renderAlertBox("Please log in first!");
