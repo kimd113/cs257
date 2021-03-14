@@ -40,12 +40,12 @@ def get_main_page():
     query = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, 
                       videos_trending_views.views, videos_trending_views.likes, videos_trending_views.dislikes, videos_trending_views.comment_count,
                       videos.id
-               FROM videos, videos_trending_views, videos_categories_channels, channels, trending_dates
+               FROM videos, videos_trending_views, videos_channels, channels, trending_dates
                WHERE trending_dates.date = '{}'
                AND trending_dates.id = videos_trending_views.trending_dates_id
                AND videos_trending_views.videos_id = videos.id
-               AND videos.id = videos_categories_channels.videos_id
-               AND videos_categories_channels.channels_id = channels.id
+               AND videos.id = videos_channels.videos_id
+               AND videos_channels.channels_id = channels.id
                ORDER BY videos_trending_views.views
                DESC;'''.format(trending_date)
                
@@ -240,11 +240,11 @@ def get_user_info():
         
         # query4: get the videos in each playlist
         query4 = '''SELECT DISTINCT videos.link, videos.title, videos.publish_time, videos.thumbnail_link, channels.title, videos.id
-                         FROM videos, videos_categories_channels, channels, playlists_videos
+                         FROM videos, videos_channels, channels, playlists_videos
                          WHERE playlists_videos.playlists_id = {}
                          AND videos.id = playlists_videos.videos_id
-                         AND videos.id = videos_categories_channels.videos_id
-                         AND videos_categories_channels.channels_id = channels.id;'''.format(playlist_id)
+                         AND videos.id = videos_channels.videos_id
+                         AND videos_channels.channels_id = channels.id;'''.format(playlist_id)
 
         try:
             cursor4 = connection.cursor()
