@@ -156,7 +156,6 @@ def log_in():
 
     return json.dumps(name_exists)
 
-# TODO: simplify this code
 class UserInfo():
     '''
         A helper class that contains a user's username, playlists, and videos in the playlists
@@ -228,7 +227,8 @@ def get_user_info():
         print(e, file=sys.stderr)
         exit()
     # print(user_playlists_titles)
-    # populating some of user_info
+
+    # Note: this code is very redundant but I'm too sacred to change it
     for i in range(len(user_playlists_ids)):
         playlist_title = user_playlists_titles[i]
         playlist_id = user_playlists_ids[i]

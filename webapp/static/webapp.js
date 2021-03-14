@@ -704,12 +704,17 @@ function createPlaylist(user_name, playlist_title){
     // let playlist_select = document.getElementById("playlist-options");
     // playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
     renderAlertBox("Playlist created.");
+    let alert_msg = document.getElementById("saveToPlaylistAlert");
+    alert_msg.innerHTML = "";
 }
 
 function onSaveToPlaylistButton() {
     /**
      * render a "save to playlist" modal when the button is clicked.
      */
+    let alert_msg = document.getElementById("saveToPlaylistAlert");
+    alert_msg.innerHTML = "";
+
     if (!logged_in){
         document.getElementById('close-save-modal').click();
         renderAlertBox("Please log in first!");
