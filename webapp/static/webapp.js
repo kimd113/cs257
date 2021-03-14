@@ -16,7 +16,6 @@ let playlist_id = 0;
 
 /////////////////////////// INITIALIZE FUNCTION ///////////////////////////
 window.onload = initialize;
-console.log("loading");
 
 function initialize() {
 
@@ -33,7 +32,6 @@ function initialize() {
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            console.log(user_info);
         })
         .catch((error) => console.log(error));
     }
@@ -43,7 +41,6 @@ function initialize() {
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            console.log(user_info);
             updateMyPagePlaylists();
         })
         .catch((error) => console.log(error));
@@ -405,7 +402,6 @@ function loadYearList() {
         yearList.innerHTML = listBody;
         
         yearList.onchange = function() {
-            console.log(this.value);
             loadMonthList(this.value);
         }
     }
@@ -424,7 +420,6 @@ function loadMonthList(yearSelection) {
         monthList.innerHTML = listBody;
 
         monthList.onchange = function() {
-            console.log(this.value);
             loadDayList(this.value);
         }
     }
@@ -460,9 +455,6 @@ function loadDayList(monthSelection) {
         }
 
         dayList.innerHTML = listBody;
-        dayList.onchange = function() {
-            console.log(this.value);
-        }
     }
 }
 
@@ -553,7 +545,6 @@ function onSignUpSubmitButton() {
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("Signed in=" + msg);
         if (msgbox){
             if (msg){
                 document.getElementById('close-signup-modal').click();
@@ -762,7 +753,6 @@ function saveToPlaylist(playlist_id, video_id) {
 }
 
 function onDeletePlaylistButton() {
-    console.log("playlist_id = " + playlist_id);
     deletePlaylist(logged_in_user, playlist_id);
     document.getElementById('close-delete-modal').click();
     renderAlertBox("Playlist deleted.");
@@ -801,7 +791,6 @@ function removeFromPlaylist(playlist_id, video_id){
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            // console.log(user_info);
             updateMyPagePlaylists();
             renderAlertBox("Removed from playlist.");
         })
