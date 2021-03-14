@@ -1,8 +1,5 @@
 //Daniel Kim, Harry Tian
 
-window.onload = initialize;
-console.log("loading");
-
 /////////////////////////// GLOABL VARIABLES ///////////////////////////
 let videos_list = [];
 let videos_list_total_number = 0;
@@ -16,6 +13,10 @@ let user_info = [];
 
 let video_id = 0;
 let playlist_id = 0;
+
+/////////////////////////// INITIALIZE FUNCTION ///////////////////////////
+window.onload = initialize;
+console.log("loading");
 
 function initialize() {
     // console.log(videos_list);
@@ -853,7 +854,6 @@ function renderUserPlaylistsTabs() {
         listBody += `" id="v-pills-${playlist_id}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-${playlist_id}"
             type="button" role="tab" aria-controls="v-pills-${playlist_id}" aria-selected="true">${playlists_tabs[i]}</button>
             <button id=${playlist_id} type="button" class="button btn btn-outline-danger remove-playlist-btn" data-bs-toggle="modal" data-bs-target="#deletePlaylistModal">–</button></li>`;
-            // data-bs-toggle="modal" data-bs-target="#deletePlaylistModal"
     }
 
     let playlist_tab = document.getElementById('v-pills-tab');
