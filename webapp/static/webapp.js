@@ -19,8 +19,6 @@ window.onload = initialize;
 console.log("loading");
 
 function initialize() {
-    // console.log(videos_list);
-    // console.log("when initialize :", logged_in_user);
 
     // Check if user has logged in
     if (localStorage.getItem('username')) {
@@ -114,11 +112,6 @@ function initialize() {
     let saveToPlaylistSubmitButton = document.getElementById('save-to-submit');
     if (saveToPlaylistSubmitButton) {
         saveToPlaylistSubmitButton.onclick = onSaveToPlaylistSubmitButton;
-    }
-
-    let addNewPlaylistButton = document.getElementById('v-pills-newPlaylist-tab');
-    if (addNewPlaylistButton) {
-        addNewPlaylistButton.onclick = onSaveToPlaylistButton;
     }
     
     let deletePlaylistSubmitButton = document.getElementById('delete-playlist-submit');
@@ -312,7 +305,7 @@ function onNextVideosButton() {
 
 function onLoadVideoPages() {
     /**
-     * Implement the pagination of the video list.
+     * Renders the pagination of the video list.
      */
     let verticalVideosListElement = document.getElementById("vertical-videos-list");
     verticalVideosListElement.innerHTML = '';
@@ -477,7 +470,6 @@ function onSearchButton() {
     /**
      * When user enters the main page, send request to the server and get the list of trending videos.
      */
-
     let input_date = document.getElementById("search_input");
     let search_year = input_date.elements[0].value;
     if (search_year == "2017"){
@@ -555,12 +547,9 @@ function onSignUpSubmitButton() {
      * When user clicks the sign up button, create an account for the user if the username is not taken*
      */
     let user_name = document.getElementById("signUp_input"); 
-    // let user_name = document.getElementById("signup-password"); 
-
-    let url =  `${getAPIBaseURL()}/sign-up?user_name=${user_name.value}`;
-
     let msgbox = document.getElementById("signUpMsg");
 
+    let url =  `${getAPIBaseURL()}/sign-up?user_name=${user_name.value}`;
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
@@ -585,11 +574,9 @@ function onLogInSubmitButton() {
      * When user clicks the log in button, checks if the user exists in the database*
      */
     let user_name = document.getElementById("logIn_input").value; 
-    // let user_name = document.getElementById("signup-password"); 
-    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name}`;
-
     let msgbox = document.getElementById("logInMsg");
 
+    let url =  `${getAPIBaseURL()}/log-in?user_name=${user_name}`;
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
@@ -598,7 +585,7 @@ function onLogInSubmitButton() {
 
                 logged_in = true;
                 logged_in_user = user_name;
-                console.log("onLogInSubmitButton");
+
                 updateUserInfo()
                 .then((info) => {
                     user_info = info;
@@ -632,6 +619,7 @@ function onLogOutSubmitButton() {
     localStorage.removeItem('username');
     updateButtons();
     document.getElementById('close-logOut-modal').click();
+    // Redirect to main page
     if (window.location.pathname == '/myPage.html') {
         window.location.href = '/';
     }
@@ -639,7 +627,10 @@ function onLogOutSubmitButton() {
 /////////////////////////// PLAYLIST FUNCTIONS ///////////////////////////
 
 function onCreatePlaylistButton() {
+    // When user clicks create button to create a playlist, clears the input in createPlaylistModal.
     clearInput('createPlaylistModal', 'playlist_input');
+    let alert_msg = document.getElementById("createPlaylistAlert");
+    alert_msg.innerHTML = "";
 }
 
 function onCreatePlaylistSubmitButton() {
@@ -653,15 +644,15 @@ function onCreatePlaylistSubmitButton() {
     }
 
     // check for duplicate naming
-    for(var p in user_info) {
-        if (p == playlist_title){
+    for(var playlist in user_info) {
+        if (playlist == playlist_title){
             alert_msg.innerHTML = "Playlist already exists!";
             return;
         }
     }
     
-    createPlaylist(logged_in_user, playlist_title)
-    console.log("onCreatePlaylistSubmitButton");
+    createPlaylist(logged_in_user, playlist_title);
+
     updateUserInfo()
     .then((info) => {
         user_info = info;
@@ -678,11 +669,12 @@ function createPlaylist(user_name, playlist_title){
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("createPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
-            updatePlaylistSelect();
+            if (window.location.pathname == '/') {
+                updatePlaylistSelect();
+            }
         })
         .catch((error) => console.log(error));
     })
@@ -693,16 +685,20 @@ function createPlaylist(user_name, playlist_title){
     document.getElementById('close-create-modal').click();
 
     renderAlertBox("Playlist created.");
-    let alert_msg = document.getElementById("saveToPlaylistAlert");
-    alert_msg.innerHTML = "";
+    if (window.location.pathname == '/') {
+        let alert_msg = document.getElementById("saveToPlaylistAlert");
+        alert_msg.innerHTML = "";
+    }
 }
 
 function onSaveToPlaylistButton() {
     /**
      * render a "save to playlist" modal when the button is clicked.
      */
-    let alert_msg = document.getElementById("saveToPlaylistAlert");
-    alert_msg.innerHTML = "";
+    if (window.location.pathname == '/') {
+        let alert_msg = document.getElementById("saveToPlaylistAlert");
+        alert_msg.innerHTML = "";
+    }
 
     if (!logged_in){
         document.getElementById('close-save-modal').click();
@@ -710,7 +706,6 @@ function onSaveToPlaylistButton() {
     }
     else if (window.location.pathname == '/') {
         video_id = checkId(this);
-        console.log("at onSaveToPlaylistButton :", user_info);
         updatePlaylistSelect();
     }
 }
@@ -726,7 +721,7 @@ function onSaveToPlaylistSubmitButton(){
     let alert_msg = document.getElementById("saveToPlaylistAlert");
 
     // check for no playlists
-    if (isEmpty(user_info)){
+    if (isEmpty(user_info)) {
         alert_msg.innerHTML = "Create a playlist first!";
         return;
     }
@@ -742,25 +737,16 @@ function onSaveToPlaylistSubmitButton(){
         }
     }
 
-    // console.log("playlist title:" + playlist_title);
-    // console.log(user_info[playlist_title]);
-
     let playlist_id = user_info[playlist_title][0]['playlist_id'];
-
-    // console.log("playlist id:" + playlist_id);
-    // console.log("video id:" + video_id);
-    
-    saveToPlaylist(playlist_id, video_id)
+    saveToPlaylist(playlist_id, video_id);
     video_id = 0;
 }
 
-function saveToPlaylist(playlist_id, video_id){
+function saveToPlaylist(playlist_id, video_id) {
     let url =  `${getAPIBaseURL()}/save-to-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
-    console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("saveToPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
@@ -775,9 +761,9 @@ function saveToPlaylist(playlist_id, video_id){
     renderAlertBox("Saved to playlist.");
 }
 
-function onDeletePlaylistButton(){
+function onDeletePlaylistButton() {
     console.log("playlist_id = " + playlist_id);
-    deletePlaylist(logged_in_user, playlist_id)
+    deletePlaylist(logged_in_user, playlist_id);
     document.getElementById('close-delete-modal').click();
     renderAlertBox("Playlist deleted.");
     playlist_id = 0;
@@ -785,11 +771,9 @@ function onDeletePlaylistButton(){
 
 function deletePlaylist(user_name, playlist_id){
     let url =  `${getAPIBaseURL()}/delete-playlist?user_name=${user_name}&playlist_id=${playlist_id}`;
-
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("deletPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
@@ -806,17 +790,14 @@ function onRemoveFromPlaylistButton(){
     let ids = checkId(this).split("-");
     let playlist_id = ids[0];
     let video_id = ids[1];
-    console.log(playlist_id,video_id);
     removeFromPlaylist(playlist_id, video_id)
 }
 
 function removeFromPlaylist(playlist_id, video_id){
     let url =  `${getAPIBaseURL()}/remove-from-playlist?playlist_id=${playlist_id}&video_id=${video_id}`;
-    console.log(url);
     fetch(url, {method: 'get'})
     .then((response) => response.json())
     .then((msg) => {
-        console.log("removeFromPlaylist");
         updateUserInfo()
         .then((info) => {
             user_info = info;
@@ -857,11 +838,10 @@ function renderUserPlaylistsTabs() {
     let playlist_tab = document.getElementById('v-pills-tab');
     playlist_tab.innerHTML = listBody;
 
-    // console.log(document.getElementById('v-pills-2-tab'))
     let removePlaylistButton = document.querySelectorAll(".remove-playlist-btn");
     if (removePlaylistButton) {
         removePlaylistButton.forEach((element) => {
-            element.onclick = function(){playlist_id = this.id};
+            element.onclick =  function() { playlist_id = this.id };
         })
     }
 }
@@ -900,16 +880,13 @@ function renderUserPlaylistsTable() {
 }
 
 function renderUserPlaylistsItems() {
-    console.log("renderUserPlaylistsItems");
     updateUserInfo()
     .then((info) => {
         user_info = info;
-        // console.log(user_info);
     })
     .catch((error) => console.log(error));
-    /**
-     * Renders saved videos list in the table in each tabs.
-     */
+
+    // Renders saved videos list in the table in each tabs.
     let playlists_tabs =  Object.keys(user_info);
     let playlists_items =  Object.values(user_info);
 
@@ -954,7 +931,7 @@ function updateButtons(){
         document.getElementById("myPage").removeAttribute("hidden");
         document.getElementById("logOut").removeAttribute("hidden");
     }
-    else{
+    else {
         document.getElementById("logIn").removeAttribute("hidden");
         document.getElementById("signUp").removeAttribute("hidden");
         document.getElementById("myPage").setAttribute('hidden',true);
@@ -963,15 +940,13 @@ function updateButtons(){
 }
 
 function updatePlaylistSelect(){
-    console.log("updatePlaylistSelect");
-
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML = "";
     if (isEmpty(user_info)){
         playlist_select.innerHTML += '<option value="" selected="selected">playlists</option>';
     }
     else {
-        for(var playlist_title in user_info) {
+        for (var playlist_title in user_info) {
             playlist_select.innerHTML += '<option value="' + playlist_title + '">' + playlist_title + '</option>\n';
         }
     }
@@ -1012,7 +987,6 @@ function formatPublishTimeString(publish_time) {
 }
 
 function renderAlertBox(alert_msg){
-    // TODO: stylistic features?
     let alert_box = document.getElementById('alert_box');
     let success_alert = `<p class="large alert alert-success alert-dismissible fade show
     position-absolute overflow-visible top-0 start-50 translate-middle-x" role="alert">
