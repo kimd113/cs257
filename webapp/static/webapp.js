@@ -524,14 +524,16 @@ function onLogInButton() {
 }
 
 function keepLogInStatus() {
-    logged_in = true;
-    logged_in_user = localStorage.getItem('username');
-    updateUserInfo()
-    .then((info) => {
-        user_info = info;
-    })
-    .catch((error) => console.log(error));
-    updateButtons();
+    if (localStorage.getItem('username')) {
+        logged_in_user = localStorage.getItem('username');
+        logged_in = true;
+        updateUserInfo()
+        .then((info) => {
+            user_info = info;
+        })
+        .catch((error) => console.log(error));
+        updateButtons();
+    }
 }
 
 function onSignUpSubmitButton() {
@@ -702,7 +704,6 @@ function onSaveToPlaylistButton() {
 }
 
 function onSaveToPlaylistSubmitButton(){
-    console.log("onSaveToPlaylistSubmitButton");
     updateUserInfo()
     .then((info) => {
         user_info = info;
@@ -928,7 +929,7 @@ function updateButtons(){
     }
 }
 
-function updatePlaylistSelect(){
+function updatePlaylistSelect() {
     let playlist_select = document.getElementById("playlist-options");
     playlist_select.innerHTML = "";
     if (isEmpty(user_info)){
